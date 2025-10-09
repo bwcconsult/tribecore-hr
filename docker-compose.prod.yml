@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tribecore_backend_prod
+    environment:
+      NODE_ENV: production
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - tribecore_network
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tribecore_frontend_prod
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - tribecore_network
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: tribecore_postgres_prod
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "${DATABASE_PORT}:5432"
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - tribecore_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: tribecore_redis_prod
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data_prod:/data
+    restart: unless-stopped
+    networks:
+      - tribecore_network
+
+volumes:
+  postgres_data_prod:
+  redis_data_prod:
+
+networks:
+  tribecore_network:
+    driver: bridge

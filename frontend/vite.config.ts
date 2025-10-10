@@ -14,7 +14,6 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     cssCodeSplit: false,
-    minify: 'terser',
     rollupOptions: {
       output: {
         manualChunks: undefined,

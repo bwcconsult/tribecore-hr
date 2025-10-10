@@ -1,5 +1,28 @@
 import { axiosInstance } from '../lib/axios';
 
+export interface Payroll {
+  id: string;
+  employeeId: string;
+  employeeName?: string;
+  payPeriodStart: string;
+  payPeriodEnd: string;
+  baseSalary: number;
+  bonuses: number;
+  overtime: number;
+  grossPay: number;
+  taxDeduction: number;
+  insuranceDeduction: number;
+  otherDeductions: number;
+  totalDeductions: number;
+  netPay: number;
+  currency: string;
+  status: string;
+  payDate: string;
+  paymentMethod?: string;
+  notes?: string;
+  createdAt: string;
+}
+
 export const payrollService = {
   getAll: async (params?: any) => {
     const response = await axiosInstance.get('/payroll', { params });
@@ -11,8 +34,18 @@ export const payrollService = {
     return response.data;
   },
 
-  create: async (data: any) => {
+  create: async (data: Partial<Payroll>) => {
     const response = await axiosInstance.post('/payroll', data);
+    return response.data;
+  },
+
+  update: async (id: string, data: Partial<Payroll>) => {
+    const response = await axiosInstance.patch(`/payroll/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: string) => {
+    const response = await axiosInstance.delete(`/payroll/${id}`);
     return response.data;
   },
 
@@ -29,6 +62,18 @@ export const payrollService = {
   getSummary: async (startDate: string, endDate: string) => {
     const response = await axiosInstance.get('/payroll/summary', {
       params: { startDate, endDate },
+    });
+    return response.data;
+  },
+
+  getStats: async () => {
+    const response = await axiosInstance.get('/payroll/stats');
+    return response.data;
+  },
+
+  generatePayslip: async (id: string) => {
+    const response = await axiosInstance.get(`/payroll/${id}/payslip`, {
+      responseType: 'blob',
     });
     return response.data;
   },

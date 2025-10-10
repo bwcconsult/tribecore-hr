@@ -12,13 +12,10 @@ async function bootstrap() {
   const apiPrefix = configService.get('API_PREFIX') || 'api/v1';
   app.setGlobalPrefix(apiPrefix);
 
-  // CORS
-  const corsOrigin = configService.get('CORS_ORIGIN') || 'http://localhost:5173';
-  const allowedOrigins = corsOrigin.split(',').map(origin => origin.trim());
-  
+  // CORS - Temporarily allow all origins for testing
   app.enableCors({
-    origin: allowedOrigins,
-    credentials: configService.get('CORS_CREDENTIALS') === 'true',
+    origin: true,
+    credentials: true,
   });
 
   // Global validation pipe

@@ -1,15 +1,19 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { OrganizationService } from '../organization/organization.service';
+import { UserRole, Country, Currency } from '../../common/enums';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @Inject(forwardRef(() => OrganizationService))
+    private organizationService: OrganizationService,
   ) {}
 
   async create(registerDto: RegisterDto): Promise<User> {
@@ -19,7 +23,24 @@ export class UsersService {
       throw new ConflictException('User with this email already exists');
     }
 
-    const user = this.usersRepository.create(registerDto);
+    // Create organization for the new user
+    const organization = await this.organizationService.create({
+      name: `${registerDto.firstName} ${registerDto.lastName}'s Organization`,
+      email: registerDto.email,
+      phoneNumber: registerDto.phoneNumber || '',
+      address: '',
+      city: '',
+      country: Country.USA, // Default country
+      currency: Currency.USD, // Default currency
+    });
+
+    // Create user with organization and ADMIN role
+    const user = this.usersRepository.create({
+      ...registerDto,
+      organizationId: organization.id,
+      roles: [UserRole.ADMIN], // First user becomes admin
+    });
+    
     return this.usersRepository.save(user);
   }
 

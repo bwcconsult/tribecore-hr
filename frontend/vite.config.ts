@@ -14,9 +14,11 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     cssCodeSplit: false,
+    minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: () => 'everything.js',
+        manualChunks: undefined,
+        inlineDynamicImports: true,
       },
     },
   },

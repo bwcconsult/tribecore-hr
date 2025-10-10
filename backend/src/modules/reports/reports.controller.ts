@@ -45,7 +45,7 @@ export class ReportsController {
 
   @Get('turnover-rate')
   @Roles(UserRole.ADMIN, UserRole.HR_MANAGER)
-  @ApiOperation({ summary: 'Get turnover rate report' }}
+  @ApiOperation({ summary: 'Get turnover rate report' })
   getTurnoverRate(@Query('year') year: number, @CurrentUser() user: any) {
     return this.reportsService.getTurnoverRate(user.organizationId, year || new Date().getFullYear());
   }

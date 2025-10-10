@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { Toaster as HotToast } from 'react-hot-toast';
 import { useAuthStore } from './stores/authStore';
 
 // Layouts
@@ -75,6 +76,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" richColors />
+      <HotToast position="top-right" />
     </>
   );
 }

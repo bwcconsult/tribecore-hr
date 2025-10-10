@@ -1,20 +1,57 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Plus, Search } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import { employeeService } from '../../services/employeeService';
+import { employeeService, Employee } from '../../services/employeeService';
 import { formatDate } from '../../lib/utils';
+import EmployeeFormModal from '../../components/employees/EmployeeFormModal';
+import { toast } from 'react-hot-toast';
 
 export default function EmployeesPage() {
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['employees', page, search],
     queryFn: () => employeeService.getAll({ page, limit: 10, search }),
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: employeeService.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
+      toast.success('Employee deleted successfully!');
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to delete employee');
+    },
+  });
+
+  const handleAdd = () => {
+    setSelectedEmployee(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (employee: Employee) => {
+    setSelectedEmployee(employee);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this employee?')) {
+      deleteMutation.mutate(id);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedEmployee(null);
+  };
 
   return (
     <div>
@@ -23,7 +60,7 @@ export default function EmployeesPage() {
           <h1 className="text-3xl font-bold text-gray-900">Employees</h1>
           <p className="text-gray-600 mt-1">Manage your workforce</p>
         </div>
-        <Button>
+        <Button onClick={handleAdd}>
           <Plus className="h-4 w-4 mr-2" />
           Add Employee
         </Button>
@@ -61,6 +98,7 @@ export default function EmployeesPage() {
                     <th className="pb-3 font-medium">Job Title</th>
                     <th className="pb-3 font-medium">Status</th>
                     <th className="pb-3 font-medium">Hire Date</th>
+                    <th className="pb-3 font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,6 +120,25 @@ export default function EmployeesPage() {
                         </span>
                       </td>
                       <td className="py-4 text-sm">{formatDate(employee.hireDate)}</td>
+                      <td className="py-4">
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleEdit(employee)}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleDelete(employee.id)}
+                            disabled={deleteMutation.isPending}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -116,6 +173,12 @@ export default function EmployeesPage() {
           )}
         </CardContent>
       </Card>
+
+      <EmployeeFormModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        employee={selectedEmployee}
+      />
     </div>
   );
 }

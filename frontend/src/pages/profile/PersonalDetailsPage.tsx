@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import {
   User,
   Briefcase,
@@ -11,6 +12,7 @@ import {
   Edit,
   Save,
   X,
+  Plus,
 } from 'lucide-react';
 
 type TabType = 'personal' | 'employment' | 'contacts' | 'dependants';
@@ -322,7 +324,14 @@ function PersonalInformationTab() {
       {isEditing && (
         <div className="pt-6 border-t border-gray-200">
           <div className="flex gap-3">
-            <button className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+            <button 
+              onClick={() => {
+                // TODO: Save to API
+                toast.success('Profile updated successfully!');
+                setIsEditing(false);
+              }}
+              className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+            >
               <Save className="w-4 h-4" />
               Save Changes
             </button>
@@ -406,7 +415,8 @@ function EmploymentTab() {
 
 // Emergency Contacts Tab
 function EmergencyContactsTab() {
-  const contacts = [
+  const [isAddingContact, setIsAddingContact] = useState(false);
+  const [contacts, setContacts] = useState([
     {
       id: '1',
       name: 'Jane Doe',
@@ -415,13 +425,17 @@ function EmergencyContactsTab() {
       email: 'jane@email.com',
       isPrimary: true,
     },
-  ];
+  ]);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Emergency Contacts</h2>
-        <button className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+        <button 
+          onClick={() => setIsAddingContact(true)}
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
           Add Contact
         </button>
       </div>
@@ -457,24 +471,93 @@ function EmergencyContactsTab() {
                   </div>
                 </div>
               </div>
-              <button className="text-gray-400 hover:text-gray-600">
+              <button 
+                onClick={() => toast.info('Edit contact feature coming soon!')}
+                className="text-gray-400 hover:text-gray-600"
+              >
                 <Edit className="w-4 h-4" />
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Add Contact Modal/Form */}
+      {isAddingContact && (
+        <div className="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Add Emergency Contact</h3>
+              <button onClick={() => setIsAddingContact(false)} className="text-gray-400 hover:text-gray-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="SPOUSE">Spouse</option>
+                  <option value="PARTNER">Partner</option>
+                  <option value="PARENT">Parent</option>
+                  <option value="SIBLING">Sibling</option>
+                  <option value="FRIEND">Friend</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <input type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="isPrimary" className="rounded border-gray-300" />
+                <label htmlFor="isPrimary" className="text-sm text-gray-700">Set as primary contact</label>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button 
+                onClick={() => {
+                  toast.success('Emergency contact added!');
+                  setIsAddingContact(false);
+                }}
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+              >
+                Add Contact
+              </button>
+              <button 
+                onClick={() => setIsAddingContact(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 // Dependants Tab
 function DependantsTab() {
+  const [isAddingDependant, setIsAddingDependant] = useState(false);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Dependants</h2>
-        <button className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+        <button 
+          onClick={() => setIsAddingDependant(true)}
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
           Add Dependant
         </button>
       </div>
@@ -488,6 +571,69 @@ function DependantsTab() {
           Add your dependants for benefits enrollment and emergency purposes
         </p>
       </div>
+
+      {/* Add Dependant Modal/Form */}
+      {isAddingDependant && (
+        <div className="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Add Dependant</h3>
+              <button onClick={() => setIsAddingDependant(false)} className="text-gray-400 hover:text-gray-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="CHILD">Child</option>
+                  <option value="SPOUSE">Spouse</option>
+                  <option value="PARTNER">Partner</option>
+                  <option value="PARENT">Parent</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="isDependent" className="rounded border-gray-300" />
+                <label htmlFor="isDependent" className="text-sm text-gray-700">Include in benefits</label>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button 
+                onClick={() => {
+                  toast.success('Dependant added!');
+                  setIsAddingDependant(false);
+                }}
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+              >
+                Add Dependant
+              </button>
+              <button 
+                onClick={() => setIsAddingDependant(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

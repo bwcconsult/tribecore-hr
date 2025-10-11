@@ -32,6 +32,8 @@ import CalendarPage from './pages/calendar/CalendarPage';
 import AnnualOverviewPage from './pages/calendar/AnnualOverviewPage';
 import PersonalSummaryPage from './pages/profile/PersonalSummaryPage';
 import PersonalDetailsPage from './pages/profile/PersonalDetailsPage';
+import TaskCentrePage from './pages/tasks/TaskCentrePage';
+import AbsenceRequestsPage from './pages/absence/AbsenceRequestsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -77,6 +79,8 @@ function App() {
             <Route path="/calendar/annual" element={<AnnualOverviewPage />} />
             <Route path="/profile/me" element={<PersonalSummaryPage />} />
             <Route path="/profile/details" element={<PersonalDetailsPage />} />
+            <Route path="/tasks" element={<TaskCentrePage />} />
+            <Route path="/absence" element={<AbsenceRequestsPage />} />
           </Route>
 
           {/* Fallback */}

@@ -4,6 +4,8 @@ import { EmployeesService } from './employees.service';
 import { EmployeesController } from './employees.controller';
 import { ProfileService } from './profile.service';
 import { ProfileController } from './profile.controller';
+import { BankDetailsService } from './bank-details.service';
+import { BankDetailsController } from './bank-details.controller';
 import { Employee } from './entities/employee.entity';
 import { EmploymentActivity } from './entities/employment-activity.entity';
 import { WorkSchedule } from './entities/work-schedule.entity';
@@ -22,8 +24,8 @@ import { BankDetails } from './entities/bank-details.entity';
       BankDetails,
     ]),
   ],
-  controllers: [EmployeesController, ProfileController],
-  providers: [EmployeesService, ProfileService],
-  exports: [EmployeesService, ProfileService],
+  controllers: [EmployeesController, ProfileController, BankDetailsController],
+  providers: [EmployeesService, ProfileService, BankDetailsService],
+  exports: [EmployeesService, ProfileService, BankDetailsService],
 })
 export class EmployeesModule {}

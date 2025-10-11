@@ -21,12 +21,16 @@ import {
   BarChart3,
   User,
   CalendarDays,
+  CheckSquare,
+  Plane,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
   { name: 'My Profile', href: '/profile/me', icon: User },
+  { name: 'Tasks', href: '/tasks', icon: CheckSquare },
+  { name: 'Absence', href: '/absence', icon: Plane },
   { name: 'Calendar', href: '/calendar', icon: CalendarDays },
   { name: 'Employees', href: '/employees', icon: Users },
   { name: 'Recruitment', href: '/recruitment', icon: Briefcase },

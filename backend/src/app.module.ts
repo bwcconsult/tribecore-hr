@@ -55,9 +55,9 @@ import { UserSettingsModule } from './modules/user-settings/user-settings.module
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get('NODE_ENV') === 'development',
+        synchronize: false, // NEVER use synchronize in production - use migrations instead
         logging: configService.get('DATABASE_LOGGING') === 'true',
-        ssl: configService.get('DATABASE_SSL') === 'true',
+        ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),
     }),
 

@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { ExpenseClaim } from './expense-claim.entity';
 import { User } from '../../users/entities/user.entity';
 import { PaymentMethod, ReimbursementStatus } from '../enums/payment-method.enum';
 
@@ -19,9 +18,9 @@ export class Reimbursement {
   @Column()
   claimId: string;
 
-  @ManyToOne(() => ExpenseClaim, (claim) => claim.reimbursements, { onDelete: 'CASCADE' })
+  @ManyToOne('ExpenseClaim', 'reimbursements', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'claimId' })
-  claim: ExpenseClaim;
+  claim: any;
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   amount: number;

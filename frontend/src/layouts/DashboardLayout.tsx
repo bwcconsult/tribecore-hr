@@ -19,11 +19,15 @@ import {
   Briefcase,
   GraduationCap,
   BarChart3,
+  User,
+  CalendarDays,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'My Profile', href: '/profile/me', icon: User },
+  { name: 'Calendar', href: '/calendar', icon: CalendarDays },
   { name: 'Employees', href: '/employees', icon: Users },
   { name: 'Recruitment', href: '/recruitment', icon: Briefcase },
   { name: 'Onboarding', href: '/onboarding', icon: UserPlus },

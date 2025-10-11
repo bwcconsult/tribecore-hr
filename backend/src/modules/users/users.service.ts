@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdatePersonalDetailsDto } from './dto/update-personal-details.dto';
+import { UpdateAddressDto } from './dto/update-address.dto';
 import { OrganizationService } from '../organization/organization.service';
 import { UserRole, Country, Currency } from '../../common/enums';
 
@@ -81,5 +83,65 @@ export class UsersService {
   async remove(id: string): Promise<void> {
     const user = await this.findOne(id);
     await this.usersRepository.softDelete(id);
+  }
+
+  /**
+   * Update personal details for a user
+   */
+  async updatePersonalDetails(id: string, updateDto: UpdatePersonalDetailsDto): Promise<User> {
+    const user = await this.findOne(id);
+    
+    Object.assign(user, {
+      ...updateDto,
+      dateOfBirth: updateDto.dateOfBirth ? new Date(updateDto.dateOfBirth) : user.dateOfBirth,
+    });
+    
+    return this.usersRepository.save(user);
+  }
+
+  /**
+   * Update address for a user
+   */
+  async updateAddress(id: string, updateDto: UpdateAddressDto): Promise<User> {
+    const user = await this.findOne(id);
+    Object.assign(user, updateDto);
+    return this.usersRepository.save(user);
+  }
+
+  /**
+   * Get user's personal details (excluding sensitive data)
+   */
+  async getPersonalDetails(id: string): Promise<User> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'email',
+        'firstName',
+        'lastName',
+        'preferredName',
+        'pronouns',
+        'dateOfBirth',
+        'gender',
+        'nationality',
+        'maritalStatus',
+        'personalEmail',
+        'workPhone',
+        'personalPhone',
+        'phoneNumber',
+        'addressLine1',
+        'addressLine2',
+        'city',
+        'state',
+        'postcode',
+        'country',
+      ],
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 }

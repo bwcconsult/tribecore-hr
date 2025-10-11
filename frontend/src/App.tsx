@@ -28,6 +28,7 @@ import ExpensesPage from './pages/expenses/ExpensesPage';
 import SubmitExpensePage from './pages/expenses/SubmitExpensePage';
 import ExpenseDetailsPage from './pages/expenses/ExpenseDetailsPage';
 import ApprovalsPage from './pages/expenses/ApprovalsPage';
+import ExpenseAnalyticsPage from './pages/expenses/ExpenseAnalyticsPage';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
@@ -68,21 +69,20 @@ function App() {
             <Route path="/payroll" element={<PayrollPage />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/attendance" element={<AttendancePage />} />
-            <Route path="/performance" element={<PerformancePage />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/benefits" element={<BenefitsPage />} />
             <Route path="/time-tracking" element={<TimeTrackingPage />} />
-            <Route path="/expenses" element={<ExpensesPage />} />
+            <Route path="/expenses" element={<ExpensesPage />} /> {/* This now redirects to ExpensesDashboard */}
             <Route path="/expenses/submit" element={<SubmitExpensePage />} />
             <Route path="/expenses/approvals" element={<ApprovalsPage />} />
+            <Route path="/expenses/analytics" element={<ExpenseAnalyticsPage />} />
             <Route path="/expenses/:id" element={<ExpenseDetailsPage />} />
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/calendar/annual" element={<AnnualOverviewPage />} />
             <Route path="/profile/me" element={<PersonalSummaryPage />} />
             <Route path="/profile/details" element={<PersonalDetailsPage />} />
             <Route path="/tasks" element={<TaskCentrePage />} />

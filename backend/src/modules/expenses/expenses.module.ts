@@ -19,12 +19,14 @@ import { ApprovalService } from './services/approval.service';
 import { PolicyService } from './services/policy.service';
 import { ReimbursementService } from './services/reimbursement.service';
 import { AuditTrailService } from './services/audit-trail.service';
+import { AnalyticsService } from './services/analytics.service';
 
 // Controllers
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
 import { ApprovalController } from './controllers/approval.controller';
 import { ReimbursementController } from './controllers/reimbursement.controller';
 import { CategoryController } from './controllers/category.controller';
+import { AnalyticsController } from './controllers/analytics.controller';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { CategoryController } from './controllers/category.controller';
     ApprovalController,
     ReimbursementController,
     CategoryController,
+    AnalyticsController,
   ],
   providers: [
     ExpenseClaimService,
@@ -53,6 +56,7 @@ import { CategoryController } from './controllers/category.controller';
     PolicyService,
     ReimbursementService,
     AuditTrailService,
+    AnalyticsService,
   ],
   exports: [
     ExpenseClaimService,

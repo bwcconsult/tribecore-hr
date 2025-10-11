@@ -175,6 +175,78 @@ const expenseService = {
     return response.data;
   },
 
+  // Analytics
+  async getAnalyticsOverview(startDate?: string, endDate?: string, departmentId?: string, employeeId?: string) {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (departmentId) params.append('departmentId', departmentId);
+    if (employeeId) params.append('employeeId', employeeId);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/overview?${params.toString()}`);
+    return response.data;
+  },
+
+  async getExpenseTrends(months: number = 12, departmentId?: string, employeeId?: string) {
+    const params = new URLSearchParams();
+    params.append('months', months.toString());
+    if (departmentId) params.append('departmentId', departmentId);
+    if (employeeId) params.append('employeeId', employeeId);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/trends?${params.toString()}`);
+    return response.data;
+  },
+
+  async getCategoryBreakdown(startDate?: string, endDate?: string, departmentId?: string, employeeId?: string) {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (departmentId) params.append('departmentId', departmentId);
+    if (employeeId) params.append('employeeId', employeeId);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/by-category?${params.toString()}`);
+    return response.data;
+  },
+
+  async getTopSpenders(limit: number = 10, startDate?: string, endDate?: string, departmentId?: string) {
+    const params = new URLSearchParams();
+    params.append('limit', limit.toString());
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (departmentId) params.append('departmentId', departmentId);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/top-spenders?${params.toString()}`);
+    return response.data;
+  },
+
+  async getApprovalMetrics(startDate?: string, endDate?: string, approverId?: string) {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (approverId) params.append('approverId', approverId);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/approval-metrics?${params.toString()}`);
+    return response.data;
+  },
+
+  async getDepartmentComparison(startDate?: string, endDate?: string) {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/by-department?${params.toString()}`);
+    return response.data;
+  },
+
+  async getPolicyViolations(startDate?: string, endDate?: string) {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    
+    const response = await axios.get(`${API_BASE_URL}/expenses/analytics/policy-violations?${params.toString()}`);
+    return response.data;
+  },
+
   // File upload (placeholder - will implement with actual file storage)
   async uploadReceipt(expenseItemId: string, file: File) {
     const formData = new FormData();

@@ -247,7 +247,22 @@ export class ExpenseClaimService {
       newValues: { status: ExpenseStatus.SUBMITTED },
     });
 
-    // TODO: Trigger approval workflow
+    // Send email notification to employee
+    try {
+      const employee = claim.employee;
+      await this.emailService.sendExpenseSubmittedEmail(
+        `${employee.firstName} ${employee.lastName}`,
+        employee.email,
+        claim.claimNumber,
+        claim.totalAmount,
+        claim.currency,
+      );
+    } catch (error) {
+      // Log error but don't fail the submission
+      console.error('Failed to send submission email:', error);
+    }
+
+    // TODO: Trigger approval workflow & notify approver
 
     return updatedClaim;
   }

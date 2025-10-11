@@ -8,6 +8,7 @@ import { ApprovalStatus } from '../enums/approval-status.enum';
 import { ExpenseStatus } from '../enums/expense-status.enum';
 import { AuditTrailService } from './audit-trail.service';
 import { PolicyService } from './policy.service';
+import { EmailService } from '../../notifications/services/email.service';
 
 @Injectable()
 export class ApprovalService {
@@ -18,6 +19,7 @@ export class ApprovalService {
     private claimRepository: Repository<ExpenseClaim>,
     private auditTrailService: AuditTrailService,
     private policyService: PolicyService,
+    private emailService: EmailService,
   ) {}
 
   async createApprovalChain(claimId: string): Promise<Approval[]> {
@@ -126,6 +128,13 @@ export class ApprovalService {
     const approvals = await this.approvalRepository.find({
       where: { claimId: claim.id },
       order: { level: 'ASC' },
+      relations: ['approver'],
+    });
+
+    // Get claim with employee details
+    const fullClaim = await this.claimRepository.findOne({
+      where: { id: claim.id },
+      relations: ['employee'],
     });
 
     // Check if any approval is rejected
@@ -134,6 +143,25 @@ export class ApprovalService {
       claim.status = ExpenseStatus.REJECTED;
       claim.rejectedAt = new Date();
       await this.claimRepository.save(claim);
+
+      // Send rejection email
+      try {
+        const rejection = approvals.find(a => a.status === ApprovalStatus.REJECTED);
+        if (rejection && fullClaim) {
+          await this.emailService.sendExpenseRejectedEmail(
+            `${fullClaim.employee.firstName} ${fullClaim.employee.lastName}`,
+            fullClaim.employee.email,
+            fullClaim.claimNumber,
+            fullClaim.totalAmount,
+            fullClaim.currency,
+            `${rejection.approver?.firstName} ${rejection.approver?.lastName}`,
+            rejection.rejectionReason || 'No reason provided',
+          );
+        }
+      } catch (error) {
+        console.error('Failed to send rejection email:', error);
+      }
+
       return;
     }
 
@@ -143,6 +171,24 @@ export class ApprovalService {
       claim.status = ExpenseStatus.APPROVED;
       claim.approvedAt = new Date();
       await this.claimRepository.save(claim);
+
+      // Send approval email
+      try {
+        const finalApprover = approvals[approvals.length - 1];
+        if (finalApprover && fullClaim) {
+          await this.emailService.sendExpenseApprovedEmail(
+            `${fullClaim.employee.firstName} ${fullClaim.employee.lastName}`,
+            fullClaim.employee.email,
+            fullClaim.claimNumber,
+            fullClaim.totalAmount,
+            fullClaim.currency,
+            `${finalApprover.approver?.firstName} ${finalApprover.approver?.lastName}`,
+          );
+        }
+      } catch (error) {
+        console.error('Failed to send approval email:', error);
+      }
+
       return;
     }
 

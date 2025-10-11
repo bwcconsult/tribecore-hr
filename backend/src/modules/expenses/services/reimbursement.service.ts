@@ -7,6 +7,7 @@ import { CreateReimbursementDto } from '../dto/create-reimbursement.dto';
 import { ReimbursementStatus } from '../enums/payment-method.enum';
 import { ExpenseStatus } from '../enums/expense-status.enum';
 import { AuditTrailService } from './audit-trail.service';
+import { EmailService } from '../../notifications/services/email.service';
 
 @Injectable()
 export class ReimbursementService {
@@ -16,6 +17,7 @@ export class ReimbursementService {
     @InjectRepository(ExpenseClaim)
     private claimRepository: Repository<ExpenseClaim>,
     private auditTrailService: AuditTrailService,
+    private emailService: EmailService,
   ) {}
 
   async create(claimId: string, createDto: CreateReimbursementDto, processedBy: string): Promise<Reimbursement> {
@@ -96,6 +98,21 @@ export class ReimbursementService {
       entityId: id,
       newValues: { status: ReimbursementStatus.PAID },
     });
+
+    // Send reimbursement processed email
+    try {
+      const employee = reimbursement.claim.employee;
+      await this.emailService.sendReimbursementProcessedEmail(
+        `${employee.firstName} ${employee.lastName}`,
+        employee.email,
+        reimbursement.claim.claimNumber,
+        reimbursement.amount,
+        reimbursement.currency,
+        reimbursement.paymentMethod,
+      );
+    } catch (error) {
+      console.error('Failed to send reimbursement email:', error);
+    }
 
     return updated;
   }

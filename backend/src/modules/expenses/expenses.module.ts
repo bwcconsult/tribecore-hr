@@ -26,6 +26,7 @@ import { OcrService } from './services/ocr.service';
 import { StorageService } from './services/storage.service';
 import { CurrencyService } from './services/currency.service';
 import { WorkflowService } from './services/workflow.service';
+import { ForecastService } from './services/forecast.service';
 
 // Controllers
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
@@ -36,6 +37,7 @@ import { AnalyticsController } from './controllers/analytics.controller';
 import { ReceiptController } from './controllers/receipt.controller';
 import { CurrencyController } from './controllers/currency.controller';
 import { WorkflowController } from './controllers/workflow.controller';
+import { ForecastController } from './controllers/forecast.controller';
 
 @Module({
   imports: [
@@ -63,6 +65,7 @@ import { WorkflowController } from './controllers/workflow.controller';
     ReceiptController,
     CurrencyController,
     WorkflowController,
+    ForecastController,
   ],
   providers: [
     ExpenseClaimService,
@@ -75,6 +78,7 @@ import { WorkflowController } from './controllers/workflow.controller';
     StorageService,
     CurrencyService,
     WorkflowService,
+    ForecastService,
   ],
   exports: [
     ExpenseClaimService,

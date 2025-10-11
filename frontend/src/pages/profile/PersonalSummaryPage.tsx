@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User, Briefcase, Calendar, Clock, MapPin, Phone, Mail, Edit, FileText } from 'lucide-react';
 import { format } from 'date-fns';
+import { toast } from 'react-hot-toast';
 
 interface Employee {
   id: string;
@@ -33,7 +35,9 @@ interface AbsenceBalance {
 }
 
 export default function PersonalSummaryPage() {
+  const navigate = useNavigate();
   const [isEditingBio, setIsEditingBio] = useState(false);
+  const [bioText, setBioText] = useState('');
 
   // Mock data - replace with API
   const employee: Employee = {
@@ -121,7 +125,10 @@ export default function PersonalSummaryPage() {
                   <p className="text-sm text-gray-500 mt-1">{employee.preferredPronouns}</p>
                 )}
               </div>
-              <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+              <button 
+                onClick={() => navigate('/profile/details')}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+              >
                 <Edit className="w-4 h-4" />
                 Edit Profile
               </button>
@@ -163,7 +170,13 @@ export default function PersonalSummaryPage() {
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-900">About Me</h3>
             <button
-              onClick={() => setIsEditingBio(!isEditingBio)}
+              onClick={() => {
+                if (isEditingBio) {
+                  setBioText(employee.bio || '');
+                }
+                setBioText(employee.bio || '');
+                setIsEditingBio(!isEditingBio);
+              }}
               className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1"
             >
               <Edit className="w-3 h-3" />
@@ -175,14 +188,26 @@ export default function PersonalSummaryPage() {
               <textarea
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 rows={4}
-                defaultValue={employee.bio}
+                value={bioText}
+                onChange={(e) => setBioText(e.target.value)}
+                placeholder="Tell us about yourself..."
               />
               <div className="flex gap-2 mt-2">
-                <button className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                <button 
+                  onClick={() => {
+                    // TODO: Save to API
+                    toast.success('Bio updated successfully!');
+                    setIsEditingBio(false);
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+                >
                   Save
                 </button>
                 <button
-                  onClick={() => setIsEditingBio(false)}
+                  onClick={() => {
+                    setBioText(employee.bio || '');
+                    setIsEditingBio(false);
+                  }}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
                   Cancel
@@ -197,7 +222,10 @@ export default function PersonalSummaryPage() {
         {/* Quick Links */}
         <div className="mt-6 pt-6 border-t border-gray-200">
           <div className="flex gap-3">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+            <button 
+              onClick={() => navigate('/profile/details')}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+            >
               <FileText className="w-4 h-4" />
               View Profile Summary
             </button>

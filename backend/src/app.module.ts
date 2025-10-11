@@ -16,6 +16,12 @@ import { ComplianceModule } from './modules/compliance/compliance.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { DocumentsModule } from './modules/documents/documents.module';
+import { RecruitmentModule } from './modules/recruitment/recruitment.module';
+import { TimeTrackingModule } from './modules/time-tracking/time-tracking.module';
+import { OnboardingModule } from './modules/onboarding/onboarding.module';
+import { BenefitsModule } from './modules/benefits/benefits.module';
+import { ExpensesModule } from './modules/expenses/expenses.module';
+import { LearningModule } from './modules/learning/learning.module';
 
 @Module({
   imports: [
@@ -68,6 +74,12 @@ import { DocumentsModule } from './modules/documents/documents.module';
     ReportsModule,
     OrganizationModule,
     DocumentsModule,
+    RecruitmentModule,
+    TimeTrackingModule,
+    OnboardingModule,
+    BenefitsModule,
+    ExpensesModule,
+    LearningModule,
   ],
 })
 export class AppModule {}

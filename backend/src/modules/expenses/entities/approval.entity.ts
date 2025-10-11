@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { ExpenseClaim } from './expense-claim.entity';
 import { User } from '../../users/entities/user.entity';
 import { ApprovalStatus } from '../enums/approval-status.enum';
 
@@ -19,9 +18,9 @@ export class Approval {
   @Column()
   claimId: string;
 
-  @ManyToOne(() => ExpenseClaim, (claim) => claim.approvals, { onDelete: 'CASCADE' })
+  @ManyToOne('ExpenseClaim', 'approvals', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'claimId' })
-  claim: ExpenseClaim;
+  claim: any;
 
   @Column()
   approverId: string;

@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { ExpenseStatus } from '../enums/expense-status.enum';
-import { Approval } from './approval.entity';
 import { Reimbursement } from './reimbursement.entity';
 
 @Entity('expense_claims')
@@ -92,8 +91,8 @@ export class ExpenseClaim {
   @OneToMany('ExpenseItem', 'claim', { cascade: true })
   items: any[];
 
-  @OneToMany(() => Approval, (approval) => approval.claim, { cascade: true })
-  approvals: Approval[];
+  @OneToMany('Approval', 'claim', { cascade: true })
+  approvals: any[];
 
   @OneToMany(() => Reimbursement, (reimbursement) => reimbursement.claim)
   reimbursements: Reimbursement[];

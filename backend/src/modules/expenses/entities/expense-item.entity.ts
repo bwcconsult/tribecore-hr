@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { ExpenseClaim } from './expense-claim.entity';
 import { ExpenseCategory } from './expense-category.entity';
 
 @Entity('expense_items')
@@ -19,9 +18,9 @@ export class ExpenseItem {
   @Column()
   claimId: string;
 
-  @ManyToOne(() => ExpenseClaim, (claim) => claim.items, { onDelete: 'CASCADE' })
+  @ManyToOne('ExpenseClaim', 'items', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'claimId' })
-  claim: ExpenseClaim;
+  claim: any;
 
   @Column()
   categoryId: string;

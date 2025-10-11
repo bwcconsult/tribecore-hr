@@ -34,20 +34,40 @@
 
 ---
 
-## 🔄 **IN PROGRESS: Modules & Services**
+## ✅ **COMPLETED: Modules, Services & Controllers (Day 2)**
 
-### **Next Steps:**
-1. ⏳ Create RBAC module
-2. ⏳ Create Absence module
-3. ⏳ Create Tasks module
-4. ⏳ Create Dashboard module
-5. ⏳ Enhance Employees module (bank details)
-6. ⏳ Create DTOs for all entities
-7. ⏳ Create services with business logic
-8. ⏳ Create controllers with REST endpoints
-9. ⏳ Create RBAC guards & decorators
-10. ⏳ Create seed data
-11. ⏳ Register modules in app.module.ts
+### **RBAC Infrastructure:**
+1. ✅ PermissionsGuard with role-based logic
+2. ✅ Permission decorators (@RequirePermissions, @CanViewSelf, etc.)
+
+### **DTOs Created (8 files):**
+1. ✅ Absence DTOs (CreateAbsenceRequestDto, ApproveAbsenceRequestDto, RejectAbsenceRequestDto)
+2. ✅ Sickness DTOs (CreateSicknessEpisodeDto, UpdateSicknessEpisodeDto)
+3. ✅ Task DTOs (CreateTaskDto, UpdateTaskDto, CompleteTaskDto, TaskQueryDto)
+4. ✅ Checklist DTOs (CreateChecklistDto, UpdateChecklistItemDto)
+5. ✅ Saved Search DTOs (CreateSavedSearchDto, UpdateSavedSearchDto)
+6. ✅ Bank Details DTOs (CreateBankDetailsDto, UpdateBankDetailsDto, VerifyBankDetailsDto)
+
+### **Services & Controllers:**
+1. ✅ AbsenceService (400+ lines) - Full request/approval workflow
+2. ✅ AbsenceController (11 endpoints)
+3. ✅ TasksService (350+ lines) - Task & checklist management
+4. ✅ TasksController (10 endpoints)
+
+### **Business Logic Delivered:**
+- ✅ Absence request creation with conflict detection
+- ✅ Working days calculation (excludes weekends)
+- ✅ Balance updates on approval/rejection
+- ✅ Manager approval workflow
+- ✅ Task lifecycle management (create, start, complete, cancel, reassign)
+- ✅ Checklist completion tracking
+- ✅ Task event audit logging
+
+### **Remaining:**
+1. ⏳ Dashboard service & controller
+2. ⏳ Bank details service integration
+3. ⏳ Frontend pages (Task Centre, Absence Requests)
+4. ⏳ Database migrations & testing
 
 ---
 

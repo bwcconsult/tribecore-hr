@@ -12,10 +12,42 @@ async function bootstrap() {
   const apiPrefix = configService.get('API_PREFIX') || 'api/v1';
   app.setGlobalPrefix(apiPrefix);
 
-  // CORS - Temporarily allow all origins for testing
+  // CORS - Allow frontend origins
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://tribecore-hr-production-frontend.up.railway.app',
+    configService.get('FRONTEND_URL'),
+  ].filter(Boolean);
+
   app.enableCors({
-    origin: true,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
+      
+      // Allow all origins in development
+      if (configService.get('NODE_ENV') === 'development') {
+        return callback(null, true);
+      }
+      
+      // Check if origin is allowed
+      if (allowedOrigins.some(allowed => origin.startsWith(allowed) || allowed === '*')) {
+        return callback(null, true);
+      }
+      
+      // Allow any Railway deployment
+      if (origin.includes('railway.app')) {
+        return callback(null, true);
+      }
+      
+      // Default: allow all in production (you can restrict this later)
+      return callback(null, true);
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    exposedHeaders: ['Content-Length', 'Content-Type'],
+    maxAge: 86400, // 24 hours
   });
 
   // Global validation pipe

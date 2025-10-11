@@ -9,6 +9,7 @@ import { ExpenseQueryDto } from '../dto/expense-query.dto';
 import { ExpenseStatus } from '../enums/expense-status.enum';
 import { AuditTrailService } from './audit-trail.service';
 import { PolicyService } from './policy.service';
+import { EmailService } from '../../notifications/services/email.service';
 
 @Injectable()
 export class ExpenseClaimService {
@@ -19,6 +20,7 @@ export class ExpenseClaimService {
     private itemRepository: Repository<ExpenseItem>,
     private auditTrailService: AuditTrailService,
     private policyService: PolicyService,
+    private emailService: EmailService,
   ) {}
 
   async create(employeeId: string, createDto: CreateExpenseClaimDto, userId: string): Promise<ExpenseClaim> {

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 // Entities
 import { ExpenseClaim } from './entities/expense-claim.entity';
@@ -38,6 +39,7 @@ import { CategoryController } from './controllers/category.controller';
       AuditTrail,
       Budget,
     ]),
+    NotificationsModule,
   ],
   controllers: [
     ExpenseClaimController,

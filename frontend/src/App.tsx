@@ -25,6 +25,9 @@ import OnboardingPage from './pages/onboarding/OnboardingPage';
 import BenefitsPage from './pages/benefits/BenefitsPage';
 import TimeTrackingPage from './pages/time-tracking/TimeTrackingPage';
 import ExpensesPage from './pages/expenses/ExpensesPage';
+import SubmitExpensePage from './pages/expenses/SubmitExpensePage';
+import ExpenseDetailsPage from './pages/expenses/ExpenseDetailsPage';
+import ApprovalsPage from './pages/expenses/ApprovalsPage';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
@@ -72,6 +75,9 @@ function App() {
             <Route path="/benefits" element={<BenefitsPage />} />
             <Route path="/time-tracking" element={<TimeTrackingPage />} />
             <Route path="/expenses" element={<ExpensesPage />} />
+            <Route path="/expenses/submit" element={<SubmitExpensePage />} />
+            <Route path="/expenses/approvals" element={<ApprovalsPage />} />
+            <Route path="/expenses/:id" element={<ExpenseDetailsPage />} />
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />

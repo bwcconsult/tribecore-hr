@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import expenseService, { ExpenseItem } from '../../services/expense.service';
 import { Plus, Trash2, ArrowLeft, Upload, Save } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -120,17 +120,11 @@ export default function SubmitExpensePage() {
     }
   };
 
-  // Mock categories - in production, fetch from API
-  const categories = [
-    { id: '1', name: 'Travel' },
-    { id: '2', name: 'Accommodation' },
-    { id: '3', name: 'Meals' },
-    { id: '4', name: 'Transport' },
-    { id: '5', name: 'Office Supplies' },
-    { id: '6', name: 'Software' },
-    { id: '7', name: 'Training' },
-    { id: '8', name: 'Other' },
-  ];
+  // Fetch categories from API
+  const { data: categories = [] } = useQuery({
+    queryKey: ['expense-categories'],
+    queryFn: () => expenseService.getCategories(),
+  });
 
   return (
     <div className="p-6 max-w-5xl mx-auto">

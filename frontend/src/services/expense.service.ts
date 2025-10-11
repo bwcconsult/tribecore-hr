@@ -164,6 +164,17 @@ const expenseService = {
     return response.data;
   },
 
+  // Categories
+  async getCategories() {
+    const response = await axios.get(`${API_BASE_URL}/expenses/categories`);
+    return response.data;
+  },
+
+  async seedCategories() {
+    const response = await axios.post(`${API_BASE_URL}/expenses/categories/seed`);
+    return response.data;
+  },
+
   // File upload (placeholder - will implement with actual file storage)
   async uploadReceipt(expenseItemId: string, file: File) {
     const formData = new FormData();

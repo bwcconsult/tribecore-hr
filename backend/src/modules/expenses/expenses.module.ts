@@ -23,6 +23,7 @@ import { AuditTrailService } from './services/audit-trail.service';
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
 import { ApprovalController } from './controllers/approval.controller';
 import { ReimbursementController } from './controllers/reimbursement.controller';
+import { CategoryController } from './controllers/category.controller';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ReimbursementController } from './controllers/reimbursement.controller'
     ExpenseClaimController,
     ApprovalController,
     ReimbursementController,
+    CategoryController,
   ],
   providers: [
     ExpenseClaimService,

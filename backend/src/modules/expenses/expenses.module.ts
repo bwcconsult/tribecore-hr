@@ -20,6 +20,8 @@ import { PolicyService } from './services/policy.service';
 import { ReimbursementService } from './services/reimbursement.service';
 import { AuditTrailService } from './services/audit-trail.service';
 import { AnalyticsService } from './services/analytics.service';
+import { OcrService } from './services/ocr.service';
+import { StorageService } from './services/storage.service';
 
 // Controllers
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
@@ -27,6 +29,7 @@ import { ApprovalController } from './controllers/approval.controller';
 import { ReimbursementController } from './controllers/reimbursement.controller';
 import { CategoryController } from './controllers/category.controller';
 import { AnalyticsController } from './controllers/analytics.controller';
+import { ReceiptController } from './controllers/receipt.controller';
 
 @Module({
   imports: [
@@ -49,6 +52,7 @@ import { AnalyticsController } from './controllers/analytics.controller';
     ReimbursementController,
     CategoryController,
     AnalyticsController,
+    ReceiptController,
   ],
   providers: [
     ExpenseClaimService,
@@ -57,6 +61,8 @@ import { AnalyticsController } from './controllers/analytics.controller';
     ReimbursementService,
     AuditTrailService,
     AnalyticsService,
+    OcrService,
+    StorageService,
   ],
   exports: [
     ExpenseClaimService,

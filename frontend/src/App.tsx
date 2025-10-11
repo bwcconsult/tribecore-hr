@@ -29,6 +29,7 @@ import SubmitExpensePage from './pages/expenses/SubmitExpensePage';
 import ExpenseDetailsPage from './pages/expenses/ExpenseDetailsPage';
 import ApprovalsPage from './pages/expenses/ApprovalsPage';
 import ExpenseAnalyticsPage from './pages/expenses/ExpenseAnalyticsPage';
+import BudgetHealthPage from './pages/expenses/BudgetHealthPage';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
@@ -78,6 +79,7 @@ function App() {
             <Route path="/expenses/submit" element={<SubmitExpensePage />} />
             <Route path="/expenses/approvals" element={<ApprovalsPage />} />
             <Route path="/expenses/analytics" element={<ExpenseAnalyticsPage />} />
+            <Route path="/expenses/budget-health" element={<BudgetHealthPage />} />
             <Route path="/expenses/:id" element={<ExpenseDetailsPage />} />
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />

@@ -1,21 +1,38 @@
 import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import Button from '../../components/ui/Button';
-import { Plus, DollarSign, Edit2, Trash2, Check, X, Clock, FileText, Receipt } from 'lucide-react';
-import { expensesService, Expense } from '../../services/expensesService';
-import ExpenseFormModal from '../../components/expenses/ExpenseFormModal';
-import { toast } from 'react-hot-toast';
-import { formatCurrency, formatDate } from '../../lib/utils';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import expenseService from '../../services/expense.service';
+import { 
+  Plus, 
+  DollarSign, 
+  Clock, 
+  CheckCircle, 
+  XCircle, 
+  TrendingUp,
+  FileText,
+  AlertCircle,
+  Receipt,
+} from 'lucide-react';
 
 export default function ExpensesPage() {
-  const queryClient = useQueryClient();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
+  const navigate = useNavigate();
+  const [filterStatus, setFilterStatus] = useState<string>('');
 
-  const { data: expenses, isLoading } = useQuery({
-    queryKey: ['expenses'],
-    queryFn: () => expensesService.getAll(),
+  // Fetch expense statistics
+  const { data: stats, isLoading: statsLoading } = useQuery({
+    queryKey: ['expense-stats'],
+    queryFn: () => expenseService.getClaimStatistics(),
+  });
+
+  // Fetch my expenses
+  const { data: expensesData, isLoading: expensesLoading } = useQuery({
+    queryKey: ['my-expenses', filterStatus],
+    queryFn: () => expenseService.getMyClaims({ 
+      status: filterStatus || undefined,
+      limit: 20,
+      sortBy: 'createdAt',
+      sortOrder: 'DESC',
+    }),
   });
 
   const deleteMutation = useMutation({

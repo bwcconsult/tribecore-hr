@@ -17,6 +17,7 @@ async function bootstrap() {
     'http://localhost:5173',
     'http://localhost:3000',
     'https://tribecore-hr-production-frontend.up.railway.app',
+    'https://amazing-squirrel-174b09.netlify.app', // Netlify deployment
     configService.get('FRONTEND_URL'),
   ].filter(Boolean);
 
@@ -37,6 +38,11 @@ async function bootstrap() {
       
       // Allow any Railway deployment
       if (origin.includes('railway.app')) {
+        return callback(null, true);
+      }
+      
+      // Allow any Netlify deployment
+      if (origin.includes('netlify.app')) {
         return callback(null, true);
       }
       

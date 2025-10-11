@@ -71,7 +71,7 @@ export default function DashboardLayout() {
                 <X className="h-6 w-6" />
               </button>
             </div>
-            <nav className="flex flex-col p-4 space-y-1">
+            <nav className="flex flex-col p-4 space-y-1 overflow-y-auto">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
@@ -100,7 +100,7 @@ export default function DashboardLayout() {
         <div className="flex h-16 items-center px-6 border-b">
           <h1 className="text-xl font-bold text-primary-700">TribeCore</h1>
         </div>
-        <nav className="flex flex-1 flex-col p-4 space-y-1">
+        <nav className="flex flex-1 flex-col p-4 space-y-1 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (

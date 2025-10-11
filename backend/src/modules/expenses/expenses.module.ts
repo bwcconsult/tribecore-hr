@@ -13,6 +13,7 @@ import { Reimbursement } from './entities/reimbursement.entity';
 import { AuditTrail } from './entities/audit-trail.entity';
 import { Budget } from './entities/budget.entity';
 import { ExchangeRate } from './entities/exchange-rate.entity';
+import { ApprovalRule } from './entities/approval-rule.entity';
 
 // Services
 import { ExpenseClaimService } from './services/expense-claim.service';
@@ -24,6 +25,7 @@ import { AnalyticsService } from './services/analytics.service';
 import { OcrService } from './services/ocr.service';
 import { StorageService } from './services/storage.service';
 import { CurrencyService } from './services/currency.service';
+import { WorkflowService } from './services/workflow.service';
 
 // Controllers
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
@@ -33,6 +35,7 @@ import { CategoryController } from './controllers/category.controller';
 import { AnalyticsController } from './controllers/analytics.controller';
 import { ReceiptController } from './controllers/receipt.controller';
 import { CurrencyController } from './controllers/currency.controller';
+import { WorkflowController } from './controllers/workflow.controller';
 
 @Module({
   imports: [
@@ -47,6 +50,7 @@ import { CurrencyController } from './controllers/currency.controller';
       AuditTrail,
       Budget,
       ExchangeRate,
+      ApprovalRule,
     ]),
     NotificationsModule,
   ],
@@ -58,6 +62,7 @@ import { CurrencyController } from './controllers/currency.controller';
     AnalyticsController,
     ReceiptController,
     CurrencyController,
+    WorkflowController,
   ],
   providers: [
     ExpenseClaimService,
@@ -69,6 +74,7 @@ import { CurrencyController } from './controllers/currency.controller';
     OcrService,
     StorageService,
     CurrencyService,
+    WorkflowService,
   ],
   exports: [
     ExpenseClaimService,

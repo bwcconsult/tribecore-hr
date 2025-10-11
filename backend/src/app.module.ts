@@ -22,6 +22,8 @@ import { OnboardingModule } from './modules/onboarding/onboarding.module';
 import { BenefitsModule } from './modules/benefits/benefits.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
 import { LearningModule } from './modules/learning/learning.module';
+import { CalendarModule } from './modules/calendar/calendar.module';
+import { UserSettingsModule } from './modules/user-settings/user-settings.module';
 
 @Module({
   imports: [
@@ -80,6 +82,8 @@ import { LearningModule } from './modules/learning/learning.module';
     BenefitsModule,
     ExpensesModule,
     LearningModule,
+    CalendarModule,
+    UserSettingsModule,
   ],
 })
 export class AppModule {}

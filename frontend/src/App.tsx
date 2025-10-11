@@ -28,6 +28,10 @@ import ExpensesPage from './pages/expenses/ExpensesPage';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
+import CalendarPage from './pages/calendar/CalendarPage';
+import AnnualOverviewPage from './pages/calendar/AnnualOverviewPage';
+import PersonalSummaryPage from './pages/profile/PersonalSummaryPage';
+import PersonalDetailsPage from './pages/profile/PersonalDetailsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -69,6 +73,10 @@ function App() {
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/calendar/annual" element={<AnnualOverviewPage />} />
+            <Route path="/profile/me" element={<PersonalSummaryPage />} />
+            <Route path="/profile/details" element={<PersonalDetailsPage />} />
           </Route>
 
           {/* Fallback */}

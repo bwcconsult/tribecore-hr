@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { ExpenseClaim } from './expense-claim.entity';
 import { ExpenseCategory } from './expense-category.entity';
-import { Receipt } from './receipt.entity';
 
 @Entity('expense_items')
 export class ExpenseItem {
@@ -88,8 +87,8 @@ export class ExpenseItem {
   @Column({ type: 'jsonb', nullable: true })
   metadata: Record<string, any>;
 
-  @OneToMany(() => Receipt, (receipt) => receipt.expenseItem, { cascade: true })
-  receipts: Receipt[];
+  @OneToMany('Receipt', 'expenseItem', { cascade: true })
+  receipts: any[];
 
   @CreateDateColumn()
   createdAt: Date;

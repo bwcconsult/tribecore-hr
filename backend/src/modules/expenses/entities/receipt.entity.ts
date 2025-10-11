@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { ExpenseItem } from './expense-item.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('receipts')
@@ -18,9 +17,9 @@ export class Receipt {
   @Column()
   expenseItemId: string;
 
-  @ManyToOne(() => ExpenseItem, (item) => item.receipts, { onDelete: 'CASCADE' })
+  @ManyToOne('ExpenseItem', 'receipts', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'expenseItemId' })
-  expenseItem: ExpenseItem;
+  expenseItem: any;
 
   @Column()
   fileName: string;

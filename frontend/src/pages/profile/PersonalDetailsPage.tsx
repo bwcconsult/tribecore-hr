@@ -350,9 +350,30 @@ function PersonalInformationTab() {
 
 // Employment Tab
 function EmploymentTab() {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <div className="space-y-8">
-      <h2 className="text-lg font-semibold text-gray-900">Employment Details</h2>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-900">Employment Details</h2>
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+        >
+          {isEditing ? (
+            <>
+              <X className="w-4 h-4" />
+              Cancel
+            </>
+          ) : (
+            <>
+              <Edit className="w-4 h-4" />
+              Edit
+            </>
+          )}
+        </button>
+      </div>
       
       <div>
         <h3 className="text-sm font-semibold text-gray-900 mb-4">Current Position</h3>
@@ -364,8 +385,8 @@ function EmploymentTab() {
             <input
               type="text"
               defaultValue="Senior Software Engineer"
-              disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+              disabled={!isEditing}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           <div>
@@ -375,8 +396,8 @@ function EmploymentTab() {
             <input
               type="text"
               defaultValue="Engineering"
-              disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+              disabled={!isEditing}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           <div>
@@ -386,8 +407,8 @@ function EmploymentTab() {
             <input
               type="text"
               defaultValue="London, UK"
-              disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+              disabled={!isEditing}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           <div>
@@ -397,18 +418,37 @@ function EmploymentTab() {
             <input
               type="text"
               defaultValue="1.0 (Full-time)"
-              disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+              disabled={!isEditing}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
         </div>
       </div>
 
-      <div className="pt-6 border-t border-gray-200">
-        <p className="text-sm text-gray-600">
-          Employment details can only be updated by HR. Contact your HR team for any changes.
-        </p>
-      </div>
+      {/* Save Button */}
+      {isEditing && (
+        <div className="pt-6 border-t border-gray-200">
+          <div className="flex gap-3">
+            <button 
+              onClick={() => {
+                // TODO: Save to API
+                toast.success('Employment details updated successfully!');
+                setIsEditing(false);
+              }}
+              className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+            >
+              <Save className="w-4 h-4" />
+              Save Changes
+            </button>
+            <button
+              onClick={() => setIsEditing(false)}
+              className="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

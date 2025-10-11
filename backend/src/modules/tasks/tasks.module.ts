@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TasksService } from './tasks.service';
+import { TasksController } from './tasks.controller';
 import { Task } from './entities/task.entity';
 import { Checklist, ChecklistItem } from './entities/checklist.entity';
 import { TaskEvent } from './entities/task-event.entity';
@@ -13,8 +15,8 @@ import { TaskEvent } from './entities/task-event.entity';
       TaskEvent,
     ]),
   ],
-  providers: [],
-  controllers: [],
-  exports: [TypeOrmModule],
+  providers: [TasksService],
+  controllers: [TasksController],
+  exports: [TasksService, TypeOrmModule],
 })
 export class TasksModule {}

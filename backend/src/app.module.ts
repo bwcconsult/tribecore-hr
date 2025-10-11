@@ -24,6 +24,10 @@ import { ExpensesModule } from './modules/expenses/expenses.module';
 import { LearningModule } from './modules/learning/learning.module';
 import { CalendarModule } from './modules/calendar/calendar.module';
 import { UserSettingsModule } from './modules/user-settings/user-settings.module';
+import { RbacModule } from './modules/rbac/rbac.module';
+import { AbsenceModule } from './modules/absence/absence.module';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -84,6 +88,10 @@ import { UserSettingsModule } from './modules/user-settings/user-settings.module
     LearningModule,
     CalendarModule,
     UserSettingsModule,
+    RbacModule,
+    AbsenceModule,
+    TasksModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}

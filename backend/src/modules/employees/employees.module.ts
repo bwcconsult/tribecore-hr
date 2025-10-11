@@ -9,6 +9,7 @@ import { EmploymentActivity } from './entities/employment-activity.entity';
 import { WorkSchedule } from './entities/work-schedule.entity';
 import { EmergencyContact } from './entities/emergency-contact.entity';
 import { Dependant } from './entities/dependant.entity';
+import { BankDetails } from './entities/bank-details.entity';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { Dependant } from './entities/dependant.entity';
       WorkSchedule,
       EmergencyContact,
       Dependant,
+      BankDetails,
     ]),
   ],
   controllers: [EmployeesController, ProfileController],

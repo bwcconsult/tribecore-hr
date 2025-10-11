@@ -59,7 +59,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get('NODE_ENV') !== 'production', // Auto-create tables in dev, use migrations in prod
+        synchronize: false, // ALWAYS false - prevents crashes. Use migrations or manual schema creation
         logging: configService.get('DATABASE_LOGGING') === 'true',
         ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),

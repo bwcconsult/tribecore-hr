@@ -13,9 +13,13 @@ import {
   Save,
   X,
   Plus,
+  Search,
+  Loader2,
 } from 'lucide-react';
+import { PRONOUNS, COUNTRIES, NEXT_OF_KIN_RELATIONSHIPS } from '../../constants/profile-data';
+import { lookupPostcode, validatePostcode, type AddressResult } from '../../utils/postcodeService';
 
-type TabType = 'personal' | 'employment' | 'contacts' | 'dependants';
+type TabType = 'personal' | 'employment' | 'contacts' | 'dependants' | 'nextofkin';
 
 export default function PersonalDetailsPage() {
   const [activeTab, setActiveTab] = useState<TabType>('personal');
@@ -25,6 +29,7 @@ export default function PersonalDetailsPage() {
     { id: 'personal' as TabType, label: 'Personal Information', icon: User },
     { id: 'employment' as TabType, label: 'Employment', icon: Briefcase },
     { id: 'contacts' as TabType, label: 'Emergency Contacts', icon: AlertCircle },
+    { id: 'nextofkin' as TabType, label: 'Next of Kin', icon: Heart },
     { id: 'dependants' as TabType, label: 'Dependants', icon: Users },
   ];
 
@@ -69,6 +74,7 @@ export default function PersonalDetailsPage() {
           {activeTab === 'personal' && <PersonalInformationTab />}
           {activeTab === 'employment' && <EmploymentTab />}
           {activeTab === 'contacts' && <EmergencyContactsTab />}
+          {activeTab === 'nextofkin' && <NextOfKinTab />}
           {activeTab === 'dependants' && <DependantsTab />}
         </div>
       </div>
@@ -79,6 +85,59 @@ export default function PersonalDetailsPage() {
 // Personal Information Tab
 function PersonalInformationTab() {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLookingUpPostcode, setIsLookingUpPostcode] = useState(false);
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressResult[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState('GB');
+  const [formData, setFormData] = useState({
+    firstName: 'John',
+    lastName: 'Doe',
+    preferredName: 'Johnny',
+    pronouns: 'he/him',
+    dateOfBirth: '1990-05-15',
+    gender: 'MALE',
+    nationality: 'GB',
+    maritalStatus: 'SINGLE',
+    personalEmail: 'john@personal.com',
+    workPhone: '+44 20 1234 5678',
+    personalPhone: '+44 7700 900000',
+    addressLine1: '123 Main Street',
+    city: 'London',
+    postcode: 'SW1A 1AA',
+    country: 'GB',
+  });
+
+  const handlePostcodeLookup = async () => {
+    if (!formData.postcode) {
+      toast.error('Please enter a postcode');
+      return;
+    }
+
+    setIsLookingUpPostcode(true);
+    try {
+      const results = await lookupPostcode(formData.postcode, selectedCountry);
+      setAddressSuggestions(results);
+      if (results.length > 0) {
+        toast.success(`Found ${results.length} address${results.length > 1 ? 'es' : ''}`);
+      }
+    } catch (error) {
+      toast.error('Failed to lookup postcode. Please enter address manually.');
+      setAddressSuggestions([]);
+    } finally {
+      setIsLookingUpPostcode(false);
+    }
+  };
+
+  const selectAddress = (address: AddressResult) => {
+    setFormData({
+      ...formData,
+      addressLine1: address.line1,
+      city: address.city,
+      postcode: address.postcode,
+      country: selectedCountry,
+    });
+    setAddressSuggestions([]);
+    toast.success('Address selected');
+  };
 
   return (
     <div className="space-y-8">
@@ -144,12 +203,18 @@ function PersonalInformationTab() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Preferred Pronouns
             </label>
-            <input
-              type="text"
-              defaultValue="he/him"
+            <select
+              value={formData.pronouns}
+              onChange={(e) => setFormData({ ...formData, pronouns: e.target.value })}
               disabled={!isEditing}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
-            />
+            >
+              {PRONOUNS.map((pronoun) => (
+                <option key={pronoun.value} value={pronoun.value}>
+                  {pronoun.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -189,12 +254,18 @@ function PersonalInformationTab() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Nationality
             </label>
-            <input
-              type="text"
-              defaultValue="British"
+            <select
+              value={formData.nationality}
+              onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
               disabled={!isEditing}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
-            />
+            >
+              {COUNTRIES.map((country) => (
+                <option key={country.value} value={country.value}>
+                  {country.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -271,13 +342,74 @@ function PersonalInformationTab() {
       <div className="pt-6 border-t border-gray-200">
         <h3 className="text-sm font-semibold text-gray-900 mb-4">Home Address</h3>
         <div className="grid grid-cols-1 gap-4">
+          {/* Postcode Lookup */}
+          {isEditing && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Postcode/ZIP Code Lookup
+              </label>
+              <div className="flex gap-2">
+                <select
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="GB">UK</option>
+                  <option value="US">USA</option>
+                  <option value="CA">Canada</option>
+                </select>
+                <input
+                  type="text"
+                  value={formData.postcode}
+                  onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
+                  placeholder="Enter postcode/ZIP"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  onClick={handlePostcodeLookup}
+                  disabled={isLookingUpPostcode}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 flex items-center gap-2"
+                >
+                  {isLookingUpPostcode ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Looking up...
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-4 h-4" />
+                      Find Address
+                    </>
+                  )}
+                </button>
+              </div>
+              {addressSuggestions.length > 0 && (
+                <div className="mt-2 bg-white border border-gray-200 rounded-lg divide-y">
+                  {addressSuggestions.map((address, index) => (
+                    <button
+                      key={index}
+                      onClick={() => selectAddress(address)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="text-sm font-medium text-gray-900">{address.line1}</div>
+                      <div className="text-sm text-gray-600">
+                        {address.city}, {address.postcode}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Address Line 1
             </label>
             <input
               type="text"
-              defaultValue="123 Main Street"
+              value={formData.addressLine1}
+              onChange={(e) => setFormData({ ...formData, addressLine1: e.target.value })}
               disabled={!isEditing}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
             />
@@ -289,7 +421,8 @@ function PersonalInformationTab() {
               </label>
               <input
                 type="text"
-                defaultValue="London"
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                 disabled={!isEditing}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
               />
@@ -300,7 +433,8 @@ function PersonalInformationTab() {
               </label>
               <input
                 type="text"
-                defaultValue="SW1A 1AA"
+                value={formData.postcode}
+                onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
                 disabled={!isEditing}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
               />
@@ -309,12 +443,18 @@ function PersonalInformationTab() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Country
               </label>
-              <input
-                type="text"
-                defaultValue="United Kingdom"
+              <select
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                 disabled={!isEditing}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
-              />
+              >
+                {COUNTRIES.map((country) => (
+                  <option key={country.value} value={country.value}>
+                    {country.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -573,6 +713,207 @@ function EmergencyContactsTab() {
               </button>
               <button 
                 onClick={() => setIsAddingContact(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Next of Kin Tab
+function NextOfKinTab() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [nextOfKin, setNextOfKin] = useState([
+    {
+      id: '1',
+      name: 'Jane Doe',
+      relationship: 'SPOUSE',
+      phoneNumber: '+44 7700 900001',
+      email: 'jane@email.com',
+      addressLine1: '123 Main Street',
+      city: 'London',
+      postcode: 'SW1A 1AA',
+      country: 'GB',
+      isPrimary: true,
+    },
+  ]);
+
+  const [isAddingNextOfKin, setIsAddingNextOfKin] = useState(false);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-900">Next of Kin</h2>
+        <button 
+          onClick={() => setIsAddingNextOfKin(true)}
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          Add Next of Kin
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {nextOfKin.map((kin) => (
+          <div
+            key={kin.id}
+            className="p-6 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium text-gray-900 text-lg">{kin.name}</h3>
+                {kin.isPrimary && (
+                  <span className="px-2 py-1 text-xs font-medium text-indigo-700 bg-indigo-50 rounded-full">
+                    Primary
+                  </span>
+                )}
+              </div>
+              <button 
+                onClick={() => toast.info('Edit next of kin feature coming soon!')}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <Edit className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Contact Information</h4>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="text-gray-600">Relationship:</span>
+                    <span className="ml-2 text-gray-900">{NEXT_OF_KIN_RELATIONSHIPS.find(r => r.value === kin.relationship)?.label}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Phone:</span>
+                    <span className="ml-2 text-gray-900">{kin.phoneNumber}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Email:</span>
+                    <span className="ml-2 text-gray-900">{kin.email}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Address</h4>
+                <div className="space-y-1 text-sm text-gray-900">
+                  <div>{kin.addressLine1}</div>
+                  <div>{kin.city}, {kin.postcode}</div>
+                  <div>{COUNTRIES.find(c => c.value === kin.country)?.label}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Add Next of Kin Modal/Form */}
+      {isAddingNextOfKin && (
+        <div className="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Add Next of Kin</h3>
+              <button onClick={() => setIsAddingNextOfKin(false)} className="text-gray-400 hover:text-gray-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Personal Details */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">Personal Details</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                    <input type="text" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Relationship *</label>
+                    <select required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                      {NEXT_OF_KIN_RELATIONSHIPS.map((rel) => (
+                        <option key={rel.value} value={rel.value}>{rel.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                    <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">Contact Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                    <input type="tel" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Address */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">Address</h4>
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 1 *</label>
+                    <input type="text" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 2</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
+                      <input type="text" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Postcode *</label>
+                      <input type="text" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Country *</label>
+                      <select required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        {COUNTRIES.map((country) => (
+                          <option key={country.value} value={country.value}>{country.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="isPrimaryNOK" className="rounded border-gray-300" />
+                <label htmlFor="isPrimaryNOK" className="text-sm text-gray-700">Set as primary next of kin</label>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200">
+              <button 
+                onClick={() => {
+                  toast.success('Next of kin added!');
+                  setIsAddingNextOfKin(false);
+                }}
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+              >
+                Add Next of Kin
+              </button>
+              <button 
+                onClick={() => setIsAddingNextOfKin(false)}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 Cancel

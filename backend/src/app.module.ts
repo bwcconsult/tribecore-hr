@@ -59,7 +59,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false, // Tables created, sync disabled permanently for safety
+        synchronize: true, // TEMPORARY - Creating tables in fresh database
         logging: configService.get('DATABASE_LOGGING') === 'true',
         ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),

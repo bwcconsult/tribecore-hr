@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import expenseService, { ExpenseItem } from '../../services/expense.service';
-import { Plus, Trash2, ArrowLeft, Upload, Save } from 'lucide-react';
+import { Plus, Trash2, ArrowLeft, Save } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { CurrencySelector } from '../../components/expenses/CurrencySelector';
+import { ReceiptUploader } from '../../components/expenses/ReceiptUploader';
 
 export default function SubmitExpensePage() {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ export default function SubmitExpensePage() {
   const [description, setDescription] = useState('');
   const [currency, setCurrency] = useState('GBP');
   const [notes, setNotes] = useState('');
+  const [uploadedReceipts, setUploadedReceipts] = useState<{ [key: number]: any }>({});
   const [items, setItems] = useState<Partial<ExpenseItem>[]>([
     {
       categoryId: '',
@@ -172,15 +175,12 @@ export default function SubmitExpensePage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
-              <select
+              <CurrencySelector
                 value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                <option value="GBP">GBP (£)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-              </select>
+                onChange={setCurrency}
+                amount={calculateTotal()}
+                showConversion={true}
+              />
             </div>
           </div>
         </div>
@@ -287,15 +287,28 @@ export default function SubmitExpensePage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Receipt
                     </label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors cursor-pointer">
-                      <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600">
-                        Click to upload or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        PDF, PNG, JPG up to 10MB
-                      </p>
-                    </div>
+                    <ReceiptUploader
+                      onUploadComplete={(receipt, ocrData) => {
+                        // Store uploaded receipt
+                        setUploadedReceipts({ ...uploadedReceipts, [index]: receipt });
+                        
+                        // Auto-fill from OCR data if available
+                        if (ocrData) {
+                          const newItems = [...items];
+                          if (ocrData.amount && !newItems[index].amount) {
+                            newItems[index].amount = ocrData.amount;
+                          }
+                          if (ocrData.vendor && !newItems[index].vendor) {
+                            newItems[index].vendor = ocrData.vendor;
+                          }
+                          if (ocrData.date && !newItems[index].expenseDate) {
+                            newItems[index].expenseDate = ocrData.date;
+                          }
+                          setItems(newItems);
+                          toast.success('Receipt uploaded and data extracted!');
+                        }
+                      }}
+                    />
                   </div>
                 </div>
               </div>

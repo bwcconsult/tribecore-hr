@@ -11,6 +11,10 @@ import {
   FileText,
   TrendingUp,
   AlertCircle,
+  BarChart3,
+  Activity,
+  Settings,
+  CheckSquare,
 } from 'lucide-react';
 
 export default function ExpensesDashboard() {
@@ -124,6 +128,48 @@ export default function ExpensesDashboard() {
           </div>
           <p className="text-2xl font-bold text-blue-600">{stats?.byStatus?.paid || 0}</p>
           <p className="text-sm text-gray-500 mt-1">Reimbursed</p>
+        </div>
+      </div>
+
+      {/* Quick Access */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Access</h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <button
+            onClick={() => navigate('/expenses/analytics')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all text-left"
+          >
+            <BarChart3 className="w-8 h-8 text-blue-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Analytics</h3>
+            <p className="text-sm text-gray-600 mt-1">View spending trends and insights</p>
+          </button>
+
+          <button
+            onClick={() => navigate('/expenses/budget-health')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-green-300 hover:shadow-md transition-all text-left"
+          >
+            <Activity className="w-8 h-8 text-green-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Budget Health</h3>
+            <p className="text-sm text-gray-600 mt-1">Monitor budget utilization</p>
+          </button>
+
+          <button
+            onClick={() => navigate('/expenses/workflows')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all text-left"
+          >
+            <Settings className="w-8 h-8 text-purple-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Workflows</h3>
+            <p className="text-sm text-gray-600 mt-1">Manage approval rules</p>
+          </button>
+
+          <button
+            onClick={() => navigate('/expenses/approvals')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-yellow-300 hover:shadow-md transition-all text-left"
+          >
+            <CheckSquare className="w-8 h-8 text-yellow-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Approvals</h3>
+            <p className="text-sm text-gray-600 mt-1">Review pending expenses</p>
+          </button>
         </div>
       </div>
 

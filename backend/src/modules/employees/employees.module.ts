@@ -12,6 +12,8 @@ import { WorkSchedule } from './entities/work-schedule.entity';
 import { EmergencyContact } from './entities/emergency-contact.entity';
 import { Dependant } from './entities/dependant.entity';
 import { BankDetails } from './entities/bank-details.entity';
+import { UsersModule } from '../users/users.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { BankDetails } from './entities/bank-details.entity';
       Dependant,
       BankDetails,
     ]),
+    UsersModule,
+    AuthModule,
   ],
   controllers: [EmployeesController, ProfileController, BankDetailsController],
   providers: [EmployeesService, ProfileService, BankDetailsService],

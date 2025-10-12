@@ -33,8 +33,8 @@ export class BenefitsService {
       .createQueryBuilder('benefit')
       .where('benefit.active = :active', { active: true });
     
-    // SUPERADMIN can see all benefits across all organizations
-    const isSuperAdmin = userRoles?.includes('SUPERADMIN');
+    // SUPER_ADMIN can see all benefits across all organizations
+    const isSuperAdmin = userRoles?.includes('SUPER_ADMIN');
     if (!isSuperAdmin) {
       query.andWhere('benefit.organizationId = :organizationId', { organizationId });
     }

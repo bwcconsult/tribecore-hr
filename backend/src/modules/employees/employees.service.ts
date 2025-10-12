@@ -29,8 +29,8 @@ export class EmployeesService {
     const queryBuilder = this.employeesRepository
       .createQueryBuilder('employee');
     
-    // SUPERADMIN can see all employees across all organizations
-    const isSuperAdmin = userRoles?.includes('SUPERADMIN');
+    // SUPER_ADMIN can see all employees across all organizations
+    const isSuperAdmin = userRoles?.includes('SUPER_ADMIN');
     if (!isSuperAdmin) {
       queryBuilder.where('employee.organizationId = :organizationId', { organizationId });
     }

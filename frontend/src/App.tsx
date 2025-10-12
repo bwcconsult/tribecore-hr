@@ -16,6 +16,8 @@ import DashboardPage from './pages/dashboard/DashboardPage';
 import EmployeesPage from './pages/employees/EmployeesPage';
 import EmployeeDetailsPage from './pages/employees/EmployeeDetailsPage';
 import PayrollPage from './pages/payroll/PayrollPage';
+import { EmployeePayrollDashboard } from './pages/payroll/EmployeePayrollDashboard';
+import { EmployeePayslipsPage } from './pages/payroll/EmployeePayslipsPage';
 import LeavePage from './pages/leave/LeavePage';
 import AttendancePage from './pages/attendance/AttendancePage';
 import PerformancePage from './pages/performance/PerformancePage';
@@ -69,6 +71,8 @@ function App() {
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/employees/:id" element={<EmployeeDetailsPage />} />
             <Route path="/payroll" element={<PayrollPage />} />
+            <Route path="/payroll/dashboard" element={<EmployeePayrollDashboard />} />
+            <Route path="/payroll/payslips" element={<EmployeePayslipsPage />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/reports" element={<ReportsPage />} />

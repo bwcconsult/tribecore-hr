@@ -77,4 +77,32 @@ export const payrollService = {
     });
     return response.data;
   },
+
+  // Employee-specific methods
+  getMyDashboard: async () => {
+    const response = await axiosInstance.get('/payroll/my/dashboard');
+    return response.data;
+  },
+
+  getMyPayslips: async (params?: any) => {
+    const response = await axiosInstance.get('/payroll/my/payslips', { params });
+    return response.data;
+  },
+
+  getMyPayrollDetails: async () => {
+    const response = await axiosInstance.get('/payroll/my/details');
+    return response.data;
+  },
+
+  getMyPayslip: async (id: string) => {
+    const response = await axiosInstance.get(`/payroll/my/payslips/${id}`);
+    return response.data;
+  },
+
+  downloadMyPayslip: async (id: string) => {
+    const response = await axiosInstance.get(`/payroll/my/payslips/${id}/download`, {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
 };

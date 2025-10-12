@@ -57,10 +57,10 @@ export class ExpenseClaim {
   @Column('timestamp', { nullable: true })
   paidAt: Date;
 
-  @Column()
+  @Column({ nullable: false })
   createdById: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { eager: false })
   @JoinColumn({ name: 'createdById' })
   createdBy: User;
 

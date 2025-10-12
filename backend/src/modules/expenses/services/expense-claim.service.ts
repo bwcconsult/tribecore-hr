@@ -28,7 +28,7 @@ export class ExpenseClaimService {
     const totalAmount = createDto.items.reduce((sum, item) => sum + item.amount, 0);
 
     const claim = this.claimRepository.create({
-      employeeId,
+      createdById: employeeId,
       title: createDto.title,
       description: createDto.description,
       totalAmount,
@@ -85,7 +85,7 @@ export class ExpenseClaimService {
 
     const queryBuilder = this.claimRepository
       .createQueryBuilder('claim')
-      .leftJoinAndSelect('claim.employee', 'employee')
+      .leftJoinAndSelect('claim.createdBy', 'createdBy')
       .leftJoinAndSelect('claim.items', 'items')
       .leftJoinAndSelect('items.category', 'category')
       .leftJoinAndSelect('claim.approvals', 'approvals');
@@ -96,7 +96,7 @@ export class ExpenseClaimService {
     }
 
     if (employeeId) {
-      queryBuilder.andWhere('claim.employeeId = :employeeId', { employeeId });
+      queryBuilder.andWhere('claim.createdById = :employeeId', { employeeId });
     }
 
     if (departmentId) {
@@ -153,7 +153,7 @@ export class ExpenseClaimService {
   async findOne(id: string): Promise<ExpenseClaim> {
     const claim = await this.claimRepository.findOne({
       where: { id },
-      relations: ['employee', 'items', 'items.category', 'items.receipts', 'approvals', 'approvals.approver', 'reimbursements'],
+      relations: ['createdBy', 'items', 'items.category', 'items.receipts', 'approvals', 'approvals.approver', 'reimbursements'],
     });
 
     if (!claim) {
@@ -249,7 +249,7 @@ export class ExpenseClaimService {
 
     // Send email notification to employee
     try {
-      const employee = claim.employee;
+      const employee = claim.createdBy;
       await this.emailService.sendExpenseSubmittedEmail(
         `${employee.firstName} ${employee.lastName}`,
         employee.email,
@@ -300,7 +300,7 @@ export class ExpenseClaimService {
     const queryBuilder = this.claimRepository.createQueryBuilder('claim');
 
     if (employeeId) {
-      queryBuilder.where('claim.employeeId = :employeeId', { employeeId });
+      queryBuilder.where('claim.createdById = :employeeId', { employeeId });
     }
 
     const [

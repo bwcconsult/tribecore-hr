@@ -83,11 +83,34 @@ export class BenefitsService {
     return await this.benefitEnrollmentRepository.save(enrollment);
   }
 
-  async findAllEnrollments(): Promise<BenefitEnrollment[]> {
-    return await this.benefitEnrollmentRepository.find({
-      relations: ['benefitPlan'],
-      order: { enrollmentDate: 'DESC' },
-    });
+  async findAllEnrollments(): Promise<any> {
+    const enrollments = await this.benefitEnrollmentRepository
+      .createQueryBuilder('enrollment')
+      .leftJoinAndSelect('enrollment.benefitPlan', 'plan')
+      .orderBy('enrollment.enrollmentDate', 'DESC')
+      .getMany();
+
+    // Map to frontend format
+    const data = enrollments.map(e => ({
+      id: e.id,
+      employeeId: e.employeeId,
+      employeeName: 'Employee', // Will be populated by frontend from employee service
+      benefitPlanId: e.benefitPlanId,
+      benefitPlanName: e.benefitPlan?.name,
+      enrollmentDate: e.enrollmentDate,
+      effectiveDate: e.effectiveDate,
+      endDate: e.endDate,
+      status: e.status,
+      coverage: e.coverageLevel,
+      employeeContribution: e.employeeCost,
+      employerContribution: e.employerCost,
+      totalCost: e.totalCost,
+      dependents: e.dependents,
+      notes: e.notes,
+      createdAt: e.createdAt,
+    }));
+
+    return { data };
   }
 
   async findEmployeeBenefits(

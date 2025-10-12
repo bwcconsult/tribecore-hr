@@ -98,4 +98,18 @@ export class BenefitsController {
   deleteEmployeeBenefit(@Param('id') id: string) {
     return this.benefitsService.deleteEmployeeBenefit(id);
   }
+
+  @Get('enrollments')
+  @Roles(UserRole.ADMIN, UserRole.HR_MANAGER)
+  @ApiOperation({ summary: 'Get all benefit enrollments' })
+  findAllEnrollments() {
+    return this.benefitsService.findAllEnrollments();
+  }
+
+  @Get('stats')
+  @Roles(UserRole.ADMIN, UserRole.HR_MANAGER)
+  @ApiOperation({ summary: 'Get benefit statistics' })
+  getBenefitStats() {
+    return this.benefitsService.getBenefitStats();
+  }
 }

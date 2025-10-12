@@ -30,7 +30,8 @@ export class BenefitsService {
 
     const query = this.benefitPlanRepository
       .createQueryBuilder('benefit')
-      .where('benefit.active = :active', { active: true });
+      .where('benefit.active = :active', { active: true })
+      .andWhere('benefit.organizationId = :organizationId', { organizationId }); // Filter by organization
 
     if (search) {
       query.andWhere(

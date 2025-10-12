@@ -18,6 +18,7 @@ import { TaxCode } from './entities/tax-code.entity';
 import { Currency } from './entities/currency.entity';
 import { Project } from './entities/project.entity';
 import { CorpCardTxn } from './entities/corp-card-txn.entity';
+import { User } from '../users/entities/user.entity';
 
 // Services
 import { ExpenseClaimService } from './services/expense-claim.service';
@@ -64,6 +65,7 @@ import { CorpCardController } from './controllers/corp-card.controller';
       Currency,
       Project,
       CorpCardTxn,
+      User,
     ]),
     NotificationsModule,
   ],

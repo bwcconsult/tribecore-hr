@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { EmploymentType, EmploymentStatus, Country } from '../../../common/enums';
+import { EmploymentType, EmploymentStatus } from '../../../common/enums';
 import { Organization } from '../../organization/entities/organization.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -62,6 +62,10 @@ export class Employee extends BaseEntity {
   @Column({ nullable: true })
   managerId?: string;
 
+  @ManyToOne(() => Employee, { nullable: true })
+  @JoinColumn({ name: 'managerId' })
+  manager?: Employee;
+
   @Column({ type: 'date' })
   hireDate: Date;
 
@@ -82,11 +86,8 @@ export class Employee extends BaseEntity {
   })
   status: EmploymentStatus;
 
-  @Column({
-    type: 'enum',
-    enum: Country,
-  })
-  workLocation: Country;
+  @Column({ nullable: true })
+  workLocation?: string; // Now configurable from organization settings
 
   @Column({ nullable: true })
   officeLocation?: string;

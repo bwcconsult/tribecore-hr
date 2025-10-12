@@ -18,6 +18,9 @@ export enum BenefitStatus {
 @Entity('benefit_plans')
 export class BenefitPlan extends BaseEntity {
   @Column()
+  organizationId: string; // Benefits are organization-specific
+
+  @Column()
   name: string;
 
   @Column({

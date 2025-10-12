@@ -62,14 +62,37 @@ export class Organization extends BaseEntity {
 
   @Column({ type: 'jsonb', nullable: true })
   settings?: {
+    // Employee Settings
+    employeeIdPrefix?: string; // e.g., "EMP-", "TC-", "STAFF-"
+    workLocations?: string[]; // Configurable work locations
+    departments?: string[]; // Configurable departments
+    jobLevels?: string[]; // Configurable job levels/grades
+    employmentTypes?: string[]; // Configurable employment types
+    
+    // Payroll Settings
     payroll?: {
       frequency?: string;
       paymentDay?: number;
     };
+    
+    // Leave Settings
     leave?: {
       annualLeaveDefault?: number;
       sickLeaveDefault?: number;
     };
+    
+    // Onboarding Settings
+    onboardingChecklist?: Array<{
+      id: string;
+      title: string;
+      description?: string;
+      category?: string;
+      daysToComplete?: number;
+      isRequired: boolean;
+      order: number;
+    }>;
+    
+    // Compliance Settings
     compliance?: {
       gdprEnabled?: boolean;
       dataRetentionDays?: number;

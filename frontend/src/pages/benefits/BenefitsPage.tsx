@@ -57,12 +57,12 @@ export default function BenefitsPage() {
 
   // Calculate stats
   const calculateStats = () => {
-    const enrollmentsList = enrollments?.data || [];
-    const plans = plansData?.data || [];
+    const enrollmentsList = Array.isArray(enrollments?.data) ? enrollments.data : [];
+    const plans = Array.isArray(plansData?.data) ? plansData.data : [];
     
     const totalEnrollments = enrollmentsList.length;
-    const activeEnrollments = enrollmentsList.filter((e: BenefitEnrollment) => e.status === 'ACTIVE').length;
-    const totalCost = enrollmentsList.reduce((sum: number, e: BenefitEnrollment) => sum + (e.totalCost || 0), 0);
+    const activeEnrollments = enrollmentsList.filter((e: BenefitEnrollment) => e?.status === 'ACTIVE').length;
+    const totalCost = enrollmentsList.reduce((sum: number, e: BenefitEnrollment) => sum + (Number(e?.totalCost) || 0), 0);
     const totalPlans = plans.length;
 
     return { totalEnrollments, activeEnrollments, totalCost, totalPlans };
@@ -73,7 +73,8 @@ export default function BenefitsPage() {
 
   // Group enrollments by plan type
   const getEnrollmentsByType = () => {
-    const enrollmentsList = enrollments?.data || [];
+    const enrollmentsList = Array.isArray(enrollments?.data) ? enrollments.data : [];
+    const plansList = Array.isArray(plansData?.data) ? plansData.data : [];
     const typeMap: { [key: string]: { count: number; icon: any; color: string } } = {
       'HEALTH': { count: 0, icon: Heart, color: 'text-red-600' },
       'DENTAL': { count: 0, icon: Shield, color: 'text-blue-600' },
@@ -82,8 +83,8 @@ export default function BenefitsPage() {
     };
 
     enrollmentsList.forEach((enrollment: BenefitEnrollment) => {
-      const plan = plans.find((p: any) => p.id === enrollment.benefitPlanId);
-      if (plan && typeMap[plan.type]) {
+      const plan = plansList.find((p: any) => p?.id === enrollment?.benefitPlanId);
+      if (plan?.type && typeMap[plan.type]) {
         typeMap[plan.type].count++;
       }
     });
@@ -199,18 +200,18 @@ export default function BenefitsPage() {
                       </td>
                       <td className="py-4 text-sm">
                         <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
-                          {enrollment.coverage.replace(/_/g, ' ')}
+                          {enrollment.coverage?.replace(/_/g, ' ') || 'N/A'}
                         </span>
                       </td>
                       <td className="py-4 text-sm">{formatDate(enrollment.effectiveDate)}</td>
                       <td className="py-4 text-sm text-red-600">
-                        ${enrollment.employeeContribution.toFixed(2)}
+                        ${(enrollment.employeeContribution || 0).toFixed(2)}
                       </td>
                       <td className="py-4 text-sm text-green-600">
-                        ${enrollment.employerContribution.toFixed(2)}
+                        ${(enrollment.employerContribution || 0).toFixed(2)}
                       </td>
                       <td className="py-4 text-sm font-semibold text-gray-900">
-                        ${enrollment.totalCost.toFixed(2)}
+                        ${(enrollment.totalCost || 0).toFixed(2)}
                       </td>
                       <td className="py-4">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${

@@ -205,13 +205,13 @@ export default function BenefitsPage() {
                       </td>
                       <td className="py-4 text-sm">{formatDate(enrollment.effectiveDate)}</td>
                       <td className="py-4 text-sm text-red-600">
-                        ${(enrollment.employeeContribution || 0).toFixed(2)}
+                        ${Number(enrollment.employeeContribution || 0).toFixed(2)}
                       </td>
                       <td className="py-4 text-sm text-green-600">
-                        ${(enrollment.employerContribution || 0).toFixed(2)}
+                        ${Number(enrollment.employerContribution || 0).toFixed(2)}
                       </td>
                       <td className="py-4 text-sm font-semibold text-gray-900">
-                        ${(enrollment.totalCost || 0).toFixed(2)}
+                        ${Number(enrollment.totalCost || 0).toFixed(2)}
                       </td>
                       <td className="py-4">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${

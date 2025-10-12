@@ -17,8 +17,14 @@ import { FxConversionService } from './services/fx-conversion.service';
 import { BankFileGeneratorService } from './services/bank-file-generator.service';
 import { PayrollCalculationService } from './services/payroll-calculation.service';
 import { FinanceIntegrationService } from './services/finance-integration.service';
+import { AiForecastingService } from './services/ai-forecasting.service';
+import { BulkProcessingService } from './services/bulk-processing.service';
+import { ThirteenthMonthService } from './services/thirteenth-month.service';
+import { BonusCommissionService } from './services/bonus-commission.service';
+import { AuditTrailService } from './services/audit-trail.service';
 import { PayrollRunController } from './controllers/payroll-run.controller';
 import { ContractorPaymentController } from './controllers/contractor-payment.controller';
+import { AdvancedPayrollController } from './controllers/advanced-payroll.controller';
 import { Employee } from '../employees/entities/employee.entity';
 
 @Module({
@@ -36,6 +42,7 @@ import { Employee } from '../employees/entities/employee.entity';
     PayrollController,
     PayrollRunController,
     ContractorPaymentController,
+    AdvancedPayrollController,
   ],
   providers: [
     PayrollService,
@@ -49,6 +56,11 @@ import { Employee } from '../employees/entities/employee.entity';
     BankFileGeneratorService,
     PayrollCalculationService,
     FinanceIntegrationService,
+    AiForecastingService,
+    BulkProcessingService,
+    ThirteenthMonthService,
+    BonusCommissionService,
+    AuditTrailService,
   ],
   exports: [
     PayrollService,

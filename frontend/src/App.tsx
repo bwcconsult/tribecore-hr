@@ -23,6 +23,12 @@ import { ContractorPayments } from './pages/payroll/ContractorPayments';
 import { PayrollAnalyticsDashboard } from './pages/payroll/PayrollAnalyticsDashboard';
 import { TaxComplianceDashboard } from './pages/payroll/TaxComplianceDashboard';
 import { MultiCurrencyPayments } from './pages/payroll/MultiCurrencyPayments';
+import AIForecastingDashboard from './pages/payroll/AIForecastingDashboard';
+import AnomalyDetectionDashboard from './pages/payroll/AnomalyDetectionDashboard';
+import BonusCommissionManager from './pages/payroll/BonusCommissionManager';
+import ThirteenthMonthCalculator from './pages/payroll/ThirteenthMonthCalculator';
+import AuditReportDashboard from './pages/payroll/AuditReportDashboard';
+import EnhancedPayrollDashboard from './pages/payroll/EnhancedPayrollDashboard';
 import LeavePage from './pages/leave/LeavePage';
 import AttendancePage from './pages/attendance/AttendancePage';
 import PerformancePage from './pages/performance/PerformancePage';
@@ -75,7 +81,7 @@ function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/employees/:id" element={<EmployeeDetailsPage />} />
-            <Route path="/payroll" element={<PayrollPage />} />
+            <Route path="/payroll" element={<EnhancedPayrollDashboard />} />
             <Route path="/payroll/dashboard" element={<EmployeePayrollDashboard />} />
             <Route path="/payroll/payslips" element={<EmployeePayslipsPage />} />
             <Route path="/payroll/run" element={<PayrollRunWizard />} />
@@ -83,6 +89,11 @@ function App() {
             <Route path="/payroll/analytics" element={<PayrollAnalyticsDashboard />} />
             <Route path="/payroll/tax-compliance" element={<TaxComplianceDashboard />} />
             <Route path="/payroll/multi-currency" element={<MultiCurrencyPayments />} />
+            <Route path="/payroll/ai-forecasting" element={<AIForecastingDashboard />} />
+            <Route path="/payroll/anomaly-detection" element={<AnomalyDetectionDashboard />} />
+            <Route path="/payroll/bonus-commission" element={<BonusCommissionManager />} />
+            <Route path="/payroll/thirteenth-month" element={<ThirteenthMonthCalculator />} />
+            <Route path="/payroll/audit-reports" element={<AuditReportDashboard />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/reports" element={<ReportsPage />} />

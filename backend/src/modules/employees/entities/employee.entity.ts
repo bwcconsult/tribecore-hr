@@ -6,10 +6,10 @@ import { User } from '../../users/entities/user.entity';
 
 @Entity('employees')
 export class Employee extends BaseEntity {
-  @Column()
+  @Column({ unique: true })
   employeeId: string;
 
-  @Column()
+  @Column({ nullable: true })
   userId: string;
 
   @ManyToOne(() => User)

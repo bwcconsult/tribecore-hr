@@ -123,4 +123,65 @@ export class EmployeesService {
       departments,
     };
   }
+
+  async seedEmployees(organizationId: string) {
+    const seedData = [
+      {"EmployeeID":"EMP-001","FirstName":"Bill","LastName":"Essien","Email":"bill.essien@tribecore.com","PhoneNumber":"+44 7712 111111","Department":"Executive","JobTitle":"Chief Executive Officer","HireDate":"2021-01-15","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":null,"Currency":"GBP"},
+      {"EmployeeID":"EMP-002","FirstName":"Ene","LastName":"Cathy","Email":"ene.cathy@tribecore.com","PhoneNumber":"+44 7712 111112","Department":"Operations","JobTitle":"Group COO","HireDate":"2021-03-01","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":150000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-003","FirstName":"Grace","LastName":"Akinola","Email":"grace.akinola@tribecore.com","PhoneNumber":"+44 7712 111113","Department":"Finance","JobTitle":"Group CFO","HireDate":"2021-06-20","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":145000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-004","FirstName":"Oluseun","LastName":"Oladiipo","Email":"oluseun.oladiipo@tribecore.com","PhoneNumber":"+44 7712 111114","Department":"Technology","JobTitle":"Group VP of Technology","HireDate":"2021-08-10","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":150000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-005","FirstName":"Matthew","LastName":"Odedoyin","Email":"matthew.odedoyin@tribecore.com","PhoneNumber":"+44 7712 111115","Department":"Development","JobTitle":"Director of Development","HireDate":"2022-02-01","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":115000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-006","FirstName":"Oludare","LastName":"Aduramimo","Email":"oludare.aduramimo@tribecore.com","PhoneNumber":"+44 7712 111116","Department":"Development","JobTitle":"Deputy Director of Development","HireDate":"2022-05-01","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":100000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-007","FirstName":"Jamie","LastName":"Lee","Email":"jamie.lee@tribecore.com","PhoneNumber":"+44 7712 111117","Department":"Engineering","JobTitle":"Senior Software Engineer (Backend)","HireDate":"2023-01-15","EmploymentType":"Full Time","Status":"Active","WorkLocation":"Remote - UK","BaseSalary":85000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-008","FirstName":"Adenike","LastName":"Akinola","Email":"reese.taylor@tribecore.io","PhoneNumber":"+44 7712 111118","Department":"Engineering","JobTitle":"Senior Software Engineer (Frontend)","HireDate":"2023-02-10","EmploymentType":"Full Time","Status":"Active","WorkLocation":"Remote - UK","BaseSalary":83000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-009","FirstName":"Avery","LastName":"Patel","Email":"avery.patel@tribecore.io","PhoneNumber":"+44 7712 111119","Department":"Data Science","JobTitle":"Data Scientist","HireDate":"2023-03-25","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":90000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-010","FirstName":"Adenike","LastName":"Williams","Email":"adenike.williams@tribecore.com","PhoneNumber":"+44 7712 111120","Department":"Strategy & Growth","JobTitle":"Strategic Growth Business Analyst","HireDate":"2023-04-01","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":110000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-011","FirstName":"Parker","LastName":"Morgan","Email":"parker.morgan@tribecore.com","PhoneNumber":"+44 7712 111121","Department":"People","JobTitle":"HR Manager","HireDate":"2022-09-05","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":65000,"Currency":"GBP"},
+      {"EmployeeID":"EMP-012","FirstName":"Quinn","LastName":"Hayes","Email":"quinn.hayes@tribecore.com","PhoneNumber":"+44 7712 111122","Department":"Finance","JobTitle":"Accountant","HireDate":"2022-11-01","EmploymentType":"Full Time","Status":"Active","WorkLocation":"UK","BaseSalary":60000,"Currency":"GBP"}
+    ];
+
+    const results: Array<{ action: string; employee: Employee }> = [];
+    for (const data of seedData) {
+      // Check if employee exists
+      const existing = await this.employeesRepository.findOne({
+        where: { employeeId: data.EmployeeID }
+      });
+
+      const employeeData = {
+        employeeId: data.EmployeeID,
+        firstName: data.FirstName,
+        lastName: data.LastName,
+        email: data.Email,
+        phoneNumber: data.PhoneNumber,
+        department: data.Department,
+        jobTitle: data.JobTitle,
+        hireDate: new Date(data.HireDate),
+        employmentType: data.EmploymentType.replace(' ', '_').toUpperCase() as any,
+        status: data.Status.toUpperCase() as any,
+        workLocation: data.WorkLocation as any,
+        baseSalary: data.BaseSalary || 0,
+        salaryCurrency: data.Currency,
+        organizationId,
+      };
+
+      if (existing) {
+        // Update existing
+        Object.assign(existing, employeeData);
+        const updated = await this.employeesRepository.save(existing);
+        results.push({ action: 'updated', employee: updated });
+      } else {
+        // Create new
+        const employee = this.employeesRepository.create(employeeData);
+        const created = await this.employeesRepository.save(employee);
+        results.push({ action: 'created', employee: created });
+      }
+    }
+
+    return {
+      message: `Seeded ${results.length} employees`,
+      created: results.filter(r => r.action === 'created').length,
+      updated: results.filter(r => r.action === 'updated').length,
+      results,
+    };
+  }
 }

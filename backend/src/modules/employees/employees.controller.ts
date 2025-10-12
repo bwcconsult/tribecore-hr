@@ -67,4 +67,11 @@ export class EmployeesController {
   remove(@Param('id') id: string) {
     return this.employeesService.remove(id);
   }
+
+  @Post('seed')
+  @Roles(UserRole.ADMIN)
+  @ApiOperation({ summary: 'Seed employee data' })
+  async seedEmployees(@CurrentUser() user: any) {
+    return this.employeesService.seedEmployees(user.organizationId);
+  }
 }

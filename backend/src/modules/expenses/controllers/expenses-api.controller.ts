@@ -16,6 +16,7 @@ import { Roles } from '../../../common/decorators/roles.decorator';
 import { UserRole } from '../../../common/enums';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Expense, ExpenseStatus } from '../entities/expense.entity';
 import { ExpenseClaim, ClaimStatus } from '../entities/expense-claim.entity';
 import { ExpenseItem } from '../entities/expense-item.entity';
 import { ExpenseCategory } from '../entities/expense-category.entity';
@@ -29,6 +30,8 @@ import { User } from '../../users/entities/user.entity';
 @Controller('api')
 export class ExpensesApiController {
   constructor(
+    @InjectRepository(Expense)
+    private expenseRepo: Repository<Expense>,
     @InjectRepository(ExpenseClaim)
     private claimRepo: Repository<ExpenseClaim>,
     @InjectRepository(ExpenseItem)
@@ -113,25 +116,22 @@ export class ExpensesApiController {
     @Query('limit') limit: number = 10,
     @Query('q') q?: string,
   ) {
-    const query = this.claimRepo.createQueryBuilder('claim')
-      .leftJoinAndSelect('claim.createdBy', 'createdBy')
-      .leftJoinAndSelect('claim.items', 'items')
-      .leftJoinAndSelect('claim.approvals', 'approvals')
-      .leftJoinAndSelect('claim.project', 'project');
+    const query = this.expenseRepo.createQueryBuilder('expense')
+      .leftJoinAndSelect('expense.employee', 'employee');
 
     if (status) {
-      query.andWhere('claim.status = :status', { status: status.toUpperCase() });
+      query.andWhere('expense.status = :status', { status: status.toUpperCase() });
     }
 
     if (q) {
       query.andWhere(
-        '(claim.title ILIKE :q OR claim.description ILIKE :q)',
+        '(expense.description ILIKE :q OR expense.merchant ILIKE :q)',
         { q: `%${q}%` }
       );
     }
 
     const skip = (page - 1) * limit;
-    query.skip(skip).take(limit).orderBy('claim.createdAt', 'DESC');
+    query.skip(skip).take(limit).orderBy('expense.createdAt', 'DESC');
 
     const [data, total] = await query.getManyAndCount();
 
@@ -431,30 +431,28 @@ export class ExpensesApiController {
   @Get('expenses/stats')
   @ApiOperation({ summary: 'Get expense statistics' })
   async getStats(@Request() req) {
-    const userId = req.user.id;
-
-    const [totalClaims, draft, submitted, approved, rejected, paid] = await Promise.all([
-      this.claimRepo.count({ where: { createdById: userId } }),
-      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.DRAFT } }),
-      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.SUBMITTED } }),
-      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.APPROVED } }),
-      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.REJECTED } }),
-      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.PAID } }),
+    const [totalExpenses, draft, submitted, approved, rejected, paid] = await Promise.all([
+      this.expenseRepo.count(),
+      this.expenseRepo.count({ where: { status: ExpenseStatus.DRAFT } }),
+      this.expenseRepo.count({ where: { status: ExpenseStatus.SUBMITTED } }),
+      this.expenseRepo.count({ where: { status: ExpenseStatus.APPROVED } }),
+      this.expenseRepo.count({ where: { status: ExpenseStatus.REJECTED } }),
+      this.expenseRepo.count({ where: { status: ExpenseStatus.PAID } }),
     ]);
 
-    const approvedClaims = await this.claimRepo.find({
-      where: { createdById: userId, status: ClaimStatus.APPROVED },
+    const approvedExpenses = await this.expenseRepo.find({
+      where: { status: ExpenseStatus.APPROVED },
     });
 
-    const paidClaims = await this.claimRepo.find({
-      where: { createdById: userId, status: ClaimStatus.PAID },
+    const paidExpenses = await this.expenseRepo.find({
+      where: { status: ExpenseStatus.PAID },
     });
 
-    const approvedAmount = approvedClaims.reduce((sum, c) => sum + Number(c.totalAmount), 0);
-    const paidAmount = paidClaims.reduce((sum, c) => sum + Number(c.totalAmount), 0);
+    const approvedAmount = approvedExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
+    const paidAmount = paidExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
 
     return {
-      totalClaims,
+      totalClaims: totalExpenses,
       byStatus: {
         draft,
         submitted,

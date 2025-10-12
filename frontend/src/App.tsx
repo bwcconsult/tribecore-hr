@@ -18,6 +18,11 @@ import EmployeeDetailsPage from './pages/employees/EmployeeDetailsPage';
 import PayrollPage from './pages/payroll/PayrollPage';
 import { EmployeePayrollDashboard } from './pages/payroll/EmployeePayrollDashboard';
 import { EmployeePayslipsPage } from './pages/payroll/EmployeePayslipsPage';
+import { PayrollRunWizard } from './pages/payroll/PayrollRunWizard';
+import { ContractorPayments } from './pages/payroll/ContractorPayments';
+import { PayrollAnalyticsDashboard } from './pages/payroll/PayrollAnalyticsDashboard';
+import { TaxComplianceDashboard } from './pages/payroll/TaxComplianceDashboard';
+import { MultiCurrencyPayments } from './pages/payroll/MultiCurrencyPayments';
 import LeavePage from './pages/leave/LeavePage';
 import AttendancePage from './pages/attendance/AttendancePage';
 import PerformancePage from './pages/performance/PerformancePage';
@@ -73,6 +78,11 @@ function App() {
             <Route path="/payroll" element={<PayrollPage />} />
             <Route path="/payroll/dashboard" element={<EmployeePayrollDashboard />} />
             <Route path="/payroll/payslips" element={<EmployeePayslipsPage />} />
+            <Route path="/payroll/run" element={<PayrollRunWizard />} />
+            <Route path="/payroll/contractors" element={<ContractorPayments />} />
+            <Route path="/payroll/analytics" element={<PayrollAnalyticsDashboard />} />
+            <Route path="/payroll/tax-compliance" element={<TaxComplianceDashboard />} />
+            <Route path="/payroll/multi-currency" element={<MultiCurrencyPayments />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/reports" element={<ReportsPage />} />

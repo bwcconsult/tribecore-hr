@@ -21,13 +21,19 @@ export class EmployeesService {
   async findAll(
     organizationId: string,
     paginationDto: PaginationDto,
+    userRoles?: string[],
   ): Promise<PaginatedResponseDto<Employee>> {
-    const { page, limit, search, sortBy, sortOrder } = paginationDto;
+    const { page = 1, limit = 10, search, sortBy, sortOrder } = paginationDto;
     const skip = (page - 1) * limit;
 
     const queryBuilder = this.employeesRepository
-      .createQueryBuilder('employee')
-      .where('employee.organizationId = :organizationId', { organizationId });
+      .createQueryBuilder('employee');
+    
+    // SUPERADMIN can see all employees across all organizations
+    const isSuperAdmin = userRoles?.includes('SUPERADMIN');
+    if (!isSuperAdmin) {
+      queryBuilder.where('employee.organizationId = :organizationId', { organizationId });
+    }
 
     if (search) {
       queryBuilder.andWhere(

@@ -39,7 +39,7 @@ export class BenefitsController {
   @Get('plans')
   @ApiOperation({ summary: 'Get all benefit plans' })
   findAllBenefits(@Query() paginationDto: PaginationDto, @CurrentUser() user: any) {
-    return this.benefitsService.findAllBenefits(user.organizationId, paginationDto);
+    return this.benefitsService.findAllBenefits(user.organizationId, paginationDto, user.roles);
   }
 
   @Get('plans/:id')

@@ -24,14 +24,20 @@ export class BenefitsService {
   async findAllBenefits(
     organizationId: string,
     paginationDto: PaginationDto,
+    userRoles?: string[],
   ): Promise<{ data: BenefitPlan[]; total: number; page: number; totalPages: number }> {
     const { page = 1, limit = 10, search } = paginationDto;
     const skip = (page - 1) * limit;
 
     const query = this.benefitPlanRepository
       .createQueryBuilder('benefit')
-      .where('benefit.active = :active', { active: true })
-      .andWhere('benefit.organizationId = :organizationId', { organizationId }); // Filter by organization
+      .where('benefit.active = :active', { active: true });
+    
+    // SUPERADMIN can see all benefits across all organizations
+    const isSuperAdmin = userRoles?.includes('SUPERADMIN');
+    if (!isSuperAdmin) {
+      query.andWhere('benefit.organizationId = :organizationId', { organizationId });
+    }
 
     if (search) {
       query.andWhere(

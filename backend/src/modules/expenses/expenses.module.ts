@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { UsersModule } from '../users/users.module';
 
 // Entities
 import { ExpenseClaim } from './entities/expense-claim.entity';
@@ -68,6 +69,7 @@ import { CorpCardController } from './controllers/corp-card.controller';
       User,
     ]),
     NotificationsModule,
+    UsersModule,
   ],
   controllers: [
     ExpenseClaimController,

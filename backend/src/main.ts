@@ -12,47 +12,27 @@ async function bootstrap() {
   const apiPrefix = configService.get('API_PREFIX') || 'api/v1';
   app.setGlobalPrefix(apiPrefix);
 
-  // CORS - Allow frontend origins
-  const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://tribecore-hr-production-frontend.up.railway.app',
-    'https://amazing-squirrel-174b09.netlify.app', // Netlify deployment
-    configService.get('FRONTEND_URL'),
-  ].filter(Boolean);
-
+  // CORS - Allow all origins (can be restricted later)
   app.enableCors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, Postman, etc.)
-      if (!origin) return callback(null, true);
-      
-      // Allow all origins in development
-      if (configService.get('NODE_ENV') === 'development') {
-        return callback(null, true);
-      }
-      
-      // Check if origin is allowed
-      if (allowedOrigins.some(allowed => origin.startsWith(allowed) || allowed === '*')) {
-        return callback(null, true);
-      }
-      
-      // Allow any Railway deployment
-      if (origin.includes('railway.app')) {
-        return callback(null, true);
-      }
-      
-      // Allow any Netlify deployment
-      if (origin.includes('netlify.app')) {
-        return callback(null, true);
-      }
-      
-      // Default: allow all in production (you can restrict this later)
-      return callback(null, true);
-    },
+    origin: true, // Allow all origins
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    exposedHeaders: ['Content-Length', 'Content-Type'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: [
+      'Accept',
+      'Authorization',
+      'Content-Type',
+      'X-Requested-With',
+      'Origin',
+      'Access-Control-Request-Method',
+      'Access-Control-Request-Headers',
+    ],
+    exposedHeaders: [
+      'Content-Length',
+      'Content-Type',
+      'Authorization',
+    ],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
     maxAge: 86400, // 24 hours
   });
 

@@ -53,6 +53,13 @@ import PersonalSummaryPage from './pages/profile/PersonalSummaryPage';
 import PersonalDetailsPage from './pages/profile/PersonalDetailsPage';
 import TaskCentrePage from './pages/tasks/TaskCentrePage';
 import AbsenceRequestsPage from './pages/absence/AbsenceRequestsPage';
+import ShiftsRotasPage from './pages/shifts/ShiftsRotasPage';
+import RecognitionPage from './pages/recognition/RecognitionPage';
+import OffboardingPage from './pages/offboarding/OffboardingPage';
+import OvertimePage from './pages/overtime/OvertimePage';
+import ClockInDashboard from './pages/attendance/ClockInDashboard';
+import HolidayPlannerPage from './pages/leave/HolidayPlannerPage';
+import SicknessDashboard from './pages/absence/SicknessDashboard';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -116,6 +123,13 @@ function App() {
             <Route path="/profile/details" element={<PersonalDetailsPage />} />
             <Route path="/tasks" element={<TaskCentrePage />} />
             <Route path="/absence" element={<AbsenceRequestsPage />} />
+            <Route path="/absence/sickness" element={<SicknessDashboard />} />
+            <Route path="/shifts" element={<ShiftsRotasPage />} />
+            <Route path="/recognition" element={<RecognitionPage />} />
+            <Route path="/offboarding" element={<OffboardingPage />} />
+            <Route path="/overtime" element={<OvertimePage />} />
+            <Route path="/attendance/clock-in" element={<ClockInDashboard />} />
+            <Route path="/leave/holiday-planner" element={<HolidayPlannerPage />} />
           </Route>
 
           {/* Fallback */}

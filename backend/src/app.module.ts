@@ -28,6 +28,10 @@ import { RbacModule } from './modules/rbac/rbac.module';
 import { AbsenceModule } from './modules/absence/absence.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ShiftsModule } from './modules/shifts/shifts.module';
+import { RecognitionModule } from './modules/recognition/recognition.module';
+import { OffboardingModule } from './modules/offboarding/offboarding.module';
+import { OvertimeModule } from './modules/overtime/overtime.module';
 
 @Module({
   imports: [
@@ -92,6 +96,10 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     AbsenceModule,
     TasksModule,
     DashboardModule,
+    ShiftsModule,
+    RecognitionModule,
+    OffboardingModule,
+    OvertimeModule,
   ],
 })
 export class AppModule {}

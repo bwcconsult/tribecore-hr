@@ -19,31 +19,36 @@ export class UsersService {
   ) {}
 
   async create(registerDto: RegisterDto): Promise<User> {
-    const existingUser = await this.findByEmail(registerDto.email);
-    
-    if (existingUser) {
-      throw new ConflictException('User with this email already exists');
+    try {
+      const existingUser = await this.findByEmail(registerDto.email);
+      
+      if (existingUser) {
+        throw new ConflictException('User with this email already exists');
+      }
+
+      // Create organization for the new user
+      const organization = await this.organizationService.create({
+        name: `${registerDto.firstName} ${registerDto.lastName}'s Organization`,
+        email: registerDto.email,
+        phoneNumber: registerDto.phoneNumber || '',
+        address: '',
+        city: '',
+        country: Country.UK, // Default country
+        currency: Currency.GBP, // Default currency
+      });
+
+      // Create user with organization and ADMIN role
+      const user = this.usersRepository.create({
+        ...registerDto,
+        organizationId: organization.id,
+        roles: [UserRole.ADMIN], // First user becomes admin
+      });
+      
+      return await this.usersRepository.save(user);
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
     }
-
-    // Create organization for the new user
-    const organization = await this.organizationService.create({
-      name: `${registerDto.firstName} ${registerDto.lastName}'s Organization`,
-      email: registerDto.email,
-      phoneNumber: registerDto.phoneNumber || '',
-      address: '',
-      city: '',
-      country: Country.USA, // Default country
-      currency: Currency.USD, // Default currency
-    });
-
-    // Create user with organization and ADMIN role
-    const user = this.usersRepository.create({
-      ...registerDto,
-      organizationId: organization.id,
-      roles: [UserRole.ADMIN], // First user becomes admin
-    });
-    
-    return this.usersRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {

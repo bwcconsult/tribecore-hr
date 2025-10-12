@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, X, FileText, CheckCircle, AlertCircle, Loader } from 'lucide-react';
-import { expenseService } from '../../services/expense.service';
+import expenseService from '../../services/expense.service';
 
 interface OcrResult {
   vendor?: string;

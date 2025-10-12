@@ -153,4 +153,104 @@ export class PayrollService {
     const payroll = await this.findOne(id);
     await this.payrollRepository.softDelete(id);
   }
+
+  // Employee-specific methods
+  async getEmployeeDashboard(employeeId: string) {
+    const latestPayroll = await this.payrollRepository.findOne({
+      where: { employeeId },
+      order: { payDate: 'DESC' },
+      relations: ['employee'],
+    });
+
+    if (!latestPayroll) {
+      return {
+        period: null,
+        payDate: null,
+        netPay: 0,
+        grossPay: 0,
+        totalDeductions: 0,
+        pensionContribution: 0,
+        employee: null,
+      };
+    }
+
+    return {
+      period: `${latestPayroll.payPeriodStart} - ${latestPayroll.payPeriodEnd}`,
+      payDate: latestPayroll.payDate,
+      netPay: Number(latestPayroll.netPay),
+      grossPay: Number(latestPayroll.grossPay),
+      totalDeductions: Number(latestPayroll.totalDeductions),
+      pensionContribution: Number(latestPayroll.pensionContribution),
+      employee: latestPayroll.employee,
+      taxYear: latestPayroll.taxYear,
+      taxPeriod: latestPayroll.taxPeriod,
+    };
+  }
+
+  async getEmployeePayslips(employeeId: string, paginationDto: PaginationDto) {
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await this.payrollRepository.findAndCount({
+      where: { employeeId, status: 'PAID' as any },
+      order: { payDate: 'DESC' },
+      skip,
+      take: limit,
+    });
+
+    return {
+      data: data.map(p => ({
+        id: p.id,
+        payDate: p.payDate,
+        taxYear: p.taxYear,
+        taxPeriod: p.taxPeriod,
+        netPay: Number(p.netPay),
+        grossPay: Number(p.grossPay),
+        payslipUrl: p.payslipUrl,
+      })),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
+  async getEmployeePayrollDetails(employeeId: string) {
+    const employee = await this.payrollRepository
+      .createQueryBuilder('payroll')
+      .leftJoinAndSelect('payroll.employee', 'employee')
+      .where('payroll.employeeId = :employeeId', { employeeId })
+      .orderBy('payroll.payDate', 'DESC')
+      .getOne();
+
+    if (!employee) {
+      throw new NotFoundException('Employee not found');
+    }
+
+    return {
+      employeeId: employee.employee.employeeId,
+      taxReference: employee.employee.taxReference,
+      niNumber: employee.employee.niNumber,
+      taxDistrict: employee.employee.taxDistrict,
+    };
+  }
+
+  async getPayslipForEmployee(id: string, employeeId: string) {
+    const payroll = await this.payrollRepository.findOne({
+      where: { id, employeeId },
+      relations: ['employee', 'organization'],
+    });
+
+    if (!payroll) {
+      throw new NotFoundException('Payslip not found');
+    }
+
+    return payroll;
+  }
+
+  async downloadPayslipPDF(id: string, employeeId: string) {
+    const payroll = await this.getPayslipForEmployee(id, employeeId);
+    const pdfUrl = await this.payslipService.generatePayslip(payroll);
+    return { url: pdfUrl };
+  }
 }

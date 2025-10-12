@@ -29,6 +29,12 @@ export class Payroll extends BaseEntity {
   @Column({ type: 'date' })
   payDate: Date;
 
+  @Column({ nullable: true })
+  taxYear?: string; // e.g., "2024/25"
+
+  @Column({ nullable: true })
+  taxPeriod?: string; // e.g., "202404" for April 2024
+
   @Column({
     type: 'enum',
     enum: PayrollFrequency,

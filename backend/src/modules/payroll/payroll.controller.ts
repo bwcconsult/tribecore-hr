@@ -102,4 +102,35 @@ export class PayrollController {
   remove(@Param('id') id: string) {
     return this.payrollService.remove(id);
   }
+
+  // Employee-specific endpoints
+  @Get('my/dashboard')
+  @ApiOperation({ summary: 'Get employee payroll dashboard' })
+  getMyDashboard(@CurrentUser() user: any) {
+    return this.payrollService.getEmployeeDashboard(user.employeeId);
+  }
+
+  @Get('my/payslips')
+  @ApiOperation({ summary: 'Get my payslips' })
+  getMyPayslips(@CurrentUser() user: any, @Query() paginationDto: PaginationDto) {
+    return this.payrollService.getEmployeePayslips(user.employeeId, paginationDto);
+  }
+
+  @Get('my/details')
+  @ApiOperation({ summary: 'Get my payroll details' })
+  getMyPayrollDetails(@CurrentUser() user: any) {
+    return this.payrollService.getEmployeePayrollDetails(user.employeeId);
+  }
+
+  @Get('my/payslips/:id')
+  @ApiOperation({ summary: 'Get specific payslip' })
+  getMyPayslip(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.payrollService.getPayslipForEmployee(id, user.employeeId);
+  }
+
+  @Get('my/payslips/:id/download')
+  @ApiOperation({ summary: 'Download payslip PDF' })
+  downloadPayslip(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.payrollService.downloadPayslipPDF(id, user.employeeId);
+  }
 }

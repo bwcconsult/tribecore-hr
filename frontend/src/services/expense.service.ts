@@ -78,7 +78,7 @@ const expenseService = {
   },
 
   async getMyClaims(query?: ExpenseQuery) {
-    const response = await axios.get(`${API_BASE_URL}/api/expenses`, { params: query });
+    const response = await axios.get(`${API_BASE_URL}/api/expenses/my-expenses`, { params: query });
     return response.data;
   },
 

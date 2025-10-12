@@ -31,18 +31,48 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
 
-  // Fetch supported currencies
+  // Default currencies fallback
+  const defaultCurrencies: Currency[] = [
+    { code: 'GBP', name: 'British Pound', symbol: '£', decimalPlaces: 2 },
+    { code: 'USD', name: 'US Dollar', symbol: '$', decimalPlaces: 2 },
+    { code: 'EUR', name: 'Euro', symbol: '€', decimalPlaces: 2 },
+    { code: 'JPY', name: 'Japanese Yen', symbol: '¥', decimalPlaces: 0 },
+    { code: 'AUD', name: 'Australian Dollar', symbol: 'A$', decimalPlaces: 2 },
+    { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$', decimalPlaces: 2 },
+    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', decimalPlaces: 2 },
+    { code: 'CNY', name: 'Chinese Yuan', symbol: '¥', decimalPlaces: 2 },
+    { code: 'SEK', name: 'Swedish Krona', symbol: 'kr', decimalPlaces: 2 },
+    { code: 'NZD', name: 'New Zealand Dollar', symbol: 'NZ$', decimalPlaces: 2 },
+    { code: 'INR', name: 'Indian Rupee', symbol: '₹', decimalPlaces: 2 },
+    { code: 'BRL', name: 'Brazilian Real', symbol: 'R$', decimalPlaces: 2 },
+    { code: 'ZAR', name: 'South African Rand', symbol: 'R', decimalPlaces: 2 },
+    { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$', decimalPlaces: 2 },
+    { code: 'HKD', name: 'Hong Kong Dollar', symbol: 'HK$', decimalPlaces: 2 },
+    { code: 'NOK', name: 'Norwegian Krone', symbol: 'kr', decimalPlaces: 2 },
+    { code: 'DKK', name: 'Danish Krone', symbol: 'kr', decimalPlaces: 2 },
+    { code: 'MXN', name: 'Mexican Peso', symbol: '$', decimalPlaces: 2 },
+    { code: 'AED', name: 'UAE Dirham', symbol: 'د.إ', decimalPlaces: 2 },
+    { code: 'SAR', name: 'Saudi Riyal', symbol: 'ر.س', decimalPlaces: 2 },
+  ];
+
+  // Fetch supported currencies (with fallback to defaults)
   const { data: currenciesData, isLoading } = useQuery({
     queryKey: ['supported-currencies'],
     queryFn: async () => {
-      const response = await fetch('/api/v1/expenses/currency/supported', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      return response.json();
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1'}/expenses/currency/supported`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        if (!response.ok) throw new Error('Failed to fetch');
+        return response.json();
+      } catch (error) {
+        // Return defaults on error
+        return { currencies: defaultCurrencies };
+      }
     },
   });
 
-  const currencies: Currency[] = currenciesData?.currencies || [];
+  const currencies: Currency[] = currenciesData?.currencies || defaultCurrencies;
 
   // Get selected currency details
   const selectedCurrency = currencies.find((c) => c.code === value);

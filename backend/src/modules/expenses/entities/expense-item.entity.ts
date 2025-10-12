@@ -3,12 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
 import { ExpenseCategory } from './expense-category.entity';
+import { TaxCode } from './tax-code.entity';
+import { Currency } from './currency.entity';
 
 @Entity('expense_items')
 export class ExpenseItem {
@@ -29,65 +30,56 @@ export class ExpenseItem {
   @JoinColumn({ name: 'categoryId' })
   category: ExpenseCategory;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
+  @Column('date')
+  txnDate: Date;
+
+  @Column('decimal', { precision: 12, scale: 2 })
   amount: number;
 
   @Column({ default: 'GBP', length: 3 })
-  currency: string;
+  currencyCode: string;
 
-  @Column({ type: 'date' })
-  expenseDate: Date;
+  @ManyToOne(() => Currency)
+  @JoinColumn({ name: 'currencyCode' })
+  currency: Currency;
 
   @Column({ nullable: true })
-  vendor: string;
+  merchant: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @Column({ nullable: true })
-  projectId: string;
+  taxCodeId: string;
+
+  @ManyToOne(() => TaxCode, { nullable: true })
+  @JoinColumn({ name: 'taxCodeId' })
+  taxCode: TaxCode;
 
   @Column({ nullable: true })
-  departmentId: string;
+  receiptUrl: string; // S3 presigned URL or path
 
-  // Mileage specific fields
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  mileageDistance: number;
-
-  @Column({ type: 'decimal', precision: 10, scale: 4, nullable: true })
-  mileageRate: number;
-
-  @Column({ nullable: true })
-  startLocation: string;
-
-  @Column({ nullable: true })
-  endLocation: string;
-
-  // Receipt requirement
-  @Column({ default: true })
-  receiptRequired: boolean;
+  // Mileage specific
+  @Column('decimal', { precision: 10, scale: 2, nullable: true })
+  distanceKm: number;
 
   @Column({ default: false })
-  receiptAttached: boolean;
+  perDiem: boolean;
 
-  // Tax fields
-  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
-  taxAmount: number;
-
-  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
-  taxRate: number;
-
-  @Column({ default: false })
-  isBillable: boolean; // Can be billed to client
+  // Project allocation
+  @Column('decimal', { precision: 5, scale: 2, nullable: true })
+  projectSplitPct: number; // Optional % split to project
 
   @Column({ nullable: true })
-  clientId: string;
+  glCodeOverride: string; // Override category GL code
 
+  // Policy flags
   @Column({ type: 'jsonb', nullable: true })
-  metadata: Record<string, any>;
-
-  @OneToMany('Receipt', 'expenseItem', { cascade: true })
-  receipts: any[];
+  policyFlags: {
+    overLimit?: boolean;
+    missingReceipt?: boolean;
+    [key: string]: any;
+  };
 
   @CreateDateColumn()
   createdAt: Date;

@@ -18,10 +18,10 @@ export default function SubmitExpensePage() {
     {
       categoryId: '',
       amount: 0,
-      currency: 'GBP',
-      expenseDate: new Date().toISOString().split('T')[0],
+      currencyCode: 'GBP',
+      txnDate: new Date().toISOString().split('T')[0],
       description: '',
-      vendor: '',
+      merchant: '',
     },
   ]);
 
@@ -42,10 +42,10 @@ export default function SubmitExpensePage() {
       {
         categoryId: '',
         amount: 0,
-        currency: currency,
-        expenseDate: new Date().toISOString().split('T')[0],
+        currencyCode: currency,
+        txnDate: new Date().toISOString().split('T')[0],
         description: '',
-        vendor: '',
+        merchant: '',
       },
     ]);
   };
@@ -84,8 +84,7 @@ export default function SubmitExpensePage() {
     createMutation.mutate({
       title,
       description,
-      currency,
-      notes,
+      currencyCode: currency,
       items: validItems as ExpenseItem[],
     });
   };
@@ -109,8 +108,7 @@ export default function SubmitExpensePage() {
       const claim = await createMutation.mutateAsync({
         title,
         description,
-        currency,
-        notes,
+        currencyCode: currency,
         items: validItems as ExpenseItem[],
       });
 
@@ -251,8 +249,8 @@ export default function SubmitExpensePage() {
                     </label>
                     <input
                       type="date"
-                      value={item.expenseDate}
-                      onChange={(e) => updateItem(index, 'expenseDate', e.target.value)}
+                      value={item.txnDate}
+                      onChange={(e) => updateItem(index, 'txnDate', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
@@ -263,8 +261,8 @@ export default function SubmitExpensePage() {
                     </label>
                     <input
                       type="text"
-                      value={item.vendor}
-                      onChange={(e) => updateItem(index, 'vendor', e.target.value)}
+                      value={item.merchant}
+                      onChange={(e) => updateItem(index, 'merchant', e.target.value)}
                       placeholder="e.g., Tesco, Uber"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
@@ -298,11 +296,11 @@ export default function SubmitExpensePage() {
                           if (ocrData.amount && !newItems[index].amount) {
                             newItems[index].amount = ocrData.amount;
                           }
-                          if (ocrData.vendor && !newItems[index].vendor) {
-                            newItems[index].vendor = ocrData.vendor;
+                          if (ocrData.vendor && !newItems[index].merchant) {
+                            newItems[index].merchant = ocrData.vendor;
                           }
-                          if (ocrData.date && !newItems[index].expenseDate) {
-                            newItems[index].expenseDate = ocrData.date;
+                          if (ocrData.date && !newItems[index].txnDate) {
+                            newItems[index].txnDate = ocrData.date;
                           }
                           setItems(newItems);
                           toast.success('Receipt uploaded and data extracted!');

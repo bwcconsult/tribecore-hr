@@ -14,6 +14,10 @@ import { AuditTrail } from './entities/audit-trail.entity';
 import { Budget } from './entities/budget.entity';
 import { ExchangeRate } from './entities/exchange-rate.entity';
 import { ApprovalRule } from './entities/approval-rule.entity';
+import { TaxCode } from './entities/tax-code.entity';
+import { Currency } from './entities/currency.entity';
+import { Project } from './entities/project.entity';
+import { CorpCardTxn } from './entities/corp-card-txn.entity';
 
 // Services
 import { ExpenseClaimService } from './services/expense-claim.service';
@@ -38,6 +42,9 @@ import { ReceiptController } from './controllers/receipt.controller';
 import { CurrencyController } from './controllers/currency.controller';
 import { WorkflowController } from './controllers/workflow.controller';
 import { ForecastController } from './controllers/forecast.controller';
+import { ExpensesApiController } from './controllers/expenses-api.controller';
+import { ReceiptsUploadController } from './controllers/receipts-upload.controller';
+import { CorpCardController } from './controllers/corp-card.controller';
 
 @Module({
   imports: [
@@ -53,6 +60,10 @@ import { ForecastController } from './controllers/forecast.controller';
       Budget,
       ExchangeRate,
       ApprovalRule,
+      TaxCode,
+      Currency,
+      Project,
+      CorpCardTxn,
     ]),
     NotificationsModule,
   ],
@@ -66,6 +77,9 @@ import { ForecastController } from './controllers/forecast.controller';
     CurrencyController,
     WorkflowController,
     ForecastController,
+    ExpensesApiController,
+    ReceiptsUploadController,
+    CorpCardController,
   ],
   providers: [
     ExpenseClaimService,

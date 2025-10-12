@@ -1,0 +1,108 @@
+{
+  "taxCodes": [
+    {"region":"UK","code":"VAT0","rate":0.0,"name":"Zero Rated"},
+    {"region":"UK","code":"VAT5","rate":0.05,"name":"Reduced 5%"},
+    {"region":"UK","code":"VAT20","rate":0.20,"name":"Standard 20%"}
+  ],
+  "currencies": [
+    {"code":"GBP","symbol":"£","name":"British Pound","fxToBase":1.0},
+    {"code":"USD","symbol":"$","name":"US Dollar","fxToBase":1.29},
+    {"code":"EUR","symbol":"€","name":"Euro","fxToBase":1.17}
+  ],
+  "categories": [
+    {"name":"Airfare","uniqueCode":"AIRFARE","glCode":"7000","taxCode":"VAT0","description":"Commercial flights incl. baggage","limitPerTxn":2000,"requiresReceipt":true},
+    {"name":"Hotel/Accommodation","uniqueCode":"HOTEL","glCode":"7010","taxCode":"VAT20","description":"Hotel stays, lodging, service fees","limitPerDay":300,"requiresReceipt":true},
+    {"name":"Ground Transport — Taxi/Rideshare","uniqueCode":"GROUND_TAXI","glCode":"7020","taxCode":"VAT20","description":"Uber, Lyft, local taxi","requiresReceipt":true},
+    {"name":"Rail/Coach","uniqueCode":"GROUND_RAIL","glCode":"7021","taxCode":"VAT0","description":"Rail & intercity coach","requiresReceipt":true},
+    {"name":"Car Hire","uniqueCode":"CAR_HIRE","glCode":"7030","taxCode":"VAT20","description":"Vehicle rental incl. insurance", "limitPerDay":120,"requiresReceipt":true},
+    {"name":"Fuel","uniqueCode":"FUEL","glCode":"7040","taxCode":"VAT20","description":"Fuel for company/lease cars","requiresReceipt":true},
+    {"name":"Mileage (Personal Vehicle)","uniqueCode":"MILEAGE","glCode":"7045","taxCode":"VAT0","description":"Distance based @ HMRC rate","requiresReceipt":false},
+    {"name":"Parking & Tolls","uniqueCode":"PARKING_TOLLS","glCode":"7050","taxCode":"VAT20","description":"Parking, tolls, congestion charges","requiresReceipt":true},
+    {"name":"Meals — Travel","uniqueCode":"MEALS_TRAVEL","glCode":"7060","taxCode":"VAT20","description":"Employee meals while travelling","limitPerDay":50,"requiresReceipt":true},
+    {"name":"Meals — Client Entertainment","uniqueCode":"MEALS_CLIENT","glCode":"7061","taxCode":"VAT20","description":"Client meals; attendees required","limitPerTxn":120,"requiresReceipt":true},
+    {"name":"Per Diem","uniqueCode":"PER_DIEM","glCode":"7065","taxCode":"VAT0","description":"Daily allowance by location","perDiemAllowed":true,"requiresReceipt":false},
+    {"name":"Conference & Training Fees","uniqueCode":"TRAINING_FEES","glCode":"7070","taxCode":"VAT20","description":"Event tickets & course fees","requiresReceipt":true},
+    {"name":"Software Subscription","uniqueCode":"SOFTWARE_SUB","glCode":"7080","taxCode":"VAT20","description":"SaaS tools (Adobe, AWS, etc.)","requiresReceipt":true},
+    {"name":"Office Supplies","uniqueCode":"OFFICE_SUPPLIES","glCode":"7090","taxCode":"VAT20","description":"Stationery and small equipment","requiresReceipt":true},
+    {"name":"Mobile/Internet","uniqueCode":"MOBILE_INTERNET","glCode":"7095","taxCode":"VAT20","description":"Work phone & data","requiresReceipt":true},
+    {"name":"Gifts & Donations (Client)","uniqueCode":"GIFTS_CLIENT","glCode":"7100","taxCode":"VAT20","description":"Client gifts (tax limits apply)","limitPerTxn":50,"requiresReceipt":true},
+    {"name":"Visas & Passports","uniqueCode":"VISA_PASSPORT","glCode":"7110","taxCode":"VAT0","description":"Government travel documents","requiresReceipt":true},
+    {"name":"Equipment (Capex threshold)","uniqueCode":"EQUIPMENT","glCode":"7300","taxCode":"VAT20","description":"Monitors, peripherals","limitPerTxn":800,"requiresReceipt":true},
+    {"name":"Work From Home Stipend","uniqueCode":"WFH_STIPEND","glCode":"7990","taxCode":"VAT0","description":"Home office allowance","requiresReceipt":false}
+  ],
+  "merchants": [
+    "Uber","Bolt","Lyft","British Airways","EasyJet","Trainline","Hilton","Marriott","Premier Inn","Pret A Manger","Tesco","Costa Coffee","Amazon","Apple","Google","Adobe","WeWork","Shell","BP","NCP Parking","Eurotunnel","Shake Shack","Dishoom","Dart Charge"
+  ],
+  "projects": [
+    {"code":"PRJ-GAME-ALPHA","name":"Game Alpha"},
+    {"code":"PRJ-PLATFORM-CORE","name":"Platform Core"},
+    {"code":"PRJ-MKT-2025","name":"Marketing 2025"}
+  ],
+  "users": [
+    {"email":"tobi.essien@tribecore.test","name":"Tobi Essien","role":"EMPLOYEE"},
+    {"email":"niveditha@tribecore.test","name":"Niveditha A","role":"MANAGER"},
+    {"email":"finance@tribecore.test","name":"Finance Ops","role":"FINANCE"}
+  ],
+  "claims": [
+    {
+      "title":"London Client Visit",
+      "status":"DRAFT",
+      "currency":"GBP",
+      "createdBy":"tobi.essien@tribecore.test",
+      "items": [
+        {"category":"GROUND_TAXI","txnDate":"2025-10-01","amount":28.50,"merchant":"Uber","description":"Waterloo → Soho","taxCode":"VAT20","receiptUrl":"/receipts/uber_20251001.jpg"},
+        {"category":"MEALS_TRAVEL","txnDate":"2025-10-01","amount":14.20,"merchant":"Pret A Manger","description":"Lunch","taxCode":"VAT20","receiptUrl":"/receipts/pret_20251001.jpg"}
+      ]
+    },
+    {
+      "title":"AWS re:Invent 2025",
+      "status":"SUBMITTED",
+      "currency":"USD",
+      "createdBy":"tobi.essien@tribecore.test",
+      "project":"PRJ-PLATFORM-CORE",
+      "items": [
+        {"category":"AIRFARE","txnDate":"2025-11-28","amount":920.00,"merchant":"British Airways","description":"LHR→LAS","taxCode":"VAT0","receiptUrl":"/receipts/ba_20251128.pdf"},
+        {"category":"HOTEL","txnDate":"2025-12-01","amount":780.00,"merchant":"Hilton","description":"4 nights","taxCode":"VAT20","receiptUrl":"/receipts/hilton_20251201.pdf"},
+        {"category":"MEALS_TRAVEL","txnDate":"2025-12-01","amount":45.00,"merchant":"Shake Shack","description":"Dinner","taxCode":"VAT0"}
+      ]
+    },
+    {
+      "title":"Quarterly Planning Offsite",
+      "status":"APPROVED",
+      "currency":"GBP",
+      "createdBy":"niveditha@tribecore.test",
+      "items": [
+        {"category":"GROUND_RAIL","txnDate":"2025-09-17","amount":62.00,"merchant":"Trainline","description":"Guildford ↔ London","taxCode":"VAT0"},
+        {"category":"MEALS_CLIENT","txnDate":"2025-09-17","amount":98.00,"merchant":"Dishoom","description":"Team dinner with client","taxCode":"VAT20"}
+      ]
+    },
+    {
+      "title":"Subscription — Adobe CC",
+      "status":"REJECTED",
+      "currency":"GBP",
+      "createdBy":"tobi.essien@tribecore.test",
+      "items": [
+        {"category":"SOFTWARE_SUB","txnDate":"2025-09-01","amount":52.99,"merchant":"Adobe","description":"Creative Cloud seat","taxCode":"VAT20","receiptUrl":"/receipts/adobe_20250901.pdf"}
+      ]
+    },
+    {
+      "title":"Parking & Tolls July",
+      "status":"PAID",
+      "currency":"GBP",
+      "createdBy":"tobi.essien@tribecore.test",
+      "items": [
+        {"category":"PARKING_TOLLS","txnDate":"2025-07-05","amount":12.50,"merchant":"NCP Parking","description":"Client site","taxCode":"VAT20"},
+        {"category":"PARKING_TOLLS","txnDate":"2025-07-06","amount":6.80,"merchant":"Dart Charge","description":"Dartford Crossing","taxCode":"VAT20"}
+      ]
+    },
+    {
+      "title":"Client Site Visits — Oct",
+      "status":"SUBMITTED",
+      "currency":"GBP",
+      "createdBy":"tobi.essien@tribecore.test",
+      "items":[
+        {"category":"MILEAGE","txnDate":"2025-10-03","amount":15.39,"description":"34.2 km @ £0.45","distanceKm":34.2}
+      ]
+    }
+  ]
+}

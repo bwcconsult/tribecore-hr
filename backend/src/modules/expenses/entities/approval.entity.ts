@@ -8,7 +8,13 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-import { ApprovalStatus } from '../enums/approval-status.enum';
+
+export enum ApprovalDecision {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  RETURNED = 'RETURNED',
+}
 
 @Entity('expense_approvals')
 export class Approval {
@@ -29,54 +35,21 @@ export class Approval {
   @JoinColumn({ name: 'approverId' })
   approver: User;
 
-  @Column({ type: 'int' })
-  level: number; // 1 = Manager, 2 = Finance, 3 = Director, etc.
-
   @Column({
     type: 'enum',
-    enum: ApprovalStatus,
-    default: ApprovalStatus.PENDING,
+    enum: ApprovalDecision,
+    default: ApprovalDecision.PENDING,
   })
-  status: ApprovalStatus;
+  decision: ApprovalDecision;
+
+  @Column('timestamp', { nullable: true })
+  decidedAt: Date;
 
   @Column({ type: 'text', nullable: true })
-  comments: string;
+  comment: string;
 
-  @Column({ type: 'text', nullable: true })
-  rejectionReason: string;
-
-  @Column({ type: 'timestamp', nullable: true })
-  approvedAt: Date;
-
-  @Column({ type: 'timestamp', nullable: true })
-  rejectedAt: Date;
-
-  @Column({ type: 'timestamp', nullable: true })
-  reviewedAt: Date;
-
-  // Delegation support
-  @Column({ nullable: true })
-  delegatedBy: string;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'delegatedBy' })
-  delegator: User;
-
-  @Column({ type: 'timestamp', nullable: true })
-  delegatedAt: Date;
-
-  // Override support (for policy violations)
-  @Column({ default: false })
-  isOverride: boolean;
-
-  @Column({ type: 'text', nullable: true })
-  overrideJustification: string;
-
-  @Column({ nullable: true })
-  ipAddress: string;
-
-  @Column({ nullable: true })
-  userAgent: string;
+  @Column('int', { default: 1 })
+  level: number; // 1 = Manager, 2 = Finance, etc.
 
   @CreateDateColumn()
   createdAt: Date;

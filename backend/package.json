@@ -23,7 +23,8 @@
     "migration:run": "npm run typeorm -- migration:run -d ./src/database/data-source.ts",
     "migration:revert": "npm run typeorm -- migration:revert -d ./src/database/data-source.ts",
     "init:schema": "ts-node -r tsconfig-paths/register src/cli/init-schema.ts",
-    "seed": "ts-node -r tsconfig-paths/register src/cli/seed.ts"
+    "seed": "ts-node -r tsconfig-paths/register src/cli/seed.ts",
+    "seed:expenses": "ts-node -r tsconfig-paths/register src/database/seeds/seed-expenses-cli.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.478.0",

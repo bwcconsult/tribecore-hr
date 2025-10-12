@@ -42,6 +42,18 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   organizationId?: string;
 
+  @Column({ nullable: true })
+  orgUnit?: string;
+
+  @Column({ nullable: true })
+  managerId?: string;
+
+  @Column({ nullable: true })
+  bankAccount?: string;
+
+  @Column({ default: 'Europe/London' })
+  timezone: string;
+
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, any>;
 

@@ -1,46 +1,44 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export interface ExpenseItem {
   id?: string;
   categoryId: string;
   amount: number;
-  currency?: string;
-  expenseDate: string;
-  vendor?: string;
-  description: string;
-  projectId?: string;
-  departmentId?: string;
-  mileageDistance?: number;
-  mileageRate?: number;
-  startLocation?: string;
-  endLocation?: string;
-  receiptRequired?: boolean;
-  receiptAttached?: boolean;
+  currencyCode?: string;
+  txnDate: string;
+  merchant?: string;
+  description?: string;
+  taxCodeId?: string;
+  receiptUrl?: string;
+  distanceKm?: number;
+  perDiem?: boolean;
+  projectSplitPct?: number;
+  glCodeOverride?: string;
+  policyFlags?: any;
 }
 
 export interface ExpenseClaim {
   id?: string;
-  claimNumber?: string;
-  employeeId?: string;
   title: string;
   description?: string;
+  currencyCode?: string;
   totalAmount?: number;
-  currency?: string;
-  exchangeRate?: number;
   status?: string;
   submittedAt?: string;
   approvedAt?: string;
   paidAt?: string;
-  notes?: string;
-  departmentId?: string;
+  createdById?: string;
+  createdBy?: any;
+  approverId?: string;
+  approver?: any;
   projectId?: string;
+  project?: any;
+  merchantSummary?: string;
   items: ExpenseItem[];
-  hasPolicyViolations?: boolean;
-  policyViolations?: any[];
   approvals?: any[];
-  employee?: any;
+  currency?: any;
 }
 
 export interface ExpenseQuery {
@@ -70,42 +68,42 @@ export interface ApprovalAction {
 const expenseService = {
   // Expense Claims
   async createClaim(data: ExpenseClaim) {
-    const response = await axios.post(`${API_BASE_URL}/expenses/claims`, data);
+    const response = await axios.post(`${API_BASE_URL}/api/expenses`, data);
     return response.data;
   },
 
   async getAllClaims(query?: ExpenseQuery) {
-    const response = await axios.get(`${API_BASE_URL}/expenses/claims`, { params: query });
+    const response = await axios.get(`${API_BASE_URL}/api/expenses`, { params: query });
     return response.data;
   },
 
   async getMyClaims(query?: ExpenseQuery) {
-    const response = await axios.get(`${API_BASE_URL}/expenses/claims/my-expenses`, { params: query });
+    const response = await axios.get(`${API_BASE_URL}/api/expenses`, { params: query });
     return response.data;
   },
 
   async getClaim(id: string) {
-    const response = await axios.get(`${API_BASE_URL}/expenses/claims/${id}`);
+    const response = await axios.get(`${API_BASE_URL}/api/expenses/${id}`);
     return response.data;
   },
 
   async updateClaim(id: string, data: Partial<ExpenseClaim>) {
-    const response = await axios.put(`${API_BASE_URL}/expenses/claims/${id}`, data);
+    const response = await axios.put(`${API_BASE_URL}/api/expenses/${id}`, data);
     return response.data;
   },
 
   async submitClaim(id: string) {
-    const response = await axios.post(`${API_BASE_URL}/expenses/claims/${id}/submit`);
+    const response = await axios.post(`${API_BASE_URL}/api/expenses/${id}/submit`);
     return response.data;
   },
 
   async deleteClaim(id: string) {
-    const response = await axios.delete(`${API_BASE_URL}/expenses/claims/${id}`);
+    const response = await axios.delete(`${API_BASE_URL}/api/expenses/${id}`);
     return response.data;
   },
 
   async getClaimStatistics(employeeId?: string) {
-    const response = await axios.get(`${API_BASE_URL}/expenses/claims/statistics`, {
+    const response = await axios.get(`${API_BASE_URL}/api/expenses/stats`, {
       params: { employeeId },
     });
     return response.data;
@@ -113,27 +111,32 @@ const expenseService = {
 
   // Approvals
   async getPendingApprovals() {
-    const response = await axios.get(`${API_BASE_URL}/expenses/approvals/pending`);
+    const response = await axios.get(`${API_BASE_URL}/api/approvals`, { params: { me: '1', decision: 'PENDING' } });
     return response.data;
   },
 
-  async approveExpense(approvalId: string, data: ApprovalAction) {
-    const response = await axios.post(`${API_BASE_URL}/expenses/approvals/${approvalId}/approve`, data);
+  async approveExpense(claimId: string, comment?: string) {
+    const response = await axios.post(`${API_BASE_URL}/api/expenses/${claimId}/approve`, { comment });
+    return response.data;
+  },
+
+  async rejectExpense(claimId: string, comment: string) {
+    const response = await axios.post(`${API_BASE_URL}/api/expenses/${claimId}/reject`, { comment });
     return response.data;
   },
 
   async getApprovalHistory(claimId: string) {
-    const response = await axios.get(`${API_BASE_URL}/expenses/approvals/claim/${claimId}`);
+    const response = await axios.get(`${API_BASE_URL}/api/approvals`, { params: { claimId } });
     return response.data;
   },
 
   async getApprovalStatistics() {
-    const response = await axios.get(`${API_BASE_URL}/expenses/approvals/statistics`);
+    const response = await axios.get(`${API_BASE_URL}/api/approvals/stats`);
     return response.data;
   },
 
   async delegateApproval(approvalId: string, toUserId: string) {
-    const response = await axios.post(`${API_BASE_URL}/expenses/approvals/${approvalId}/delegate`, {
+    const response = await axios.post(`${API_BASE_URL}/api/approvals/${approvalId}/delegate`, {
       toUserId,
     });
     return response.data;
@@ -164,14 +167,19 @@ const expenseService = {
     return response.data;
   },
 
-  // Categories
+  // Categories & Tax Codes
   async getCategories() {
-    const response = await axios.get(`${API_BASE_URL}/expenses/categories`);
+    const response = await axios.get(`${API_BASE_URL}/api/expense-categories`);
+    return response.data;
+  },
+
+  async getTaxCodes() {
+    const response = await axios.get(`${API_BASE_URL}/api/tax-codes`);
     return response.data;
   },
 
   async seedCategories() {
-    const response = await axios.post(`${API_BASE_URL}/expenses/categories/seed`);
+    const response = await axios.post(`${API_BASE_URL}/api/expenses/categories/seed`);
     return response.data;
   },
 
@@ -247,17 +255,22 @@ const expenseService = {
     return response.data;
   },
 
-  // File upload (placeholder - will implement with actual file storage)
-  async uploadReceipt(expenseItemId: string, file: File) {
+  // File upload
+  async uploadReceipt(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('expenseItemId', expenseItemId);
 
-    const response = await axios.post(`${API_BASE_URL}/expenses/receipts/upload`, formData, {
+    const response = await axios.post(`${API_BASE_URL}/api/receipts/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
+    return response.data;
+  },
+
+  // Mark as Paid (Finance only)
+  async markAsPaid(claimId: string) {
+    const response = await axios.post(`${API_BASE_URL}/api/expenses/${claimId}/mark-paid`);
     return response.data;
   },
 };

@@ -3,12 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
 } from 'typeorm';
-import { ExpenseType } from '../enums/expense-types.enum';
+import { TaxCode } from './tax-code.entity';
 
 @Entity('expense_categories')
 export class ExpenseCategory {
@@ -19,39 +18,38 @@ export class ExpenseCategory {
   name: string;
 
   @Column({ unique: true })
-  code: string;
+  uniqueCode: string; // e.g., "MEALS_CLIENT", "AIRFARE"
+
+  @Column({ nullable: true })
+  glCode: string; // General Ledger code
 
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({
-    type: 'enum',
-    enum: ExpenseType,
-    default: ExpenseType.OTHER,
-  })
-  type: ExpenseType;
-
-  @Column({ nullable: true })
-  parentId: string;
-
-  @ManyToOne(() => ExpenseCategory, (category) => category.children, { nullable: true })
-  @JoinColumn({ name: 'parentId' })
-  parent: ExpenseCategory;
-
-  @OneToMany(() => ExpenseCategory, (category) => category.parent)
-  children: ExpenseCategory[];
-
   @Column({ default: true })
-  isActive: boolean;
-
-  @Column({ default: false })
   requiresReceipt: boolean;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  defaultMaxAmount: number;
-
   @Column({ nullable: true })
-  glCode: string; // General Ledger code for accounting integration
+  taxCodeId: string;
+
+  @ManyToOne(() => TaxCode, { nullable: true })
+  @JoinColumn({ name: 'taxCodeId' })
+  taxCode: TaxCode;
+
+  @Column({ default: false })
+  perDiemAllowed: boolean;
+
+  @Column('decimal', { precision: 12, scale: 2, nullable: true })
+  limitPerDay: number;
+
+  @Column('decimal', { precision: 12, scale: 2, nullable: true })
+  limitPerTxn: number;
+
+  @Column('decimal', { precision: 12, scale: 2, nullable: true })
+  limitPerTrip: number;
+
+  @Column({ default: true })
+  active: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -42,16 +42,16 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   organizationId?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   orgUnit?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   managerId?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   bankAccount?: string;
 
-  @Column({ default: 'Europe/London' })
+  @Column({ default: 'Europe/London', select: false })
   timezone: string;
 
   @Column({ type: 'jsonb', nullable: true })

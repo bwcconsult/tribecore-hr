@@ -33,8 +33,10 @@ export async function seedExpenses(dataSource: DataSource) {
   for (const t of seedData.taxCodes) {
     const existing = await taxCodeRepo.findOne({ where: { code: t.code } });
     if (!existing) {
-      const saved = await taxCodeRepo.save(taxCodeRepo.create(t));
-      taxIndex[t.code] = saved.id;
+      const created = taxCodeRepo.create(t);
+      const saved = await taxCodeRepo.save(created);
+      const result = Array.isArray(saved) ? saved[0] : saved;
+      taxIndex[t.code] = result.id;
     } else {
       taxIndex[t.code] = existing.id;
     }
@@ -71,11 +73,14 @@ export async function seedExpenses(dataSource: DataSource) {
     };
 
     if (!existing) {
-      const saved = await categoryRepo.save(categoryRepo.create(categoryData));
-      catIds[cat.uniqueCode] = saved.id;
+      const created = categoryRepo.create(categoryData);
+      const saved = await categoryRepo.save(created);
+      const result = Array.isArray(saved) ? saved[0] : saved;
+      catIds[cat.uniqueCode] = result.id;
     } else {
       const updated = await categoryRepo.save({ ...existing, ...categoryData });
-      catIds[cat.uniqueCode] = updated.id;
+      const result = Array.isArray(updated) ? updated[0] : updated;
+      catIds[cat.uniqueCode] = result.id;
     }
   }
 
@@ -99,7 +104,9 @@ export async function seedExpenses(dataSource: DataSource) {
       });
       await userRepo.save(user);
     }
-    users[u.email] = user.id;
+    if (user.id) {
+      users[u.email] = user.id;
+    }
   }
 
   // Seed Projects
@@ -115,7 +122,9 @@ export async function seedExpenses(dataSource: DataSource) {
       });
       await projectRepo.save(project);
     }
-    projects[p.code] = project.id;
+    if (project.id) {
+      projects[p.code] = project.id;
+    }
   }
 
   // Seed Claims and Items

@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function seedExpenseData(dataSource: DataSource) {
   const queryRunner = dataSource.createQueryRunner();
@@ -14,30 +15,38 @@ export async function seedExpenseData(dataSource: DataSource) {
     
     const hashedPassword = await bcrypt.hash('password123', 10);
     
+    // Generate UUIDs for users
+    const userEmployee1 = uuidv4();
+    const userEmployee2 = uuidv4();
+    const userEmployee3 = uuidv4();
+    const userManager1 = uuidv4();
+    const userAdmin1 = uuidv4();
+    const userFinance1 = uuidv4();
+    
     // Employee
     await queryRunner.query(`
-      INSERT INTO "user" (id, email, password, "firstName", "lastName", role, "departmentId", "isActive")
+      INSERT INTO "users" (id, email, password, "firstName", "lastName", roles, "isActive")
       VALUES 
-        ('user-employee-1', 'john.doe@tribecore.com', '${hashedPassword}', 'John', 'Doe', 'EMPLOYEE', NULL, true),
-        ('user-employee-2', 'jane.smith@tribecore.com', '${hashedPassword}', 'Jane', 'Smith', 'EMPLOYEE', NULL, true),
-        ('user-employee-3', 'bob.johnson@tribecore.com', '${hashedPassword}', 'Bob', 'Johnson', 'EMPLOYEE', NULL, true)
+        ('${userEmployee1}', 'john.doe@tribecore.com', '${hashedPassword}', 'John', 'Doe', ARRAY['EMPLOYEE']::text[], true),
+        ('${userEmployee2}', 'jane.smith@tribecore.com', '${hashedPassword}', 'Jane', 'Smith', ARRAY['EMPLOYEE']::text[], true),
+        ('${userEmployee3}', 'bob.johnson@tribecore.com', '${hashedPassword}', 'Bob', 'Johnson', ARRAY['EMPLOYEE']::text[], true)
       ON CONFLICT (email) DO NOTHING
     `);
 
     // Manager
     await queryRunner.query(`
-      INSERT INTO "user" (id, email, password, "firstName", "lastName", role, "departmentId", "isActive")
+      INSERT INTO "users" (id, email, password, "firstName", "lastName", roles, "isActive")
       VALUES 
-        ('user-manager-1', 'manager@tribecore.com', '${hashedPassword}', 'Sarah', 'Manager', 'MANAGER', NULL, true)
+        ('${userManager1}', 'manager@tribecore.com', '${hashedPassword}', 'Sarah', 'Manager', ARRAY['MANAGER']::text[], true)
       ON CONFLICT (email) DO NOTHING
     `);
 
     // Admin/Finance
     await queryRunner.query(`
-      INSERT INTO "user" (id, email, password, "firstName", "lastName", role, "departmentId", "isActive")
+      INSERT INTO "users" (id, email, password, "firstName", "lastName", roles, "isActive")
       VALUES 
-        ('user-admin-1', 'admin@tribecore.com', '${hashedPassword}', 'Admin', 'User', 'ADMIN', NULL, true),
-        ('user-finance-1', 'finance@tribecore.com', '${hashedPassword}', 'Finance', 'Manager', 'FINANCE', NULL, true)
+        ('${userAdmin1}', 'admin@tribecore.com', '${hashedPassword}', 'Admin', 'User', ARRAY['ADMIN']::text[], true),
+        ('${userFinance1}', 'finance@tribecore.com', '${hashedPassword}', 'Finance', 'Manager', ARRAY['FINANCE']::text[], true)
       ON CONFLICT (email) DO NOTHING
     `);
 
@@ -141,60 +150,67 @@ export async function seedExpenseData(dataSource: DataSource) {
     // 5. Create Sample Expense Claims
     console.log('💳 Creating sample expense claims...');
     
+    // Generate claim IDs
+    const claim1 = uuidv4();
+    const claim2 = uuidv4();
+    const claim3 = uuidv4();
+    const claim4 = uuidv4();
+    const claim5 = uuidv4();
+    
     const claims = [
       // Recent approved claim
       {
-        id: 'claim-001',
+        id: claim1,
         title: 'Business Trip to London',
         description: 'Client meeting and conference attendance',
         totalAmount: 450.00,
         currency: 'GBP',
         status: 'APPROVED',
-        employeeId: 'user-employee-1',
+        employeeId: userEmployee1,
         submittedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
       },
       // Pending approval
       {
-        id: 'claim-002',
+        id: claim2,
         title: 'Office Equipment Purchase',
         description: 'New laptop and accessories',
         totalAmount: 1200.00,
         currency: 'GBP',
         status: 'PENDING_APPROVAL',
-        employeeId: 'user-employee-2',
+        employeeId: userEmployee2,
         submittedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
       },
       // Draft
       {
-        id: 'claim-003',
+        id: claim3,
         title: 'Monthly Phone Bill',
         description: 'Mobile phone expenses',
         totalAmount: 45.00,
         currency: 'GBP',
         status: 'DRAFT',
-        employeeId: 'user-employee-3',
+        employeeId: userEmployee3,
         submittedAt: null,
       },
       // Paid claim
       {
-        id: 'claim-004',
+        id: claim4,
         title: 'Training Course - AWS Certification',
         description: 'AWS Solutions Architect certification exam and training',
         totalAmount: 800.00,
         currency: 'GBP',
         status: 'PAID',
-        employeeId: 'user-employee-1',
+        employeeId: userEmployee1,
         submittedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
       },
       // Recent submission
       {
-        id: 'claim-005',
+        id: claim5,
         title: 'Client Lunch - Q4 Review',
         description: 'Business lunch with key client',
         totalAmount: 125.50,
         currency: 'GBP',
         status: 'SUBMITTED',
-        employeeId: 'user-employee-2',
+        employeeId: userEmployee2,
         submittedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
       },
     ];
@@ -214,22 +230,22 @@ export async function seedExpenseData(dataSource: DataSource) {
     console.log('📝 Creating expense items...');
     
     const items = [
-      // Claim 001 items
-      { id: 'item-001-1', claimId: 'claim-001', categoryId: 'cat-travel', amount: 150.00, description: 'Train ticket to London', vendor: 'Virgin Trains', expenseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) },
-      { id: 'item-001-2', claimId: 'claim-001', categoryId: 'cat-accommodation', amount: 180.00, description: 'Hotel stay (1 night)', vendor: 'Premier Inn', expenseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) },
-      { id: 'item-001-3', claimId: 'claim-001', categoryId: 'cat-meals', amount: 120.00, description: 'Client dinner', vendor: 'The Ivy Restaurant', expenseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) },
+      // Claim 1 items (use category IDs from earlier seeding)
+      { id: uuidv4(), claimId: claim1, categoryId: 'cat-travel', amount: 150.00, description: 'Train ticket to London', vendor: 'Virgin Trains', expenseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) },
+      { id: uuidv4(), claimId: claim1, categoryId: 'cat-accommodation', amount: 180.00, description: 'Hotel stay (1 night)', vendor: 'Premier Inn', expenseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) },
+      { id: uuidv4(), claimId: claim1, categoryId: 'cat-meals', amount: 120.00, description: 'Client dinner', vendor: 'The Ivy Restaurant', expenseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) },
       
-      // Claim 002 items
-      { id: 'item-002-1', claimId: 'claim-002', categoryId: 'cat-office', amount: 1200.00, description: 'MacBook Pro 14"', vendor: 'Apple Store', expenseDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) },
+      // Claim 2 items
+      { id: uuidv4(), claimId: claim2, categoryId: 'cat-office', amount: 1200.00, description: 'MacBook Pro 14"', vendor: 'Apple Store', expenseDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) },
       
-      // Claim 003 items
-      { id: 'item-003-1', claimId: 'claim-003', categoryId: 'cat-telecom', amount: 45.00, description: 'Monthly mobile bill', vendor: 'Vodafone', expenseDate: new Date() },
+      // Claim 3 items
+      { id: uuidv4(), claimId: claim3, categoryId: 'cat-telecom', amount: 45.00, description: 'Monthly mobile bill', vendor: 'Vodafone', expenseDate: new Date() },
       
-      // Claim 004 items
-      { id: 'item-004-1', claimId: 'claim-004', categoryId: 'cat-training', amount: 800.00, description: 'AWS Solutions Architect certification', vendor: 'AWS Training', expenseDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
+      // Claim 4 items
+      { id: uuidv4(), claimId: claim4, categoryId: 'cat-training', amount: 800.00, description: 'AWS Solutions Architect certification', vendor: 'AWS Training', expenseDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
       
-      // Claim 005 items
-      { id: 'item-005-1', claimId: 'claim-005', categoryId: 'cat-meals', amount: 125.50, description: 'Business lunch', vendor: 'Gaucho Grill', expenseDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) },
+      // Claim 5 items
+      { id: uuidv4(), claimId: claim5, categoryId: 'cat-meals', amount: 125.50, description: 'Business lunch', vendor: 'Gaucho Grill', expenseDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) },
     ];
 
     for (const item of items) {
@@ -248,10 +264,10 @@ export async function seedExpenseData(dataSource: DataSource) {
     await queryRunner.query(`
       INSERT INTO approval (id, "claimId", "approverId", "approverLevel", status, "approvedAt")
       VALUES 
-        ('approval-001-1', 'claim-001', 'user-manager-1', 1, 'APPROVED', NOW() - INTERVAL '4 days'),
-        ('approval-002-1', 'claim-002', 'user-manager-1', 1, 'PENDING', NULL),
-        ('approval-004-1', 'claim-004', 'user-manager-1', 1, 'APPROVED', NOW() - INTERVAL '29 days'),
-        ('approval-005-1', 'claim-005', 'user-manager-1', 1, 'PENDING', NULL)
+        ('${uuidv4()}', '${claim1}', '${userManager1}', 1, 'APPROVED', NOW() - INTERVAL '4 days'),
+        ('${uuidv4()}', '${claim2}', '${userManager1}', 1, 'PENDING', NULL),
+        ('${uuidv4()}', '${claim4}', '${userManager1}', 1, 'APPROVED', NOW() - INTERVAL '29 days'),
+        ('${uuidv4()}', '${claim5}', '${userManager1}', 1, 'PENDING', NULL)
       ON CONFLICT (id) DO NOTHING
     `);
 
@@ -263,8 +279,8 @@ export async function seedExpenseData(dataSource: DataSource) {
     await queryRunner.query(`
       INSERT INTO reimbursement (id, "claimId", amount, currency, method, "processedBy", "processedAt", status)
       VALUES 
-        ('reimb-001', 'claim-001', 450.00, 'GBP', 'BANK_TRANSFER', 'user-finance-1', NOW() - INTERVAL '2 days', 'PROCESSED'),
-        ('reimb-004', 'claim-004', 800.00, 'GBP', 'BANK_TRANSFER', 'user-finance-1', NOW() - INTERVAL '25 days', 'PROCESSED')
+        ('${uuidv4()}', '${claim1}', 450.00, 'GBP', 'BANK_TRANSFER', '${userFinance1}', NOW() - INTERVAL '2 days', 'PROCESSED'),
+        ('${uuidv4()}', '${claim4}', 800.00, 'GBP', 'BANK_TRANSFER', '${userFinance1}', NOW() - INTERVAL '25 days', 'PROCESSED')
       ON CONFLICT (id) DO NOTHING
     `);
 

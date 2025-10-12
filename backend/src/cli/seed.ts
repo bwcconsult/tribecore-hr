@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
-import { seedExpenseData } from '../database/seeders/expense-data.seeder';
+import { simpleSeed } from '../database/seeders/simple-seed';
 
 // Load environment variables
 config();
@@ -13,7 +13,7 @@ const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD || 'postgres',
   database: process.env.DATABASE_NAME || 'tribecore',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: false,
+  synchronize: false, // Don't auto-sync to avoid conflicts
 });
 
 async function runSeeder() {
@@ -23,13 +23,18 @@ async function runSeeder() {
     await AppDataSource.initialize();
     console.log('✅ Database connected');
 
-    console.log('\n🌱 Running expense data seeder...\n');
-    await seedExpenseData(AppDataSource);
+    console.log('\n🌱 Running simple seeder...\n');
+    await simpleSeed(AppDataSource);
 
     console.log('\n✅ All seeders completed successfully!');
+    await AppDataSource.destroy();
     process.exit(0);
   } catch (error) {
     console.error('\n❌ Seeding failed:', error);
+    console.error('Error details:', error.message);
+    if (AppDataSource.isInitialized) {
+      await AppDataSource.destroy();
+    }
     process.exit(1);
   }
 }

@@ -64,6 +64,47 @@ export class ExpensesApiController {
   }
 
   // Claims
+  @Get('expenses/my-expenses')
+  @ApiOperation({ summary: 'Get my expenses with filters' })
+  async getMyExpenses(
+    @Request() req,
+    @Query('status') status?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('q') q?: string,
+  ) {
+    const query = this.claimRepo.createQueryBuilder('claim')
+      .leftJoinAndSelect('claim.createdBy', 'createdBy')
+      .leftJoinAndSelect('claim.items', 'items')
+      .leftJoinAndSelect('claim.approvals', 'approvals')
+      .leftJoinAndSelect('claim.project', 'project')
+      .where('claim.createdById = :userId', { userId: req.user.id });
+
+    if (status) {
+      query.andWhere('claim.status = :status', { status: status.toUpperCase() });
+    }
+
+    if (q) {
+      query.andWhere(
+        '(claim.title ILIKE :q OR claim.description ILIKE :q)',
+        { q: `%${q}%` }
+      );
+    }
+
+    const skip = (page - 1) * limit;
+    query.skip(skip).take(limit).orderBy('claim.createdAt', 'DESC');
+
+    const [data, total] = await query.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
   @Get('expenses')
   @ApiOperation({ summary: 'Get all expenses with filters and pagination' })
   async getExpenses(
@@ -389,35 +430,41 @@ export class ExpensesApiController {
   // Stats / Dashboard
   @Get('expenses/stats')
   @ApiOperation({ summary: 'Get expense statistics' })
-  async getStats() {
-    const [total, pending, approved, paid] = await Promise.all([
-      this.claimRepo.count(),
-      this.claimRepo.count({ where: { status: ClaimStatus.SUBMITTED } }),
-      this.claimRepo.count({ where: { status: ClaimStatus.APPROVED } }),
-      this.claimRepo.count({ where: { status: ClaimStatus.PAID } }),
+  async getStats(@Request() req) {
+    const userId = req.user.id;
+
+    const [totalClaims, draft, submitted, approved, rejected, paid] = await Promise.all([
+      this.claimRepo.count({ where: { createdById: userId } }),
+      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.DRAFT } }),
+      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.SUBMITTED } }),
+      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.APPROVED } }),
+      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.REJECTED } }),
+      this.claimRepo.count({ where: { createdById: userId, status: ClaimStatus.PAID } }),
     ]);
 
     const approvedClaims = await this.claimRepo.find({
-      where: { status: ClaimStatus.APPROVED },
+      where: { createdById: userId, status: ClaimStatus.APPROVED },
     });
 
     const paidClaims = await this.claimRepo.find({
-      where: { status: ClaimStatus.PAID },
+      where: { createdById: userId, status: ClaimStatus.PAID },
     });
 
     const approvedAmount = approvedClaims.reduce((sum, c) => sum + Number(c.totalAmount), 0);
     const paidAmount = paidClaims.reduce((sum, c) => sum + Number(c.totalAmount), 0);
 
     return {
-      total,
-      pending,
-      approved: {
-        count: approved,
-        amount: approvedAmount,
+      totalClaims,
+      byStatus: {
+        draft,
+        submitted,
+        approved,
+        rejected,
+        paid,
       },
-      paid: {
-        count: paid,
-        amount: paidAmount,
+      amounts: {
+        approved: approvedAmount,
+        paid: paidAmount,
       },
     };
   }

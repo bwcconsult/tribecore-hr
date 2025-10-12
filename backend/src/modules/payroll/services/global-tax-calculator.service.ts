@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UkTaxService } from './uk-tax.service';
-import { UsaTaxService } from './usa-tax.service';
+import { UKTaxService } from './uk-tax.service';
+import { USATaxService } from './usa-tax.service';
 import { NigeriaTaxService } from './nigeria-tax.service';
 
 export interface TaxCalculationResult {
@@ -45,8 +45,8 @@ export interface EmployeePayrollInput {
 @Injectable()
 export class GlobalTaxCalculatorService {
   constructor(
-    private ukTaxService: UkTaxService,
-    private usaTaxService: UsaTaxService,
+    private ukTaxService: UKTaxService,
+    private usaTaxService: USATaxService,
     private nigeriaTaxService: NigeriaTaxService,
   ) {}
 
@@ -56,15 +56,15 @@ export class GlobalTaxCalculatorService {
     switch (country) {
       case 'UK':
       case 'GB':
-        return this.ukTaxService.calculate(input);
+        return this.calculateUKTax(input);
       
       case 'US':
       case 'USA':
-        return this.usaTaxService.calculate(input);
+        return this.calculateUSATax(input);
       
       case 'NG':
       case 'NIGERIA':
-        return this.nigeriaTaxService.calculate(input);
+        return this.calculateNigeriaTax(input);
       
       case 'ZA':
       case 'SOUTH_AFRICA':
@@ -73,6 +73,72 @@ export class GlobalTaxCalculatorService {
       default:
         return this.calculateGenericTax(input);
     }
+  }
+
+  private async calculateUKTax(input: EmployeePayrollInput): Promise<TaxCalculationResult> {
+    const { grossPay, payFrequency } = input;
+    const taxCalc = this.ukTaxService.calculateTax(grossPay, payFrequency as any);
+    
+    return {
+      grossPay,
+      taxableIncome: taxCalc.taxableIncome,
+      incomeTax: taxCalc.incomeTax,
+      socialSecurity: taxCalc.nationalInsurance,
+      pensionEmployee: taxCalc.pensionEmployee,
+      pensionEmployer: taxCalc.pensionEmployer,
+      healthInsurance: 0,
+      otherDeductions: 0,
+      totalEmployeeDeductions: taxCalc.totalDeductions,
+      totalEmployerContributions: taxCalc.pensionEmployer + (taxCalc.nationalInsurance * 1.138),
+      netPay: taxCalc.netPay,
+      breakdown: taxCalc.breakdown,
+      country: 'UK',
+      currency: 'GBP',
+    };
+  }
+
+  private async calculateUSATax(input: EmployeePayrollInput): Promise<TaxCalculationResult> {
+    const { grossPay, payFrequency } = input;
+    const taxCalc = this.usaTaxService.calculateTax(grossPay, payFrequency as any);
+    
+    return {
+      grossPay,
+      taxableIncome: taxCalc.taxableIncome,
+      incomeTax: taxCalc.incomeTax,
+      socialSecurity: taxCalc.socialSecurity,
+      pensionEmployee: taxCalc.pensionEmployee,
+      pensionEmployer: taxCalc.pensionEmployer,
+      healthInsurance: 0,
+      otherDeductions: 0,
+      totalEmployeeDeductions: taxCalc.totalDeductions,
+      totalEmployerContributions: taxCalc.socialSecurity + taxCalc.pensionEmployer,
+      netPay: taxCalc.netPay,
+      breakdown: taxCalc.breakdown,
+      country: 'USA',
+      currency: 'USD',
+    };
+  }
+
+  private async calculateNigeriaTax(input: EmployeePayrollInput): Promise<TaxCalculationResult> {
+    const { grossPay, payFrequency } = input;
+    const taxCalc = this.nigeriaTaxService.calculateTax(grossPay, payFrequency as any);
+    
+    return {
+      grossPay,
+      taxableIncome: taxCalc.taxableIncome,
+      incomeTax: taxCalc.incomeTax,
+      socialSecurity: taxCalc.pension,
+      pensionEmployee: taxCalc.pensionEmployee,
+      pensionEmployer: taxCalc.pensionEmployer,
+      healthInsurance: 0,
+      otherDeductions: 0,
+      totalEmployeeDeductions: taxCalc.totalDeductions,
+      totalEmployerContributions: taxCalc.pensionEmployer + (grossPay * 0.035), // NHF + NSITF + ITF
+      netPay: taxCalc.netPay,
+      breakdown: taxCalc.breakdown,
+      country: 'Nigeria',
+      currency: 'NGN',
+    };
   }
 
   private async calculateSouthAfricaTax(input: EmployeePayrollInput): Promise<TaxCalculationResult> {

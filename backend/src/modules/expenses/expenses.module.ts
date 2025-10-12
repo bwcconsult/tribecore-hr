@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { UsersModule } from '../users/users.module';
+import { AuthModule } from '../auth/auth.module';
 
 // Entities
 import { ExpenseClaim } from './entities/expense-claim.entity';
@@ -70,6 +71,7 @@ import { CorpCardController } from './controllers/corp-card.controller';
     ]),
     NotificationsModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [
     ExpenseClaimController,

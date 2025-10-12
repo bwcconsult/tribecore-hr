@@ -1,6 +1,6 @@
-import { IsString, IsEnum, IsDateString, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsEnum, IsDateString, IsOptional, IsArray, IsNumber, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { PerformanceReviewType, PerformanceRating } from '../../../common/enums';
+import { PerformanceReviewType } from '../../../common/enums';
 
 export class CreatePerformanceReviewDto {
   @ApiProperty()
@@ -27,9 +27,11 @@ export class CreatePerformanceReviewDto {
   @IsDateString()
   reviewDate: Date;
 
-  @ApiProperty({ enum: PerformanceRating })
-  @IsEnum(PerformanceRating)
-  overallRating: PerformanceRating;
+  @ApiProperty({ minimum: 0, maximum: 100, description: 'Performance rating 0-100' })
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  overallRating: number;
 
   @ApiPropertyOptional()
   @IsOptional()

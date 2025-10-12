@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { PerformanceReviewType, PerformanceRating } from '../../../common/enums';
+import { PerformanceReviewType } from '../../../common/enums';
 import { Employee } from '../../employees/entities/employee.entity';
 
 @Entity('performance_reviews')
@@ -34,16 +34,13 @@ export class PerformanceReview extends BaseEntity {
   @Column({ type: 'date' })
   reviewDate: Date;
 
-  @Column({
-    type: 'enum',
-    enum: PerformanceRating,
-  })
-  overallRating: PerformanceRating;
+  @Column({ type: 'int' })
+  overallRating: number; // 0-100 scale
 
   @Column({ type: 'jsonb', nullable: true })
   competencies?: Array<{
     name: string;
-    rating: PerformanceRating;
+    rating: number; // 0-100 scale
     comments?: string;
   }>;
 

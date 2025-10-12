@@ -45,51 +45,51 @@ export class User extends BaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, any>;
 
-  // Personal Details
-  @Column({ nullable: true })
+  // Personal Details (select: false to prevent querying non-existent columns)
+  @Column({ nullable: true, select: false })
   preferredName?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   pronouns?: string;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'date', nullable: true, select: false })
   dateOfBirth?: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   gender?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   nationality?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   maritalStatus?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   personalEmail?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   workPhone?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   personalPhone?: string;
 
-  // Address
-  @Column({ nullable: true })
+  // Address (select: false to prevent querying non-existent columns)
+  @Column({ nullable: true, select: false })
   addressLine1?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   addressLine2?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   city?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   state?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   postcode?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   country?: string;
 
   @BeforeInsert()

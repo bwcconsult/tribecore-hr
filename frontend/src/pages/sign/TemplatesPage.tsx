@@ -34,16 +34,17 @@ export default function TemplatesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="border-b border-gray-200 px-8 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Templates</h1>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search templates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-96 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -55,10 +56,6 @@ export default function TemplatesPage() {
             Create template
           </button>
         </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-8">
         <div className="mb-6">
           <div className="flex items-center gap-2 text-sm text-blue-600">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">

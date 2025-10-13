@@ -19,7 +19,7 @@ export default function SignHomePage() {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-600">
-              <span className="font-medium">BWC Consult LTD</span>
+              <span className="font-medium">TribeCore</span>
             </div>
             <div className="text-sm">
               <span className="text-orange-600">Enterprise Trial</span>

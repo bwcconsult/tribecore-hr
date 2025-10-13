@@ -84,16 +84,17 @@ export default function SignFormsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="border-b border-gray-200 px-8 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">SignForms</h1>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search sign forms..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-96 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -108,12 +109,11 @@ export default function SignFormsPage() {
             Create SignForm
           </button>
         </div>
-      </div>
 
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="w-64 border-r border-gray-200 min-h-screen bg-gray-50">
-          <div className="p-4">
+        <div className="flex gap-6">
+          {/* Sidebar */}
+          <div className="w-64 flex-shrink-0">
+          <div className="bg-gray-50 rounded-lg p-4">
             <div className="space-y-1">
               <div className="font-medium text-gray-900 mb-2 text-sm">SignForms</div>
               {filters.map((filter) => (
@@ -134,7 +134,7 @@ export default function SignFormsPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8">
+        <div className="flex-1">
           <div className="mb-6">
             <div className="flex items-center gap-2 text-sm text-blue-600">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -249,6 +249,7 @@ export default function SignFormsPage() {
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Create SignForm Modal */}

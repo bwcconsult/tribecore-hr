@@ -47,6 +47,17 @@ import WorkflowManagementPage from './pages/expenses/WorkflowManagementPage';
 import TripsPage from './pages/expenses/TripsPage';
 import MileagePage from './pages/expenses/MileagePage';
 import ExpenseSettingsPage from './pages/expenses/ExpenseSettingsPage';
+import ExpensesAdminLayout from './components/expenses/ExpensesAdminLayout';
+import ExpensesAdminDashboard from './pages/expenses/admin/ExpensesAdminDashboard';
+import ExpensesAdminTrips from './pages/expenses/admin/ExpensesAdminTrips';
+import ExpensesAdminReports from './pages/expenses/admin/ExpensesAdminReports';
+import ExpensesAdminAdvances from './pages/expenses/admin/ExpensesAdminAdvances';
+import ExpensesAdminBatchPayments from './pages/expenses/admin/ExpensesAdminBatchPayments';
+import ExpensesAdminCorporateCards from './pages/expenses/admin/ExpensesAdminCorporateCards';
+import ExpensesAdminBudgets from './pages/expenses/admin/ExpensesAdminBudgets';
+import ExpensesAdminAnalytics from './pages/expenses/admin/ExpensesAdminAnalytics';
+import ExpensesAdminSettings from './pages/expenses/admin/ExpensesAdminSettings';
+import ExpensesAdminGettingStarted from './pages/expenses/admin/ExpensesAdminGettingStarted';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
@@ -130,6 +141,37 @@ function App() {
             <Route path="/expenses/mileage" element={<MileagePage />} />
             <Route path="/expenses/settings" element={<ExpenseSettingsPage />} />
             <Route path="/expenses/:id" element={<ExpenseDetailsPage />} />
+          </Route>
+
+          {/* Expenses Admin Routes */}
+          <Route
+            path="/expenses/admin"
+            element={
+              <ProtectedRoute>
+                <ExpensesAdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<ExpensesAdminDashboard />} />
+            <Route path="getting-started" element={<ExpensesAdminGettingStarted />} />
+            <Route path="trips" element={<ExpensesAdminTrips />} />
+            <Route path="reports" element={<ExpensesAdminReports />} />
+            <Route path="advances" element={<ExpensesAdminAdvances />} />
+            <Route path="batch-payments" element={<ExpensesAdminBatchPayments />} />
+            <Route path="corporate-cards" element={<ExpensesAdminCorporateCards />} />
+            <Route path="budgets" element={<ExpensesAdminBudgets />} />
+            <Route path="analytics" element={<ExpensesAdminAnalytics />} />
+            <Route path="settings" element={<ExpensesAdminSettings />} />
+          </Route>
+
+          {/* Continue with other routes */}
+          <Route
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />

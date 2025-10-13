@@ -26,6 +26,8 @@ import { Trip } from './entities/trip.entity';
 import { Mileage } from './entities/mileage.entity';
 import { ExpenseDelegate } from './entities/delegate.entity';
 import { ExpenseOutOfOffice } from './entities/out-of-office.entity';
+import { Advance } from './entities/advance.entity';
+import { BatchPayment } from './entities/batch-payment.entity';
 
 // Services
 import { ExpenseClaimService } from './services/expense-claim.service';
@@ -42,6 +44,9 @@ import { ForecastService } from './services/forecast.service';
 import { TripService } from './services/trip.service';
 import { MileageService } from './services/mileage.service';
 import { DelegateService } from './services/delegate.service';
+import { AdvanceService } from './services/advance.service';
+import { BatchPaymentService } from './services/batch-payment.service';
+import { AdminDashboardService } from './services/admin-dashboard.service';
 
 // Controllers
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
@@ -59,6 +64,9 @@ import { CorpCardController } from './controllers/corp-card.controller';
 import { TripController } from './controllers/trip.controller';
 import { MileageController } from './controllers/mileage.controller';
 import { DelegateController } from './controllers/delegate.controller';
+import { AdvanceController } from './controllers/advance.controller';
+import { BatchPaymentController } from './controllers/batch-payment.controller';
+import { AdminDashboardController } from './controllers/admin-dashboard.controller';
 
 @Module({
   imports: [
@@ -84,6 +92,8 @@ import { DelegateController } from './controllers/delegate.controller';
       Mileage,
       ExpenseDelegate,
       ExpenseOutOfOffice,
+      Advance,
+      BatchPayment,
     ]),
     NotificationsModule,
     UsersModule,
@@ -105,6 +115,9 @@ import { DelegateController } from './controllers/delegate.controller';
     TripController,
     MileageController,
     DelegateController,
+    AdvanceController,
+    BatchPaymentController,
+    AdminDashboardController,
   ],
   providers: [
     ExpenseClaimService,
@@ -121,6 +134,9 @@ import { DelegateController } from './controllers/delegate.controller';
     TripService,
     MileageService,
     DelegateService,
+    AdvanceService,
+    BatchPaymentService,
+    AdminDashboardService,
   ],
   exports: [
     ExpenseClaimService,

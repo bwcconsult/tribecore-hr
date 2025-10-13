@@ -27,6 +27,7 @@ import {
   Award,
   UserX,
   ClockIcon,
+  Shield,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -53,6 +54,7 @@ const navigation = [
   { name: 'Performance', href: '/performance', icon: TrendingUp },
   { name: 'Recognition', href: '/recognition', icon: Award },
   { name: 'Learning', href: '/learning', icon: GraduationCap },
+  { name: 'Health & Safety', href: '/health-safety', icon: Shield },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Reports', href: '/reports', icon: FileText },
   { name: 'Settings', href: '/settings', icon: Settings },

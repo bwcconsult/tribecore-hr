@@ -60,6 +60,12 @@ import OvertimePage from './pages/overtime/OvertimePage';
 import ClockInDashboard from './pages/attendance/ClockInDashboard';
 import HolidayPlannerPage from './pages/leave/HolidayPlannerPage';
 import SicknessDashboard from './pages/absence/SicknessDashboard';
+import HealthSafetyDashboard from './pages/health-safety/HealthSafetyDashboard';
+import RiskAssessmentsPage from './pages/health-safety/RiskAssessmentsPage';
+import IncidentReportingPage from './pages/health-safety/IncidentReportingPage';
+import HazardousSubstancesPage from './pages/health-safety/HazardousSubstancesPage';
+import MethodStatementsPage from './pages/health-safety/MethodStatementsPage';
+import ResponsibilitiesPage from './pages/health-safety/ResponsibilitiesPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -130,6 +136,12 @@ function App() {
             <Route path="/overtime" element={<OvertimePage />} />
             <Route path="/attendance/clock-in" element={<ClockInDashboard />} />
             <Route path="/leave/holiday-planner" element={<HolidayPlannerPage />} />
+            <Route path="/health-safety" element={<HealthSafetyDashboard />} />
+            <Route path="/health-safety/risk-assessments" element={<RiskAssessmentsPage />} />
+            <Route path="/health-safety/incidents" element={<IncidentReportingPage />} />
+            <Route path="/health-safety/hazardous-substances" element={<HazardousSubstancesPage />} />
+            <Route path="/health-safety/method-statements" element={<MethodStatementsPage />} />
+            <Route path="/health-safety/responsibilities" element={<ResponsibilitiesPage />} />
           </Route>
 
           {/* Fallback */}

@@ -32,6 +32,7 @@ import { ShiftsModule } from './modules/shifts/shifts.module';
 import { RecognitionModule } from './modules/recognition/recognition.module';
 import { OffboardingModule } from './modules/offboarding/offboarding.module';
 import { OvertimeModule } from './modules/overtime/overtime.module';
+import { HealthSafetyModule } from './modules/health-safety/health-safety.module';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { OvertimeModule } from './modules/overtime/overtime.module';
     RecognitionModule,
     OffboardingModule,
     OvertimeModule,
+    HealthSafetyModule,
   ],
 })
 export class AppModule {}

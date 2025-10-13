@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Edit2, Trash2, Check, DollarSign, TrendingUp, Users, FileText, Download } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Edit2, Trash2, Check, DollarSign, TrendingUp, Users, FileText, Download, Receipt, Settings, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { payrollService, Payroll } from '../../services/payrollService';
@@ -9,6 +10,7 @@ import { toast } from 'react-hot-toast';
 import { formatCurrency, formatDate } from '../../lib/utils';
 
 export default function PayrollPage() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -125,6 +127,54 @@ export default function PayrollPage() {
           <Plus className="h-4 w-4 mr-2" />
           Run Payroll
         </Button>
+      </div>
+
+      {/* Payslip System Quick Access */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/payroll/payslips')}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Receipt className="w-5 h-5 text-blue-600" />
+                  <h3 className="font-semibold text-gray-900">My Payslips</h3>
+                </div>
+                <p className="text-sm text-gray-600">View and download your payslips</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/payroll/admin/payslips')}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText className="w-5 h-5 text-purple-600" />
+                  <h3 className="font-semibold text-gray-900">Manage Payslips</h3>
+                </div>
+                <p className="text-sm text-gray-600">Admin: Generate & publish payslips</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/payroll/codes-catalog')}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Settings className="w-5 h-5 text-green-600" />
+                  <h3 className="font-semibold text-gray-900">Codes Catalog</h3>
+                </div>
+                <p className="text-sm text-gray-600">Manage earning & deduction codes</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Stats Cards */}

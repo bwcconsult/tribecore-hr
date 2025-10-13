@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Plus, BookOpen, Award, TrendingUp, Edit2, Trash2, Users, Clock, GraduationCap } from 'lucide-react';
+import { Plus, BookOpen, Award, TrendingUp, Edit2, Trash2, Users, Clock, GraduationCap, Shield, BarChart3, ArrowRight } from 'lucide-react';
 import { learningService, Course } from '../../services/learningService';
 import CourseFormModal from '../../components/learning/CourseFormModal';
 import { toast } from 'react-hot-toast';
 import { formatDate } from '../../lib/utils';
 
 export default function LearningPage() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -91,6 +93,45 @@ export default function LearningPage() {
           <Plus className="h-4 w-4 mr-2" />
           Create Course
         </Button>
+      </div>
+
+      {/* Quick Access Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div 
+          onClick={() => navigate('/learning/my-learning')}
+          className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <GraduationCap className="w-12 h-12" />
+            <ArrowRight className="w-6 h-6" />
+          </div>
+          <h3 className="text-xl font-bold mb-2">My Learning</h3>
+          <p className="text-blue-100">Track your courses, progress, and achievements</p>
+        </div>
+
+        <div 
+          onClick={() => navigate('/learning/mandatory-training')}
+          className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <Shield className="w-12 h-12" />
+            <ArrowRight className="w-6 h-6" />
+          </div>
+          <h3 className="text-xl font-bold mb-2">UK Mandatory Training</h3>
+          <p className="text-red-100">View all 11 statutory and mandatory courses</p>
+        </div>
+
+        <div 
+          onClick={() => navigate('/learning/compliance')}
+          className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <BarChart3 className="w-12 h-12" />
+            <ArrowRight className="w-6 h-6" />
+          </div>
+          <h3 className="text-xl font-bold mb-2">Compliance Dashboard</h3>
+          <p className="text-green-100">Monitor organization-wide training compliance</p>
+        </div>
       </div>
 
       {/* Stats Cards */}

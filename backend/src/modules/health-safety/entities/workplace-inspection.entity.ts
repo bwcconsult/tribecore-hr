@@ -106,7 +106,7 @@ export class WorkplaceInspection {
     location: string;
     severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     immediateActionTaken: string;
-    furtherAction Required: boolean;
+    furtherActionRequired: boolean;
   }>;
 
   @Column({ type: 'jsonb', nullable: true })
@@ -196,7 +196,7 @@ export class WorkplaceInspection {
 
   @Column({ type: 'jsonb', nullable: true })
   metadata: {
-    template Id?: string;
+    templateId?: string;
     previousInspectionId?: string;
     comparisonNotes?: string;
     improvementsSinceLastInspection?: string[];

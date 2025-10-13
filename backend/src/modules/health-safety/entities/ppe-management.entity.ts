@@ -59,7 +59,7 @@ export class PPEManagement {
   ceMarking: string; // CE marking number for UK/EU compliance
 
   @Column({ nullable: true })
-  ukca Marking: string; // UK Conformity Assessed marking
+  ukcaMarking: string; // UK Conformity Assessed marking
 
   @Column({ type: 'simple-array', nullable: true })
   standards: string[]; // e.g., EN 397, EN 166

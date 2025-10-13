@@ -82,7 +82,7 @@ export class ManualHandlingAssessment {
     reaching: boolean;
     largeVerticalMovement: boolean;
     longCarryingDistances: boolean;
-    strenuous Pushing: boolean;
+    strenuousPushing: boolean;
     unpredictableMovement: boolean;
     repetitiveHandling: boolean;
     insufficientRest: boolean;

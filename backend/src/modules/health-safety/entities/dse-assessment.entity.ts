@@ -64,7 +64,7 @@ export class DSEAssessment {
   dailyHoursAtDSE: number;
 
   @Column({ default: false })
-  isHabitual User: boolean; // >1 hour continuously or significant DSE use
+  isHabitualUser: boolean; // >1 hour continuously or significant DSE use
 
   @Column({ default: false })
   hasVisionCorrectionPresscribed: boolean;

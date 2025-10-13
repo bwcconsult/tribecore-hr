@@ -18,13 +18,8 @@ export default function SignHomePage() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-600">
-              <span className="font-medium">TribeCore</span>
-            </div>
-            <div className="text-sm">
-              <span className="text-orange-600">Enterprise Trial</span>
-              <br />
-              <span className="text-xs text-gray-500">MODIFY | UPGRADE</span>
+            <div className="text-lg text-gray-900">
+              <span className="font-semibold">TribeCore HR E-Sign</span>
             </div>
           </div>
         </div>

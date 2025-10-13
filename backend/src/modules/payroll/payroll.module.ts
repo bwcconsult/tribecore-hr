@@ -27,6 +27,28 @@ import { ContractorPaymentController } from './controllers/contractor-payment.co
 import { AdvancedPayrollController } from './controllers/advanced-payroll.controller';
 import { Employee } from '../employees/entities/employee.entity';
 
+// Payslip System imports
+import { PayslipCalculationEngineService } from './services/payslip-calculation-engine.service';
+import { PayslipController } from './controllers/payslip.controller';
+import {
+  Payslip,
+  PayslipEarning,
+  PayslipDeduction,
+  PayslipTax,
+  PayslipGarnishment,
+  PayslipEmployerContribution,
+  PayslipAllowance,
+  PayslipReimbursement,
+} from './entities/payslip.entity';
+import {
+  EarningCode,
+  DeductionCode,
+  TaxCode,
+  BenefitPlan,
+  PayslipTemplate,
+  JurisdictionRule,
+} from './entities/payslip-codes.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -36,6 +58,21 @@ import { Employee } from '../employees/entities/employee.entity';
       PayrollRun,
       TaxFiling,
       Employee,
+      // Payslip System entities
+      Payslip,
+      PayslipEarning,
+      PayslipDeduction,
+      PayslipTax,
+      PayslipGarnishment,
+      PayslipEmployerContribution,
+      PayslipAllowance,
+      PayslipReimbursement,
+      EarningCode,
+      DeductionCode,
+      TaxCode,
+      BenefitPlan,
+      PayslipTemplate,
+      JurisdictionRule,
     ]),
   ],
   controllers: [
@@ -43,6 +80,7 @@ import { Employee } from '../employees/entities/employee.entity';
     PayrollRunController,
     ContractorPaymentController,
     AdvancedPayrollController,
+    PayslipController, // NEW
   ],
   providers: [
     PayrollService,
@@ -61,12 +99,14 @@ import { Employee } from '../employees/entities/employee.entity';
     ThirteenthMonthService,
     BonusCommissionService,
     AuditTrailService,
+    PayslipCalculationEngineService, // NEW
   ],
   exports: [
     PayrollService,
     GlobalTaxCalculatorService,
     FxConversionService,
     PayrollCalculationService,
+    PayslipCalculationEngineService, // NEW
   ],
 })
 export class PayrollModule {}

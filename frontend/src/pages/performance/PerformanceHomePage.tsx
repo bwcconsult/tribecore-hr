@@ -88,12 +88,14 @@ export default function PerformanceHomePage() {
         : 'No recognition yet',
     },
     {
-      title: 'Reviews',
-      description: 'Performance reviews and cycles',
-      icon: FileText,
+      title: 'Actions',
+      description: 'Tasks and commitments',
+      icon: CheckCircle2,
       color: 'from-indigo-500 to-indigo-600',
-      route: '/performance/reviews',
-      stats: 'View all reviews',
+      route: '/performance/actions',
+      stats: dashboard?.actions
+        ? `${dashboard.actions.total} actions, ${dashboard.actions.overdue} overdue`
+        : 'No actions',
     },
   ];
 
@@ -117,13 +119,13 @@ export default function PerformanceHomePage() {
           <p className="text-gray-600 mt-1">Continuous growth through objectives, feedback, and 1:1s</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" onClick={() => navigate('/performance/reviews')}>
-            <FileText className="w-4 h-4 mr-2" />
-            My Reviews
+          <Button variant="outline" onClick={() => navigate('/performance/actions')}>
+            <CheckCircle2 className="w-4 h-4 mr-2" />
+            My Actions
           </Button>
-          <Button onClick={() => navigate('/performance/objectives/new')}>
+          <Button onClick={() => navigate('/performance/objectives')}>
             <Target className="w-4 h-4 mr-2" />
-            New Objective
+            My Objectives
           </Button>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { CourseModule } from './course-module.entity';
 
 export enum LessonType {
   VIDEO = 'VIDEO',
@@ -18,9 +17,9 @@ export class Lesson extends BaseEntity {
   @Column()
   moduleId: string;
 
-  @ManyToOne(() => CourseModule, (module) => module.lessons, { onDelete: 'CASCADE' })
+  @ManyToOne('CourseModule', 'lessons', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'moduleId' })
-  module: CourseModule;
+  module: any;
 
   @Column()
   title: string;

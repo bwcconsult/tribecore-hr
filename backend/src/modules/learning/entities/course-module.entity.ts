@@ -1,7 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { Course } from './course.entity';
-import { Lesson } from './lesson.entity';
 
 @Entity('course_modules')
 export class CourseModule extends BaseEntity {
@@ -12,8 +11,8 @@ export class CourseModule extends BaseEntity {
   @JoinColumn({ name: 'courseId' })
   course: Course;
 
-  @OneToMany(() => Lesson, (lesson) => lesson.module, { cascade: true })
-  lessons: Lesson[];
+  @OneToMany('Lesson', 'module', { cascade: true })
+  lessons: any[];
 
   @Column()
   title: string;

@@ -48,9 +48,10 @@ export default function SignFormsPage() {
       }
 
       const response = await axios.get('/api/sign/sign-forms', { params });
-      setSignForms(response.data);
+      setSignForms(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching sign forms:', error);
+      setSignForms([]);
     } finally {
       setLoading(false);
     }

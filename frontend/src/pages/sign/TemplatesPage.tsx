@@ -21,9 +21,10 @@ export default function TemplatesPage() {
   const fetchTemplates = async () => {
     try {
       const response = await axios.get('/api/sign/templates');
-      setTemplates(response.data);
+      setTemplates(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching templates:', error);
+      setTemplates([]);
     } finally {
       setLoading(false);
     }

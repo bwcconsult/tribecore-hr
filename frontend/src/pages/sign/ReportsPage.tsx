@@ -56,9 +56,10 @@ export default function ReportsPage() {
       params.endDate = endDate.toISOString();
 
       const response = await axios.get('/api/sign/activity-logs', { params });
-      setActivityLogs(response.data);
+      setActivityLogs(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching activity logs:', error);
+      setActivityLogs([]);
     } finally {
       setLoading(false);
     }

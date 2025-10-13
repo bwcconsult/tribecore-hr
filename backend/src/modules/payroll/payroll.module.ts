@@ -29,6 +29,8 @@ import { Employee } from '../employees/entities/employee.entity';
 
 // Payslip System imports
 import { PayslipCalculationEngineService } from './services/payslip-calculation-engine.service';
+import { PdfGeneratorService } from './services/pdf-generator.service';
+import { EmailTemplateService } from './services/email-template.service';
 import { PayslipController } from './controllers/payslip.controller';
 import {
   Payslip,
@@ -100,6 +102,8 @@ import {
     BonusCommissionService,
     AuditTrailService,
     PayslipCalculationEngineService, // NEW
+    PdfGeneratorService, // NEW
+    EmailTemplateService, // NEW
   ],
   exports: [
     PayrollService,

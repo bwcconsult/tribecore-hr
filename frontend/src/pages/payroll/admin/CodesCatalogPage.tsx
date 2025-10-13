@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import {
@@ -13,13 +13,14 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import payslipService from '../../../services/payslipService';
-import { toast } from 'react-hot-toast';
+import EarningCodeModal from '../../../components/payroll/EarningCodeModal';
 
 export default function CodesCatalogPage() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<'earnings' | 'deductions' | 'taxes'>('earnings');
   const [selectedCountry, setSelectedCountry] = useState<string>('all');
+  const [isEarningModalOpen, setIsEarningModalOpen] = useState(false);
+  const [editingEarningCode, setEditingEarningCode] = useState<any>(null);
 
   const { data: earningCodes, isLoading: loadingEarnings } = useQuery({
     queryKey: ['earning-codes', selectedCountry],

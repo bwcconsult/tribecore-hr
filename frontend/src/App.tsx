@@ -29,6 +29,8 @@ import BonusCommissionManager from './pages/payroll/BonusCommissionManager';
 import ThirteenthMonthCalculator from './pages/payroll/ThirteenthMonthCalculator';
 import AuditReportDashboard from './pages/payroll/AuditReportDashboard';
 import EnhancedPayrollDashboard from './pages/payroll/EnhancedPayrollDashboard';
+import PayslipsPage from './pages/payroll/PayslipsPage';
+import PayslipDetailPage from './pages/payroll/PayslipDetailPage';
 import LeavePage from './pages/leave/LeavePage';
 import AttendancePage from './pages/attendance/AttendancePage';
 import PerformancePage from './pages/performance/PerformancePage';
@@ -156,6 +158,8 @@ function App() {
             <Route path="/payroll/bonus-commission" element={<BonusCommissionManager />} />
             <Route path="/payroll/thirteenth-month" element={<ThirteenthMonthCalculator />} />
             <Route path="/payroll/audit-reports" element={<AuditReportDashboard />} />
+            <Route path="/payroll/payslips" element={<PayslipsPage />} />
+            <Route path="/payroll/payslips/:id" element={<PayslipDetailPage />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/reports" element={<ReportsPage />} />

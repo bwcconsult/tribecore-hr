@@ -15,6 +15,8 @@ import {
   Activity,
   Settings,
   CheckSquare,
+  Plane,
+  Car,
 } from 'lucide-react';
 
 export default function ExpensesDashboard() {
@@ -134,14 +136,32 @@ export default function ExpensesDashboard() {
       {/* Quick Access */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Access</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <button
+            onClick={() => navigate('/expenses/trips')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:shadow-md transition-all text-left"
+          >
+            <Plane className="w-8 h-8 text-indigo-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Trips</h3>
+            <p className="text-sm text-gray-600 mt-1">Business travel</p>
+          </button>
+
+          <button
+            onClick={() => navigate('/expenses/mileage')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-teal-300 hover:shadow-md transition-all text-left"
+          >
+            <Car className="w-8 h-8 text-teal-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Mileage</h3>
+            <p className="text-sm text-gray-600 mt-1">Track miles</p>
+          </button>
+
           <button
             onClick={() => navigate('/expenses/analytics')}
             className="bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all text-left"
           >
             <BarChart3 className="w-8 h-8 text-blue-600 mb-2" />
             <h3 className="font-semibold text-gray-900">Analytics</h3>
-            <p className="text-sm text-gray-600 mt-1">View spending trends and insights</p>
+            <p className="text-sm text-gray-600 mt-1">View insights</p>
           </button>
 
           <button
@@ -149,17 +169,8 @@ export default function ExpensesDashboard() {
             className="bg-white border border-gray-200 rounded-lg p-4 hover:border-green-300 hover:shadow-md transition-all text-left"
           >
             <Activity className="w-8 h-8 text-green-600 mb-2" />
-            <h3 className="font-semibold text-gray-900">Budget Health</h3>
-            <p className="text-sm text-gray-600 mt-1">Monitor budget utilization</p>
-          </button>
-
-          <button
-            onClick={() => navigate('/expenses/workflows')}
-            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all text-left"
-          >
-            <Settings className="w-8 h-8 text-purple-600 mb-2" />
-            <h3 className="font-semibold text-gray-900">Workflows</h3>
-            <p className="text-sm text-gray-600 mt-1">Manage approval rules</p>
+            <h3 className="font-semibold text-gray-900">Budget</h3>
+            <p className="text-sm text-gray-600 mt-1">Monitor budget</p>
           </button>
 
           <button
@@ -168,7 +179,16 @@ export default function ExpensesDashboard() {
           >
             <CheckSquare className="w-8 h-8 text-yellow-600 mb-2" />
             <h3 className="font-semibold text-gray-900">Approvals</h3>
-            <p className="text-sm text-gray-600 mt-1">Review pending expenses</p>
+            <p className="text-sm text-gray-600 mt-1">Review pending</p>
+          </button>
+
+          <button
+            onClick={() => navigate('/expenses/settings')}
+            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all text-left"
+          >
+            <Settings className="w-8 h-8 text-purple-600 mb-2" />
+            <h3 className="font-semibold text-gray-900">Settings</h3>
+            <p className="text-sm text-gray-600 mt-1">Preferences</p>
           </button>
         </div>
       </div>

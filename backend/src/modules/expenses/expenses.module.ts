@@ -22,6 +22,10 @@ import { Project } from './entities/project.entity';
 import { CorpCardTxn } from './entities/corp-card-txn.entity';
 import { Expense } from './entities/expense.entity';
 import { User } from '../users/entities/user.entity';
+import { Trip } from './entities/trip.entity';
+import { Mileage } from './entities/mileage.entity';
+import { ExpenseDelegate } from './entities/delegate.entity';
+import { ExpenseOutOfOffice } from './entities/out-of-office.entity';
 
 // Services
 import { ExpenseClaimService } from './services/expense-claim.service';
@@ -35,6 +39,9 @@ import { StorageService } from './services/storage.service';
 import { CurrencyService } from './services/currency.service';
 import { WorkflowService } from './services/workflow.service';
 import { ForecastService } from './services/forecast.service';
+import { TripService } from './services/trip.service';
+import { MileageService } from './services/mileage.service';
+import { DelegateService } from './services/delegate.service';
 
 // Controllers
 import { ExpenseClaimController } from './controllers/expense-claim.controller';
@@ -49,6 +56,9 @@ import { ForecastController } from './controllers/forecast.controller';
 import { ExpensesApiController } from './controllers/expenses-api.controller';
 import { ReceiptsUploadController } from './controllers/receipts-upload.controller';
 import { CorpCardController } from './controllers/corp-card.controller';
+import { TripController } from './controllers/trip.controller';
+import { MileageController } from './controllers/mileage.controller';
+import { DelegateController } from './controllers/delegate.controller';
 
 @Module({
   imports: [
@@ -70,6 +80,10 @@ import { CorpCardController } from './controllers/corp-card.controller';
       Project,
       CorpCardTxn,
       User,
+      Trip,
+      Mileage,
+      ExpenseDelegate,
+      ExpenseOutOfOffice,
     ]),
     NotificationsModule,
     UsersModule,
@@ -88,6 +102,9 @@ import { CorpCardController } from './controllers/corp-card.controller';
     ExpensesApiController,
     ReceiptsUploadController,
     CorpCardController,
+    TripController,
+    MileageController,
+    DelegateController,
   ],
   providers: [
     ExpenseClaimService,
@@ -101,6 +118,9 @@ import { CorpCardController } from './controllers/corp-card.controller';
     CurrencyService,
     WorkflowService,
     ForecastService,
+    TripService,
+    MileageService,
+    DelegateService,
   ],
   exports: [
     ExpenseClaimService,

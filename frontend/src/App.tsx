@@ -44,6 +44,9 @@ import ApprovalsPage from './pages/expenses/ApprovalsPage';
 import ExpenseAnalyticsPage from './pages/expenses/ExpenseAnalyticsPage';
 import BudgetHealthPage from './pages/expenses/BudgetHealthPage';
 import WorkflowManagementPage from './pages/expenses/WorkflowManagementPage';
+import TripsPage from './pages/expenses/TripsPage';
+import MileagePage from './pages/expenses/MileagePage';
+import ExpenseSettingsPage from './pages/expenses/ExpenseSettingsPage';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
@@ -123,6 +126,9 @@ function App() {
             <Route path="/expenses/analytics" element={<ExpenseAnalyticsPage />} />
             <Route path="/expenses/budget-health" element={<BudgetHealthPage />} />
             <Route path="/expenses/workflows" element={<WorkflowManagementPage />} />
+            <Route path="/expenses/trips" element={<TripsPage />} />
+            <Route path="/expenses/mileage" element={<MileagePage />} />
+            <Route path="/expenses/settings" element={<ExpenseSettingsPage />} />
             <Route path="/expenses/:id" element={<ExpenseDetailsPage />} />
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />

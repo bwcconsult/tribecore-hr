@@ -87,6 +87,19 @@ export class ExpenseClaim {
   @Column({ type: 'text', nullable: true })
   merchantSummary: string; // Denormalized merchant list
 
+  @Column({ nullable: true })
+  tripId: string;
+
+  @ManyToOne('Trip', 'expenseClaims', { nullable: true })
+  @JoinColumn({ name: 'tripId' })
+  trip: any;
+
+  @Column({ type: 'boolean', default: false })
+  hasPolicyViolations: boolean;
+
+  @Column({ nullable: true })
+  claimNumber: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

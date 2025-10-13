@@ -29,6 +29,7 @@ import {
   ClockIcon,
   Shield,
   Scale,
+  Edit,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -52,6 +53,7 @@ const navigation = [
   { name: 'Payroll', href: '/payroll', icon: DollarSign },
   { name: 'Benefits', href: '/benefits', icon: Heart },
   { name: 'Expenses', href: '/expenses', icon: Receipt },
+  { name: 'Sign', href: '/sign', icon: Edit },
   { name: 'Performance', href: '/performance', icon: TrendingUp },
   { name: 'Recognition', href: '/recognition', icon: Award },
   { name: 'Learning', href: '/learning', icon: GraduationCap },

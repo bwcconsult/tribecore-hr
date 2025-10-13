@@ -34,8 +34,7 @@ export default function TemplatesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -146,7 +145,6 @@ export default function TemplatesPage() {
             </table>
           </div>
         </div>
-      </div>
     </div>
   );
 }

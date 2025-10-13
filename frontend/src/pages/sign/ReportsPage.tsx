@@ -65,8 +65,7 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Organization activity history</h1>
@@ -183,7 +182,6 @@ export default function ReportsPage() {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

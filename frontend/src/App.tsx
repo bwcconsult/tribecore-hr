@@ -78,6 +78,17 @@ import HealthSafetyDashboard from './pages/health-safety/HealthSafetyDashboard';
 import RiskAssessmentsPage from './pages/health-safety/RiskAssessmentsPage';
 import IncidentReportingPage from './pages/health-safety/IncidentReportingPage';
 import HazardousSubstancesPage from './pages/health-safety/HazardousSubstancesPage';
+
+// Sign Module
+import SignLayout from './components/sign/SignLayout';
+import SignHomePage from './pages/sign/SignHomePage';
+import SendForSignaturesPage from './pages/sign/SendForSignaturesPage';
+import SignYourselfPage from './pages/sign/SignYourselfPage';
+import DocumentsPage from './pages/sign/DocumentsPage';
+import TemplatesPage from './pages/sign/TemplatesPage';
+import SignFormsPage from './pages/sign/SignFormsPage';
+import SignReportsPage from './pages/sign/ReportsPage';
+import SignProfilePage from './pages/sign/ProfilePage';
 import MethodStatementsPage from './pages/health-safety/MethodStatementsPage';
 import ResponsibilitiesPage from './pages/health-safety/ResponsibilitiesPage';
 import EmploymentLawServicesPage from './pages/legal/EmploymentLawServicesPage';
@@ -196,6 +207,25 @@ function App() {
             <Route path="/legal/employment-law" element={<EmploymentLawServicesPage />} />
             <Route path="/legal/documents" element={<DocumentLibraryPage />} />
             <Route path="/legal/insurance" element={<HRInsurancePage />} />
+          </Route>
+
+          {/* Sign Module Routes */}
+          <Route
+            path="/sign"
+            element={
+              <ProtectedRoute>
+                <SignLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<SignHomePage />} />
+            <Route path="send-for-signatures" element={<SendForSignaturesPage />} />
+            <Route path="sign-yourself" element={<SignYourselfPage />} />
+            <Route path="documents" element={<DocumentsPage />} />
+            <Route path="templates" element={<TemplatesPage />} />
+            <Route path="sign-forms" element={<SignFormsPage />} />
+            <Route path="reports" element={<SignReportsPage />} />
+            <Route path="settings" element={<SignProfilePage />} />
           </Route>
 
           {/* Fallback */}

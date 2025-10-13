@@ -7,7 +7,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Document } from './document.entity';
 
 export enum RecipientRole {
   NEEDS_TO_SIGN = 'needs_to_sign',
@@ -41,11 +40,11 @@ export class Recipient {
   @Column({ type: 'uuid' })
   documentId: string;
 
-  @ManyToOne(() => Document, (document) => document.recipients, {
+  @ManyToOne('Document', 'recipients', {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'documentId' })
-  document: Document;
+  document: any;
 
   @Column()
   email: string;

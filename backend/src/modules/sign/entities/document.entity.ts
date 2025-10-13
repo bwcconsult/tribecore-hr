@@ -9,8 +9,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-import { Recipient } from './recipient.entity';
-import { ActivityLog } from './activity-log.entity';
 
 export enum DocumentStatus {
   DRAFT = 'draft',
@@ -98,13 +96,13 @@ export class Document {
   @Column({ type: 'jsonb', nullable: true })
   settings: any;
 
-  @OneToMany(() => Recipient, (recipient) => recipient.document, {
+  @OneToMany('Recipient', 'document', {
     cascade: true,
   })
-  recipients: Recipient[];
+  recipients: any[];
 
-  @OneToMany(() => ActivityLog, (log) => log.document)
-  activityLogs: ActivityLog[];
+  @OneToMany('ActivityLog', 'document')
+  activityLogs: any[];
 
   @CreateDateColumn()
   createdAt: Date;

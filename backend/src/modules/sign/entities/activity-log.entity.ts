@@ -6,7 +6,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Document } from './document.entity';
 import { User } from '../../users/entities/user.entity';
 
 export enum ActivityType {
@@ -33,11 +32,11 @@ export class ActivityLog {
   @Column({ type: 'uuid' })
   documentId: string;
 
-  @ManyToOne(() => Document, (document) => document.activityLogs, {
+  @ManyToOne('Document', 'activityLogs', {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'documentId' })
-  document: Document;
+  document: any;
 
   @Column({ type: 'uuid', nullable: true })
   userId: string;

@@ -94,6 +94,10 @@ import ResponsibilitiesPage from './pages/health-safety/ResponsibilitiesPage';
 import EmploymentLawServicesPage from './pages/legal/EmploymentLawServicesPage';
 import DocumentLibraryPage from './pages/legal/DocumentLibraryPage';
 import HRInsurancePage from './pages/legal/HRInsurancePage';
+import EmploymentLawDashboardPage from './pages/legal/EmploymentLawDashboardPage';
+import EqualityCompliancePage from './pages/legal/EqualityCompliancePage';
+import WorkingTimeCompliancePage from './pages/legal/WorkingTimeCompliancePage';
+import RedundancyProcessPage from './pages/legal/RedundancyProcessPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -207,6 +211,10 @@ function App() {
             <Route path="/legal/employment-law" element={<EmploymentLawServicesPage />} />
             <Route path="/legal/documents" element={<DocumentLibraryPage />} />
             <Route path="/legal/insurance" element={<HRInsurancePage />} />
+            <Route path="/legal/employment-law-dashboard" element={<EmploymentLawDashboardPage />} />
+            <Route path="/legal/equality-compliance" element={<EqualityCompliancePage />} />
+            <Route path="/legal/working-time" element={<WorkingTimeCompliancePage />} />
+            <Route path="/legal/redundancy" element={<RedundancyProcessPage />} />
           </Route>
 
           {/* Sign Module Routes */}

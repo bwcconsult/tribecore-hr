@@ -1,19 +1,41 @@
-import { useState } from 'react';
-import { Scale, MessageCircle, Phone, FileText, Shield, Clock } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Scale, MessageCircle, Phone, FileText, Shield, Clock, Users, AlertTriangle, TrendingUp, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import * as employmentLawService from '../../services/employmentLaw.service';
 
 export default function EmploymentLawServicesPage() {
   const [showRequestForm, setShowRequestForm] = useState(false);
+  const [dashboard, setDashboard] = useState<any>(null);
+  const [adviceRequests, setAdviceRequests] = useState<any[]>([]);
 
-  const adviceRequests = [
-    { id: '1', requestNumber: 'ADV-2025001', subject: 'Disciplinary procedure query', status: 'RESPONDED', priority: 'HIGH', createdAt: '2025-10-10' },
-    { id: '2', requestNumber: 'ADV-2025002', subject: 'Contract termination advice', status: 'IN_PROGRESS', priority: 'URGENT', createdAt: '2025-10-12' },
-  ];
+  useEffect(() => {
+    loadDashboardData();
+    loadAdviceRequests();
+  }, []);
+
+  const loadDashboardData = async () => {
+    try {
+      const data = await employmentLawService.getEmploymentLawDashboard('org-1');
+      setDashboard(data);
+    } catch (error) {
+      console.error('Failed to load dashboard', error);
+    }
+  };
+
+  const loadAdviceRequests = async () => {
+    try {
+      const data = await employmentLawService.getAllAdviceRequests('org-1');
+      setAdviceRequests(data.slice(0, 5));
+    } catch (error) {
+      console.error('Failed to load advice requests', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Employment Law Services</h1>
-        <p className="text-gray-600 mt-1">Expert advice and document library</p>
+        <h1 className="text-3xl font-bold text-gray-900">UK Employment Law Compliance</h1>
+        <p className="text-gray-600 mt-1">Comprehensive compliance platform for all UK employment regulations</p>
       </div>
 
       {/* Quick Actions */}
@@ -40,13 +62,109 @@ export default function EmploymentLawServicesPage() {
         </button>
       </div>
 
+      {/* Compliance Overview */}
+      <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-8 mb-6 text-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-purple-100 mb-2">Overall Compliance Score</p>
+            <p className="text-5xl font-bold">{dashboard?.overallComplianceScore || 0}%</p>
+            <p className="text-purple-100 mt-2">Real-time UK employment law compliance</p>
+          </div>
+          <Shield className="w-24 h-24 opacity-20" />
+        </div>
+      </div>
+
+      {/* UK Employment Law Modules */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">UK Employment Law Modules</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Link to="/legal/employment-law-dashboard" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <Shield className="w-10 h-10 text-blue-600" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Compliance Dashboard</h3>
+            <p className="text-sm text-gray-600 mb-3">Comprehensive overview of all employment law compliance</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-gray-900">{dashboard?.overallComplianceScore || 0}%</span>
+              <span className="text-sm text-gray-500">Score</span>
+            </div>
+          </Link>
+
+          <Link to="/legal/equality-compliance" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <Users className="w-10 h-10 text-purple-600" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Equality Act 2010</h3>
+            <p className="text-sm text-gray-600 mb-3">Anti-discrimination & protected characteristics</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-gray-900">{dashboard?.equalityCases || 0}</span>
+              <span className="text-sm text-gray-500">Cases</span>
+            </div>
+          </Link>
+
+          <Link to="/legal/working-time" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <Clock className="w-10 h-10 text-orange-600" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Working Time Regulations</h3>
+            <p className="text-sm text-gray-600 mb-3">48-hour week, rest breaks & annual leave</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-gray-900">{dashboard?.workingTimeViolations || 0}</span>
+              <span className="text-sm text-gray-500">Violations</span>
+            </div>
+          </Link>
+
+          <Link to="/legal/redundancy" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <Users className="w-10 h-10 text-red-600" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Redundancy Process</h3>
+            <p className="text-sm text-gray-600 mb-3">Fair consultation, selection & payment</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-gray-900">{dashboard?.redundancyProcesses || 0}</span>
+              <span className="text-sm text-gray-500">Active</span>
+            </div>
+          </Link>
+
+          <Link to="/legal/minimum-wage" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <TrendingUp className="w-10 h-10 text-green-600" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Minimum Wage Compliance</h3>
+            <p className="text-sm text-gray-600 mb-3">National Living Wage & age bands</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-gray-900">{dashboard?.minimumWageViolations || 0}</span>
+              <span className="text-sm text-gray-500">Issues</span>
+            </div>
+          </Link>
+
+          <Link to="/legal/whistleblowing" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <AlertTriangle className="w-10 h-10 text-yellow-600" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Whistleblowing</h3>
+            <p className="text-sm text-gray-600 mb-3">Protected disclosures & public interest</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-gray-900">{dashboard?.whistleblowingCases || 0}</span>
+              <span className="text-sm text-gray-500">Cases</span>
+            </div>
+          </Link>
+        </div>
+      </div>
+
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         {[
-          { label: 'Advice Requests', value: '24', icon: MessageCircle, color: 'blue' },
+          { label: 'Advice Requests', value: adviceRequests.length.toString(), icon: MessageCircle, color: 'blue' },
           { label: 'Avg Response Time', value: '< 2hrs', icon: Clock, color: 'green' },
-          { label: 'Templates Used', value: '156', icon: FileText, color: 'purple' },
-          { label: 'Active Claims', value: '2', icon: Scale, color: 'orange' },
+          { label: 'Templates Available', value: '500+', icon: FileText, color: 'purple' },
+          { label: 'GDPR Requests', value: dashboard?.gdprRequests || '0', icon: Scale, color: 'orange' },
         ].map((stat, idx) => (
           <div key={idx} className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-2">

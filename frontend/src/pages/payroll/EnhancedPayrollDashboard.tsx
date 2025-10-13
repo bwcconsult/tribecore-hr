@@ -17,6 +17,8 @@ import {
   Activity,
   BarChart3,
   Zap,
+  Receipt,
+  Settings,
 } from 'lucide-react';
 import {
   LineChart,
@@ -86,6 +88,27 @@ const EnhancedPayrollDashboard: React.FC = () => {
 
   const quickActions = [
     {
+      title: 'My Payslips',
+      description: 'View & download your payslips',
+      icon: Receipt,
+      color: 'from-blue-500 to-cyan-600',
+      path: '/payroll/payslips',
+    },
+    {
+      title: 'Manage Payslips',
+      description: 'Admin: Generate & publish payslips',
+      icon: FileText,
+      color: 'from-purple-500 to-pink-600',
+      path: '/payroll/admin/payslips',
+    },
+    {
+      title: 'Codes Catalog',
+      description: 'Manage earning & deduction codes',
+      icon: Settings,
+      color: 'from-green-500 to-emerald-600',
+      path: '/payroll/codes-catalog',
+    },
+    {
       title: 'AI Forecasting',
       description: 'ML-powered payroll predictions',
       icon: Brain,
@@ -110,7 +133,7 @@ const EnhancedPayrollDashboard: React.FC = () => {
       title: '13th Month Salary',
       description: 'Global statutory bonuses',
       icon: Globe,
-      color: 'from-green-500 to-emerald-600',
+      color: 'from-teal-500 to-cyan-600',
       path: '/payroll/thirteenth-month',
     },
     {
@@ -124,7 +147,7 @@ const EnhancedPayrollDashboard: React.FC = () => {
       title: 'Payroll Run',
       description: 'Process monthly payroll',
       icon: Calendar,
-      color: 'from-blue-500 to-cyan-600',
+      color: 'from-blue-500 to-indigo-600',
       path: '/payroll/run',
     },
   ];

@@ -33,6 +33,7 @@ import { RecognitionModule } from './modules/recognition/recognition.module';
 import { OffboardingModule } from './modules/offboarding/offboarding.module';
 import { OvertimeModule } from './modules/overtime/overtime.module';
 import { HealthSafetyModule } from './modules/health-safety/health-safety.module';
+import { LegalServicesModule } from './modules/legal-services/legal-services.module';
 
 @Module({
   imports: [
@@ -102,6 +103,7 @@ import { HealthSafetyModule } from './modules/health-safety/health-safety.module
     OffboardingModule,
     OvertimeModule,
     HealthSafetyModule,
+    LegalServicesModule,
   ],
 })
 export class AppModule {}

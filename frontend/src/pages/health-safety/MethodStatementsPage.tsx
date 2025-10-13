@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { FileText, Plus, CheckCircle } from 'lucide-react';
+import CreateMethodStatementModal from '../../components/health-safety/CreateMethodStatementModal';
 
 export default function MethodStatementsPage() {
+  const [showModal, setShowModal] = useState(false);
   const statements = [
     {
       id: '1',
@@ -33,7 +35,10 @@ export default function MethodStatementsPage() {
             <h1 className="text-3xl font-bold text-gray-900">Method Statements</h1>
             <p className="text-gray-600 mt-1">Create and manage safe working procedures</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          <button 
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
             <Plus className="w-4 h-4" />
             New Method Statement
           </button>
@@ -79,6 +84,20 @@ export default function MethodStatementsPage() {
           </table>
         </div>
       </div>
+
+      <CreateMethodStatementModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={async (data) => {
+          const response = await fetch('/api/health-safety/method-statements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!response.ok) throw new Error('Failed');
+          return response.json();
+        }}
+      />
     </div>
   );
 }

@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { Shield, AlertTriangle, CheckCircle, FileText, Users, TrendingUp, Plus, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import ReportIncidentModal from '../../components/health-safety/ReportIncidentModal';
+import CreateRiskAssessmentModal from '../../components/health-safety/CreateRiskAssessmentModal';
 
 export default function HealthSafetyDashboard() {
+  const [showIncidentModal, setShowIncidentModal] = useState(false);
+  const [showRiskModal, setShowRiskModal] = useState(false);
   const stats = {
     riskAssessments: 156,
     incidents: 8,
@@ -32,11 +36,17 @@ export default function HealthSafetyDashboard() {
             <p className="text-gray-600 mt-1">Protect your business and employees from risks</p>
           </div>
           <div className="flex gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <button 
+              onClick={() => setShowIncidentModal(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
               <Plus className="w-4 h-4" />
               Report Incident
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+            <button 
+              onClick={() => setShowRiskModal(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            >
               <Shield className="w-4 h-4" />
               New Risk Assessment
             </button>
@@ -185,6 +195,35 @@ export default function HealthSafetyDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <ReportIncidentModal
+        isOpen={showIncidentModal}
+        onClose={() => setShowIncidentModal(false)}
+        onSubmit={async (data) => {
+          const response = await fetch('/api/health-safety/incidents', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!response.ok) throw new Error('Failed to create incident');
+          return response.json();
+        }}
+      />
+      
+      <CreateRiskAssessmentModal
+        isOpen={showRiskModal}
+        onClose={() => setShowRiskModal(false)}
+        onSubmit={async (data) => {
+          const response = await fetch('/api/health-safety/risk-assessments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!response.ok) throw new Error('Failed to create assessment');
+          return response.json();
+        }}
+      />
     </div>
   );
 }

@@ -66,6 +66,9 @@ import IncidentReportingPage from './pages/health-safety/IncidentReportingPage';
 import HazardousSubstancesPage from './pages/health-safety/HazardousSubstancesPage';
 import MethodStatementsPage from './pages/health-safety/MethodStatementsPage';
 import ResponsibilitiesPage from './pages/health-safety/ResponsibilitiesPage';
+import EmploymentLawServicesPage from './pages/legal/EmploymentLawServicesPage';
+import DocumentLibraryPage from './pages/legal/DocumentLibraryPage';
+import HRInsurancePage from './pages/legal/HRInsurancePage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -142,6 +145,9 @@ function App() {
             <Route path="/health-safety/hazardous-substances" element={<HazardousSubstancesPage />} />
             <Route path="/health-safety/method-statements" element={<MethodStatementsPage />} />
             <Route path="/health-safety/responsibilities" element={<ResponsibilitiesPage />} />
+            <Route path="/legal/employment-law" element={<EmploymentLawServicesPage />} />
+            <Route path="/legal/documents" element={<DocumentLibraryPage />} />
+            <Route path="/legal/insurance" element={<HRInsurancePage />} />
           </Route>
 
           {/* Fallback */}

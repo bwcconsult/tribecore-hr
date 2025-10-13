@@ -91,6 +91,10 @@ import SignReportsPage from './pages/sign/ReportsPage';
 import SignProfilePage from './pages/sign/ProfilePage';
 import MethodStatementsPage from './pages/health-safety/MethodStatementsPage';
 import ResponsibilitiesPage from './pages/health-safety/ResponsibilitiesPage';
+import ComplianceDashboardPage from './pages/health-safety/ComplianceDashboardPage';
+import TrainingManagementPage from './pages/health-safety/TrainingManagementPage';
+import DSEAssessmentPage from './pages/health-safety/DSEAssessmentPage';
+import PPEManagementPage from './pages/health-safety/PPEManagementPage';
 import EmploymentLawServicesPage from './pages/legal/EmploymentLawServicesPage';
 import DocumentLibraryPage from './pages/legal/DocumentLibraryPage';
 import HRInsurancePage from './pages/legal/HRInsurancePage';
@@ -211,6 +215,10 @@ function App() {
             <Route path="/health-safety/hazardous-substances" element={<HazardousSubstancesPage />} />
             <Route path="/health-safety/method-statements" element={<MethodStatementsPage />} />
             <Route path="/health-safety/responsibilities" element={<ResponsibilitiesPage />} />
+            <Route path="/health-safety/compliance-dashboard" element={<ComplianceDashboardPage />} />
+            <Route path="/health-safety/training" element={<TrainingManagementPage />} />
+            <Route path="/health-safety/dse" element={<DSEAssessmentPage />} />
+            <Route path="/health-safety/ppe" element={<PPEManagementPage />} />
             <Route path="/legal/employment-law" element={<EmploymentLawServicesPage />} />
             <Route path="/legal/documents" element={<DocumentLibraryPage />} />
             <Route path="/legal/insurance" element={<HRInsurancePage />} />

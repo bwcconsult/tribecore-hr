@@ -85,6 +85,8 @@ import ShiftsRotasPage from './pages/shifts/ShiftsRotasPage';
 import RecognitionPage from './pages/recognition/RecognitionPage';
 import OffboardingPage from './pages/offboarding/OffboardingPage';
 import OvertimePage from './pages/overtime/OvertimePage';
+import OvertimeCapturePage from './pages/overtime/OvertimeCapturePage';
+import OvertimeApprovalDashboard from './pages/overtime/OvertimeApprovalDashboard';
 import ClockInDashboard from './pages/attendance/ClockInDashboard';
 import HolidayPlannerPage from './pages/leave/HolidayPlannerPage';
 import SicknessDashboard from './pages/absence/SicknessDashboard';
@@ -236,6 +238,8 @@ function App() {
             <Route path="/recognition" element={<RecognitionPage />} />
             <Route path="/offboarding" element={<OffboardingPage />} />
             <Route path="/overtime" element={<OvertimePage />} />
+            <Route path="/overtime/capture" element={<OvertimeCapturePage />} />
+            <Route path="/overtime/approvals" element={<OvertimeApprovalDashboard />} />
             <Route path="/attendance/clock-in" element={<ClockInDashboard />} />
             <Route path="/leave/holiday-planner" element={<HolidayPlannerPage />} />
             <Route path="/health-safety" element={<HealthSafetyDashboard />} />

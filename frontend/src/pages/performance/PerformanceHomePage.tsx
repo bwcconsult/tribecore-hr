@@ -59,7 +59,7 @@ export default function PerformanceHomePage() {
     },
     {
       title: 'Wellbeing',
-      description: 'Check in on how you're feeling',
+      description: 'Check in on how you are feeling',
       icon: Heart,
       color: 'from-pink-500 to-pink-600',
       route: '/performance/wellbeing',

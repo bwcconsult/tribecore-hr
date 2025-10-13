@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PerformanceService } from './performance.service';
 import { PerformanceController } from './performance.controller';
 import { PerformanceEnhancedService } from './services/performance-enhanced.service';
+import { PerformanceEnhancedController } from './controllers/performance-enhanced.controller';
 import { PerformanceReview } from './entities/performance.entity';
 import { Objective } from './entities/objective.entity';
 import { ObjectiveMilestone } from './entities/objective-milestone.entity';
@@ -41,7 +42,7 @@ import { Nudge } from './entities/nudge.entity';
       Nudge,
     ]),
   ],
-  controllers: [PerformanceController],
+  controllers: [PerformanceController, PerformanceEnhancedController],
   providers: [PerformanceService, PerformanceEnhancedService],
   exports: [PerformanceService, PerformanceEnhancedService],
 })

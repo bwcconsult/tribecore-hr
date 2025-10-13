@@ -37,6 +37,7 @@ import OneOnOnesPage from './pages/performance/OneOnOnesPage';
 import WellbeingPage from './pages/performance/WellbeingPage';
 import FeedbackPage from './pages/performance/FeedbackPage';
 import PerformanceRecognitionPage from './pages/performance/RecognitionPage';
+import ActionsPage from './pages/performance/ActionsPage';
 import ReportsPage from './pages/reports/ReportsPage';
 import SettingsPage from './pages/settings/SettingsPage';
 import OnboardingPage from './pages/onboarding/OnboardingPage';
@@ -215,6 +216,7 @@ function App() {
             <Route path="/performance/wellbeing" element={<WellbeingPage />} />
             <Route path="/performance/feedback" element={<FeedbackPage />} />
             <Route path="/performance/recognition" element={<PerformanceRecognitionPage />} />
+            <Route path="/performance/actions" element={<ActionsPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/profile/me" element={<PersonalSummaryPage />} />

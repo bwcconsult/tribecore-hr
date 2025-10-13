@@ -93,7 +93,7 @@ export class HazardousSubstance {
   authorizedUsers: string[];
 
   @Column({ nullable: true })
-  coshh AssessmentId: string;
+  coshhAssessmentId: string;
 
   @Column({ type: 'date', nullable: true })
   lastReviewDate: Date;

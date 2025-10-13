@@ -33,6 +33,10 @@ import LeavePage from './pages/leave/LeavePage';
 import AttendancePage from './pages/attendance/AttendancePage';
 import PerformancePage from './pages/performance/PerformancePage';
 import ObjectivesPage from './pages/performance/ObjectivesPage';
+import OneOnOnesPage from './pages/performance/OneOnOnesPage';
+import WellbeingPage from './pages/performance/WellbeingPage';
+import FeedbackPage from './pages/performance/FeedbackPage';
+import PerformanceRecognitionPage from './pages/performance/RecognitionPage';
 import ReportsPage from './pages/reports/ReportsPage';
 import SettingsPage from './pages/settings/SettingsPage';
 import OnboardingPage from './pages/onboarding/OnboardingPage';
@@ -207,6 +211,10 @@ function App() {
             <Route path="/learning/course/:enrollmentId" element={<CoursePlayerPage />} />
             <Route path="/performance" element={<PerformancePage />} />
             <Route path="/performance/objectives" element={<ObjectivesPage />} />
+            <Route path="/performance/one-on-ones" element={<OneOnOnesPage />} />
+            <Route path="/performance/wellbeing" element={<WellbeingPage />} />
+            <Route path="/performance/feedback" element={<FeedbackPage />} />
+            <Route path="/performance/recognition" element={<PerformanceRecognitionPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/profile/me" element={<PersonalSummaryPage />} />

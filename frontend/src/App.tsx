@@ -60,6 +60,10 @@ import ExpensesAdminSettings from './pages/expenses/admin/ExpensesAdminSettings'
 import ExpensesAdminGettingStarted from './pages/expenses/admin/ExpensesAdminGettingStarted';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
 import LearningPage from './pages/learning/LearningPage';
+import MyLearningDashboard from './pages/learning/MyLearningDashboard';
+import UKMandatoryTrainingPage from './pages/learning/UKMandatoryTrainingPage';
+import LearningComplianceDashboard from './pages/learning/LearningComplianceDashboard';
+import CoursePlayerPage from './pages/learning/CoursePlayerPage';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
 import CalendarPage from './pages/calendar/CalendarPage';
 import AnnualOverviewPage from './pages/calendar/AnnualOverviewPage';
@@ -196,6 +200,10 @@ function App() {
           >
             <Route path="/recruitment" element={<RecruitmentPage />} />
             <Route path="/learning" element={<LearningPage />} />
+            <Route path="/learning/my-learning" element={<MyLearningDashboard />} />
+            <Route path="/learning/mandatory-training" element={<UKMandatoryTrainingPage />} />
+            <Route path="/learning/compliance" element={<LearningComplianceDashboard />} />
+            <Route path="/learning/course/:enrollmentId" element={<CoursePlayerPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/profile/me" element={<PersonalSummaryPage />} />

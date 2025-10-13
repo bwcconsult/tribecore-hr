@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OvertimeController } from './overtime.controller';
+import { OvertimeEnhancedController } from './controllers/overtime-enhanced.controller';
 import { OvertimeService } from './overtime.service';
 
 // Legacy entities
@@ -40,7 +41,7 @@ import { BudgetValidatorService } from './services/budget-validator.service';
       OvertimeBudget,
     ]),
   ],
-  controllers: [OvertimeController],
+  controllers: [OvertimeController, OvertimeEnhancedController],
   providers: [
     OvertimeService,
     OvertimeCalculationEngineService,

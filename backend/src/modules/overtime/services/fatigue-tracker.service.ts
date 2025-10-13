@@ -24,7 +24,7 @@ export interface FatigueScore {
 }
 
 export interface RestBreachResult {
-  hasBreac: boolean;
+  hasBreach: boolean;
   hoursSinceLastShift: number;
   minimumRequired: number;
   deficit: number;

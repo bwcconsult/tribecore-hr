@@ -460,7 +460,7 @@ export default function OvertimeApprovalDashboard() {
                           <div className="mt-3 p-3 bg-blue-50 rounded border border-blue-200">
                             <p className="text-xs font-semibold text-blue-700 mb-1">Calculation Breakdown:</p>
                             <p className="text-xs text-blue-600">• Regular hours: 8.0h @ $25/h = $200.00</p>
-                            <p className="text-xs text-blue-600">• Daily OT (>8h): 2.5h @ 1.5× = $93.75</p>
+                            <p className="text-xs text-blue-600">• Daily OT (&gt;8h): 2.5h @ 1.5× = $93.75</p>
                             <p className="text-xs text-blue-600">• Total: $293.75</p>
                           </div>
                         </div>

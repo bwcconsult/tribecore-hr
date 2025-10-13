@@ -7,7 +7,6 @@ import {
   Index,
   OneToMany,
 } from 'typeorm';
-import { TimeBlock } from './time-block.entity';
 
 export enum ShiftType {
   DAY = 'DAY',
@@ -281,8 +280,8 @@ export class Shift {
   }>;
 
   // Relationship to TimeBlocks (immutable ledger)
-  @OneToMany(() => TimeBlock, (timeBlock) => timeBlock.shift)
-  timeBlocks: TimeBlock[];
+  @OneToMany(() => require('./time-block.entity').TimeBlock, (timeBlock: any) => timeBlock.shift)
+  timeBlocks: any[];
 
   // Metadata
   @Column({ type: 'jsonb', nullable: true })

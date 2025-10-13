@@ -98,6 +98,9 @@ import EmploymentLawDashboardPage from './pages/legal/EmploymentLawDashboardPage
 import EqualityCompliancePage from './pages/legal/EqualityCompliancePage';
 import WorkingTimeCompliancePage from './pages/legal/WorkingTimeCompliancePage';
 import RedundancyProcessPage from './pages/legal/RedundancyProcessPage';
+import MinimumWageCompliancePage from './pages/legal/MinimumWageCompliancePage';
+import WhistleblowingPage from './pages/legal/WhistleblowingPage';
+import FamilyLeavePage from './pages/legal/FamilyLeavePage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -215,6 +218,9 @@ function App() {
             <Route path="/legal/equality-compliance" element={<EqualityCompliancePage />} />
             <Route path="/legal/working-time" element={<WorkingTimeCompliancePage />} />
             <Route path="/legal/redundancy" element={<RedundancyProcessPage />} />
+            <Route path="/legal/minimum-wage" element={<MinimumWageCompliancePage />} />
+            <Route path="/legal/whistleblowing" element={<WhistleblowingPage />} />
+            <Route path="/legal/family-leave" element={<FamilyLeavePage />} />
           </Route>
 
           {/* Sign Module Routes */}

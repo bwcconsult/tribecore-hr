@@ -132,6 +132,14 @@ import MinimumWageCompliancePage from './pages/legal/MinimumWageCompliancePage';
 import WhistleblowingPage from './pages/legal/WhistleblowingPage';
 import FamilyLeavePage from './pages/legal/FamilyLeavePage';
 
+// Enterprise Modules (NEW)
+import AIGovernanceDashboard from './pages/ai-governance/AIGovernanceDashboard';
+import CasesPage from './pages/hrsd/CasesPage';
+import ISO30414Dashboard from './pages/iso30414/ISO30414Dashboard';
+import PositionsPage from './pages/positions/PositionsPage';
+import SkillsPage from './pages/skills/SkillsPage';
+import CompensationPage from './pages/compensation/CompensationPage';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -282,6 +290,14 @@ function App() {
             <Route path="/legal/minimum-wage" element={<MinimumWageCompliancePage />} />
             <Route path="/legal/whistleblowing" element={<WhistleblowingPage />} />
             <Route path="/legal/family-leave" element={<FamilyLeavePage />} />
+            
+            {/* Enterprise Module Routes (NEW) */}
+            <Route path="/ai-governance" element={<AIGovernanceDashboard />} />
+            <Route path="/cases" element={<CasesPage />} />
+            <Route path="/analytics/iso30414" element={<ISO30414Dashboard />} />
+            <Route path="/positions" element={<PositionsPage />} />
+            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/compensation" element={<CompensationPage />} />
           </Route>
 
           {/* Sign Module Routes */}

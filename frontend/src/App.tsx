@@ -89,6 +89,8 @@ import OvertimeCapturePage from './pages/overtime/OvertimeCapturePage';
 import OvertimeApprovalDashboard from './pages/overtime/OvertimeApprovalDashboard';
 import ClockInDashboard from './pages/attendance/ClockInDashboard';
 import HolidayPlannerPage from './pages/leave/HolidayPlannerPage';
+import EmployeeHolidayDashboard from './pages/leave/EmployeeHolidayDashboard';
+import ManagerCapacityView from './pages/leave/ManagerCapacityView';
 import SicknessDashboard from './pages/absence/SicknessDashboard';
 import HealthSafetyDashboard from './pages/health-safety/HealthSafetyDashboard';
 import RiskAssessmentsPage from './pages/health-safety/RiskAssessmentsPage';
@@ -242,6 +244,8 @@ function App() {
             <Route path="/overtime/approvals" element={<OvertimeApprovalDashboard />} />
             <Route path="/attendance/clock-in" element={<ClockInDashboard />} />
             <Route path="/leave/holiday-planner" element={<HolidayPlannerPage />} />
+            <Route path="/leave/my-holidays" element={<EmployeeHolidayDashboard />} />
+            <Route path="/leave/team-capacity" element={<ManagerCapacityView />} />
             <Route path="/health-safety" element={<HealthSafetyDashboard />} />
             <Route path="/health-safety/risk-assessments" element={<RiskAssessmentsPage />} />
             <Route path="/health-safety/incidents" element={<IncidentReportingPage />} />

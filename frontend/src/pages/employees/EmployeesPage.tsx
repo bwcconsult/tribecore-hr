@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '../../components/ui/Card';
@@ -9,6 +9,14 @@ import { formatDate } from '../../lib/utils';
 import EmployeeFormModal from '../../components/employees/EmployeeFormModal';
 import { toast } from 'react-hot-toast';
 
+interface EmployeeResponse {
+  data: Employee[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export default function EmployeesPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
@@ -16,10 +24,17 @@ export default function EmployeesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery<EmployeeResponse>({
     queryKey: ['employees', page, search],
     queryFn: () => employeeService.getAll({ page, limit: 10, search }),
   });
+
+  useEffect(() => {
+    if (error) {
+      console.error('Failed to fetch employees:', error);
+      toast.error((error as any)?.response?.data?.message || 'Failed to load employees');
+    }
+  }, [error]);
 
   const deleteMutation = useMutation({
     mutationFn: employeeService.delete,
@@ -84,9 +99,32 @@ export default function EmployeesPage() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <p className="text-center py-8 text-gray-500">Loading...</p>
+            <p className="text-center py-8 text-gray-500">Loading employees...</p>
+          ) : error ? (
+            <div className="text-center py-8">
+              <p className="text-red-600 font-medium">Failed to load employees</p>
+              <p className="text-gray-500 text-sm mt-2">
+                {(error as any)?.response?.data?.message || 'Please check your connection and try again'}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Retry
+              </button>
+            </div>
           ) : data?.data?.length === 0 ? (
-            <p className="text-center py-8 text-gray-500">No employees found</p>
+            <div className="text-center py-12">
+              <Plus className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg font-medium mb-2">No employees found</p>
+              <p className="text-gray-400 mb-6">Start by adding your first employee</p>
+              <button
+                onClick={handleAdd}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add Employee
+              </button>
+            </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">

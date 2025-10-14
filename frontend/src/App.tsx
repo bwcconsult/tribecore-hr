@@ -144,6 +144,11 @@ import ContractorDetailPage from './pages/contractors/ContractorDetailPage';
 import SurveysPage from './pages/surveys/SurveysPage';
 import SurveyBuilderPage from './pages/surveys/SurveyBuilderPage';
 import SurveyResultsPage from './pages/surveys/SurveyResultsPage';
+import IntegrationsPage from './pages/integrations/IntegrationsPage';
+import OrgChartPage from './pages/organization/OrgChartPage';
+import ComplianceOverviewPage from './pages/compliance/ComplianceDashboardPage';
+import DocumentsLibraryPage from './pages/documents/DocumentsLibraryPage';
+import NotificationsCenterPage from './pages/notifications/NotificationsCenterPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -312,6 +317,13 @@ function App() {
             <Route path="/surveys" element={<SurveysPage />} />
             <Route path="/surveys/builder/:id" element={<SurveyBuilderPage />} />
             <Route path="/surveys/:id/results" element={<SurveyResultsPage />} />
+            
+            {/* Admin Pages (NEW) */}
+            <Route path="/integrations" element={<IntegrationsPage />} />
+            <Route path="/organization/chart" element={<OrgChartPage />} />
+            <Route path="/compliance/overview" element={<ComplianceOverviewPage />} />
+            <Route path="/documents" element={<DocumentsLibraryPage />} />
+            <Route path="/notifications" element={<NotificationsCenterPage />} />
           </Route>
 
           {/* Sign Module Routes */}

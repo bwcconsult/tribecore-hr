@@ -270,7 +270,9 @@ export default function RolesManagementPage() {
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${colorClasses.bg} ${colorClasses.text}`}>
                           {role.userCount} users
                         </span>
-                        <button
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedRole(role);
@@ -285,11 +287,11 @@ export default function RolesManagementPage() {
                             }, null, 2));
                             setShowPolicyEditor(true);
                           }}
-                          className="p-1 hover:bg-gray-200 rounded"
                           title="View Policy as Code"
                         >
-                          <Code className="h-4 w-4 text-gray-600" />
-                        </button>
+                          <Code className="h-4 w-4 mr-1" />
+                          Policy
+                        </Button>
                       </div>
                       <p className="text-sm text-gray-600 mt-1">{role.description}</p>
                     </div>

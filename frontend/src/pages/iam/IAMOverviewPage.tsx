@@ -8,6 +8,11 @@ import {
   AlertCircle,
   TrendingUp,
   CheckCircle,
+  BarChart3,
+  UserPlus,
+  ShieldAlert,
+  Activity,
+  Play,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -102,7 +107,7 @@ export default function IAMOverviewPage() {
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link to="/iam/roles" className="block">
               <Button variant="outline" className="w-full justify-start">
                 <Shield className="h-4 w-4 mr-2" />
@@ -125,6 +130,36 @@ export default function IAMOverviewPage() {
               <Button variant="outline" className="w-full justify-start">
                 <Building2 className="h-4 w-4 mr-2" />
                 Security Groups
+              </Button>
+            </Link>
+            <Link to="/iam/analytics" className="block">
+              <Button variant="outline" className="w-full justify-start">
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Analytics Dashboard
+              </Button>
+            </Link>
+            <Link to="/iam/delegations" className="block">
+              <Button variant="outline" className="w-full justify-start">
+                <UserPlus className="h-4 w-4 mr-2" />
+                Delegations
+              </Button>
+            </Link>
+            <Link to="/iam/sod-violations" className="block">
+              <Button variant="outline" className="w-full justify-start">
+                <ShieldAlert className="h-4 w-4 mr-2" />
+                SoD Violations
+              </Button>
+            </Link>
+            <Link to="/iam/audit-logs" className="block">
+              <Button variant="outline" className="w-full justify-start">
+                <Activity className="h-4 w-4 mr-2" />
+                Audit Logs
+              </Button>
+            </Link>
+            <Link to="/iam/policy-simulator" className="block">
+              <Button variant="outline" className="w-full justify-start">
+                <Play className="h-4 w-4 mr-2" />
+                Policy Simulator
               </Button>
             </Link>
           </div>

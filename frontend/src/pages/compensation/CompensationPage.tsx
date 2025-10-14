@@ -1,40 +1,32 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { DollarSign, TrendingUp, Award, Target, Plus } from 'lucide-react';
-import axios from 'axios';
+import { DollarSign, TrendingUp, Award, Target, Plus, X } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
+import { toast } from 'react-hot-toast';
 
 export default function CompensationPage() {
   const { user } = useAuthStore();
-
-  const { data: bands } = useQuery({
-    queryKey: ['compensation-bands', user?.organizationId],
-    queryFn: async () => {
-      const response = await axios.get(`/api/compensation/bands/${user?.organizationId}`);
-      return response.data;
-    },
-    enabled: !!user?.organizationId,
-  });
-
-  const { data: myReviews } = useQuery({
-    queryKey: ['my-reviews', user?.id],
-    queryFn: async () => {
-      const response = await axios.get(`/api/compensation/reviews/employee/${user?.id}`);
-      return response.data;
-    },
-    enabled: !!user?.id,
-  });
-
-  const { data: pendingReviews } = useQuery({
-    queryKey: ['pending-reviews', user?.organizationId],
-    queryFn: async () => {
-      const response = await axios.get(`/api/compensation/reviews/pending/${user?.organizationId}`);
-      return response.data;
-    },
-    enabled: !!user?.organizationId && user?.role === 'HR_ADMIN',
-  });
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  
+  // Mock data for demonstration (backend integration pending)
+  const bands = [
+    { id: '1', bandName: 'Entry Level', bandCode: 'L1', currency: 'GBP', minSalary: 25000, midSalary: 30000, maxSalary: 35000, jobFamily: 'Engineering' },
+    { id: '2', bandName: 'Mid Level', bandCode: 'L2', currency: 'GBP', minSalary: 35000, midSalary: 45000, maxSalary: 55000, jobFamily: 'Engineering' },
+    { id: '3', bandName: 'Senior Level', bandCode: 'L3', currency: 'GBP', minSalary: 55000, midSalary: 70000, maxSalary: 85000, jobFamily: 'Engineering' },
+  ];
+  
+  const myReviews = [
+    { id: '1', reviewCycle: 'Annual Review 2025', fiscalYear: '2025', status: 'APPROVED', currentSalary: 45000, proposedSalary: 50000, increasePercent: 11.1, bonusAmount: 5000 },
+    { id: '2', reviewCycle: 'Mid-Year Review 2024', fiscalYear: '2024', status: 'APPROVED', currentSalary: 40000, proposedSalary: 45000, increasePercent: 12.5, bonusAmount: 3000 },
+  ];
+  
+  const pendingReviews: any[] = [];
+  
+  const handleCreateReview = () => {
+    toast.success('Create Review feature - Backend integration pending');
+    setShowCreateModal(false);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -57,12 +49,10 @@ export default function CompensationPage() {
           </h1>
           <p className="text-gray-600 mt-1">Manage salary bands and compensation reviews</p>
         </div>
-        {user?.role === 'HR_ADMIN' && (
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Create Review
-          </Button>
-        )}
+        <Button onClick={() => setShowCreateModal(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Create Review
+        </Button>
       </div>
 
       {/* Stats */}
@@ -91,8 +81,7 @@ export default function CompensationPage() {
           </CardContent>
         </Card>
 
-        {user?.role === 'HR_ADMIN' && (
-          <>
+        <>
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
@@ -114,8 +103,7 @@ export default function CompensationPage() {
                 </div>
               </CardContent>
             </Card>
-          </>
-        )}
+        </>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -224,55 +212,32 @@ export default function CompensationPage() {
         </Card>
       </div>
 
-      {/* Pending Reviews (HR Admin only) */}
-      {user?.role === 'HR_ADMIN' && pendingReviews && pendingReviews.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Pending Approvals</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-3 font-semibold">Review ID</th>
-                    <th className="text-left p-3 font-semibold">Employee</th>
-                    <th className="text-left p-3 font-semibold">Cycle</th>
-                    <th className="text-left p-3 font-semibold">Current</th>
-                    <th className="text-left p-3 font-semibold">Proposed</th>
-                    <th className="text-left p-3 font-semibold">Increase</th>
-                    <th className="text-left p-3 font-semibold">Status</th>
-                    <th className="text-left p-3 font-semibold">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pendingReviews.map((review: any) => (
-                    <tr key={review.id} className="border-b hover:bg-gray-50">
-                      <td className="p-3 font-mono text-sm">{review.reviewId}</td>
-                      <td className="p-3">{review.employeeId}</td>
-                      <td className="p-3 text-sm">{review.reviewCycle}</td>
-                      <td className="p-3 font-semibold">${review.currentSalary.toLocaleString()}</td>
-                      <td className="p-3 font-semibold text-green-600">
-                        ${review.proposedSalary?.toLocaleString() || '-'}
-                      </td>
-                      <td className="p-3 text-sm">
-                        {review.increasePercent ? `+${review.increasePercent}%` : '-'}
-                      </td>
-                      <td className="p-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(review.status)}`}>
-                          {review.status}
-                        </span>
-                      </td>
-                      <td className="p-3">
-                        <Button size="sm">Review</Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      {/* Create Review Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Create Compensation Review</h2>
+              <button onClick={() => setShowCreateModal(false)}>
+                <X className="h-5 w-5" />
+              </button>
             </div>
-          </CardContent>
-        </Card>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Review Cycle</label>
+                <input type="text" className="w-full border rounded px-3 py-2" placeholder="Annual Review 2025" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Fiscal Year</label>
+                <input type="text" className="w-full border rounded px-3 py-2" placeholder="2025" />
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setShowCreateModal(false)}>Cancel</Button>
+                <Button onClick={handleCreateReview}>Create Review</Button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

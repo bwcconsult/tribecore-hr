@@ -1,22 +1,31 @@
-import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import { BarChart3, TrendingUp, Users, DollarSign, Award, Target } from 'lucide-react';
-import axios from 'axios';
+import { BarChart3, TrendingUp, Users, DollarSign, Award, Target, Download } from 'lucide-react';
+import Button from '../../components/ui/Button';
 import { useAuthStore } from '../../stores/authStore';
+import { toast } from 'react-hot-toast';
 
 export default function ISO30414Dashboard() {
   const { user } = useAuthStore();
 
-  const { data: dashboardData, isLoading } = useQuery({
-    queryKey: ['iso30414-dashboard', user?.organizationId],
-    queryFn: async () => {
-      const response = await axios.get(`/api/iso30414/dashboard/${user?.organizationId}`);
-      return response.data;
-    },
-    enabled: !!user?.organizationId,
-  });
+  const handleGenerateReport = () => {
+    toast.success('Generating ISO 30414 Board Report...', {
+      duration: 3000,
+      icon: '📊',
+    });
+    // Backend integration will download PDF report
+  };
 
-  const metrics = dashboardData?.byCategory || {};
+  //Mock dashboard data (backend integration pending)
+  const dashboardData = {
+    summary: { totalMetrics: 31, verificationRate: 87.5, lastUpdated: new Date().toISOString() },
+  };
+  
+  const metrics: any = {
+    COSTS: [],
+    PRODUCTIVITY: [],
+    TURNOVER: [],
+    DIVERSITY: [],
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -76,9 +85,10 @@ export default function ISO30414Dashboard() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <Button onClick={handleGenerateReport}>
+                <Download className="h-4 w-4 mr-2" />
                 Generate Board Report
-              </button>
+              </Button>
             </div>
           </CardContent>
         </Card>

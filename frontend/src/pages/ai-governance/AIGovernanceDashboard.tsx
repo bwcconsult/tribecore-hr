@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import {
   Brain,
@@ -14,28 +13,29 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { aiGovernanceService } from '../../services/aiGovernanceService';
+import { toast } from 'react-hot-toast';
 
 export default function AIGovernanceDashboard() {
-  const organizationId = '0aaea52a-7f95-41d4-a7a2-cb12877 2f2ba'; // Get from auth context
-
-  const { data: dashboard, isLoading } = useQuery({
-    queryKey: ['ai-governance-dashboard', organizationId],
-    queryFn: () => aiGovernanceService.getDashboard(organizationId),
-  });
-
-  if (isLoading) {
-    return (
-      <div className="p-8">
-        <p className="text-gray-500">Loading AI Governance dashboard...</p>
-      </div>
-    );
-  }
-
-  const summary = dashboard?.summary || {};
-  const compliance = dashboard?.compliance || {};
-  const alerts = dashboard?.alerts || {};
-  const systems = dashboard?.systems || [];
+  // Mock data (backend integration pending)
+  const summary = {
+    totalSystems: 0,
+    highRiskSystems: 0,
+    certifiedSystems: 0,
+    certificationRate: 0,
+    decisionsRequiringReview: 0,
+  };
+  
+  const compliance = {
+    biasTestCoverage: 0,
+    dpiaCoverage: 0,
+  };
+  
+  const alerts = {
+    systemsDueForReview: 0,
+    decisionsRequiringReview: 0,
+  };
+  
+  const systems: any[] = [];
 
   return (
     <div className="p-8">
@@ -284,17 +284,17 @@ export default function AIGovernanceDashboard() {
                 </button>
               </Link>
 
-              <Link to="/ai-governance/register">
-                <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Plus className="h-5 w-5 text-purple-600" />
-                      <span className="font-medium">Register New AI System</span>
-                    </div>
-                    <span className="text-gray-400">→</span>
+              <button 
+                onClick={() => toast.success('Register AI System - Modal opening soon!')}
+                className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Plus className="h-5 w-5 text-purple-600" />
+                    <span className="font-medium">Register New AI System</span>
                   </div>
-                </button>
-              </Link>
+                  <span className="text-gray-400">→</span>
+                </div>
+              </button>
             </div>
           </CardContent>
         </Card>

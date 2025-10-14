@@ -48,6 +48,14 @@ export default function PerformanceHomePage() {
         : 'Loading...',
     },
     {
+      title: 'Performance Reviews',
+      description: 'View and complete reviews',
+      icon: Calendar,
+      color: 'from-cyan-500 to-cyan-600',
+      route: '/performance/reviews',
+      stats: 'Quarterly reviews active',
+    },
+    {
       title: '1:1 Meetings',
       description: 'Schedule and manage one-on-ones',
       icon: MessageSquare,

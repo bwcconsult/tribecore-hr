@@ -42,6 +42,11 @@ import WellbeingPage from './pages/performance/WellbeingPage';
 import FeedbackPage from './pages/performance/FeedbackPage';
 import PerformanceRecognitionPage from './pages/performance/RecognitionPage';
 import ActionsPage from './pages/performance/ActionsPage';
+import ReviewCyclesPage from './pages/performance/ReviewCyclesPage';
+import ReviewCycleDetailPage from './pages/performance/ReviewCycleDetailPage';
+import ReviewFormPage from './pages/performance/ReviewFormPage';
+import CalibrationPage from './pages/performance/CalibrationPage';
+import ReviewResultsPage from './pages/performance/ReviewResultsPage';
 import ReportsPage from './pages/reports/ReportsPage';
 import SettingsPage from './pages/settings/SettingsPage';
 import OnboardingPage from './pages/onboarding/OnboardingPage';
@@ -260,6 +265,11 @@ function App() {
             <Route path="/performance/feedback" element={<FeedbackPage />} />
             <Route path="/performance/recognition" element={<PerformanceRecognitionPage />} />
             <Route path="/performance/actions" element={<ActionsPage />} />
+            <Route path="/performance/reviews" element={<ReviewCyclesPage />} />
+            <Route path="/performance/reviews/:id" element={<ReviewCycleDetailPage />} />
+            <Route path="/performance/reviews/:id/submit" element={<ReviewFormPage />} />
+            <Route path="/performance/reviews/:id/calibration" element={<CalibrationPage />} />
+            <Route path="/performance/reviews/:id/results/:employeeId" element={<ReviewResultsPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/profile/me" element={<PersonalSummaryPage />} />

@@ -1,4 +1,4 @@
-import { useQuery } from '@tantml:query';
+import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { BarChart3, TrendingUp, Users, DollarSign, Award, Target } from 'lucide-react';
 import axios from 'axios';

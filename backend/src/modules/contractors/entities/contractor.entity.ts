@@ -16,6 +16,12 @@ export enum PaymentFrequency {
   PROJECT_BASED = 'PROJECT_BASED',
 }
 
+export enum IR35Status {
+  INSIDE = 'INSIDE',
+  OUTSIDE = 'OUTSIDE',
+  UNDETERMINED = 'UNDETERMINED',
+}
+
 @Entity('contractors')
 export class Contractor extends BaseEntity {
   @Column()
@@ -91,6 +97,21 @@ export class Contractor extends BaseEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @Column({ type: 'enum', enum: IR35Status, default: IR35Status.UNDETERMINED })
+  ir35Status: IR35Status;
+
+  @Column({ type: 'date', nullable: true })
+  ir35AssessmentDate?: Date;
+
+  @Column({ type: 'text', nullable: true })
+  ir35Notes?: string;
+
+  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0 })
+  totalPaid: number;
+
+  @Column({ type: 'int', default: 0 })
+  invoiceCount: number;
 }
 
 @Entity('contractor_payments')
@@ -124,6 +145,53 @@ export class ContractorPayment extends BaseEntity {
 
   @Column({ nullable: true })
   invoiceNumber?: string;
+
+  @Column({ nullable: true })
+  invoiceUrl?: string;
+
+  @Column({ type: 'text', nullable: true })
+  notes?: string;
+}
+
+@Entity('contractor_invoices')
+export class ContractorInvoice extends BaseEntity {
+  @Column()
+  contractorId: string;
+
+  @Column()
+  organizationId: string;
+
+  @Column({ unique: true })
+  invoiceNumber: string;
+
+  @Column({ type: 'date' })
+  invoiceDate: Date;
+
+  @Column({ type: 'date' })
+  dueDate: Date;
+
+  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  amount: number;
+
+  @Column()
+  currency: string;
+
+  @Column({ type: 'enum', enum: ['DRAFT', 'SENT', 'PAID', 'OVERDUE', 'CANCELLED'], default: 'DRAFT' })
+  status: string;
+
+  @Column({ type: 'date', nullable: true })
+  paidDate?: Date;
+
+  @Column({ type: 'text', nullable: true })
+  description?: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  lineItems?: Array<{
+    description: string;
+    quantity: number;
+    rate: number;
+    amount: number;
+  }>;
 
   @Column({ nullable: true })
   invoiceUrl?: string;

@@ -139,6 +139,8 @@ import ISO30414Dashboard from './pages/iso30414/ISO30414Dashboard';
 import PositionsPage from './pages/positions/PositionsPage';
 import SkillsPage from './pages/skills/SkillsPage';
 import CompensationPage from './pages/compensation/CompensationPage';
+import ContractorsPage from './pages/contractors/ContractorsPage';
+import ContractorDetailPage from './pages/contractors/ContractorDetailPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -298,6 +300,10 @@ function App() {
             <Route path="/positions" element={<PositionsPage />} />
             <Route path="/skills" element={<SkillsPage />} />
             <Route path="/compensation" element={<CompensationPage />} />
+            
+            {/* Contractors Module Routes (NEW) */}
+            <Route path="/contractors" element={<ContractorsPage />} />
+            <Route path="/contractors/:id" element={<ContractorDetailPage />} />
           </Route>
 
           {/* Sign Module Routes */}

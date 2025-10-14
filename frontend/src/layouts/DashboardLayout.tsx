@@ -30,6 +30,10 @@ import {
   Shield,
   Scale,
   Edit,
+  Network,
+  Target,
+  Lightbulb,
+  Building,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -64,6 +68,15 @@ const navigation = [
   { name: 'Employment Law', href: '/legal/employment-law', icon: Scale },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Reports', href: '/reports', icon: FileText },
+  
+  // Enterprise Modules
+  { name: 'AI Governance', href: '/ai-governance', icon: Lightbulb },
+  { name: 'Cases & HRSD', href: '/cases', icon: FileText },
+  { name: 'ISO 30414', href: '/analytics/iso30414', icon: BarChart3 },
+  { name: 'Positions', href: '/positions', icon: Network },
+  { name: 'Skills', href: '/skills', icon: Award },
+  { name: 'Compensation', href: '/compensation', icon: Target },
+  
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 

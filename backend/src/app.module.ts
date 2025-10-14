@@ -66,7 +66,7 @@ import { SignModule } from './modules/sign/sign.module';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false, // IMPORTANT: Never use true in production! Use migrations instead
+        synchronize: process.env.NODE_ENV !== 'production', // Auto-create tables in dev, use migrations in prod
         logging: configService.get('DATABASE_LOGGING') === 'true',
         ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),

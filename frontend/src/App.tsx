@@ -149,6 +149,11 @@ import OrgChartPage from './pages/organization/OrgChartPage';
 import ComplianceOverviewPage from './pages/compliance/ComplianceDashboardPage';
 import DocumentsLibraryPage from './pages/documents/DocumentsLibraryPage';
 import NotificationsCenterPage from './pages/notifications/NotificationsCenterPage';
+import IAMOverviewPage from './pages/iam/IAMOverviewPage';
+import RolesManagementPage from './pages/iam/RolesManagementPage';
+import UserRolesPage from './pages/iam/UserRolesPage';
+import PermissionsMatrixPage from './pages/iam/PermissionsMatrixPage';
+import SecurityGroupsPage from './pages/iam/SecurityGroupsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -324,6 +329,13 @@ function App() {
             <Route path="/compliance/overview" element={<ComplianceOverviewPage />} />
             <Route path="/documents" element={<DocumentsLibraryPage />} />
             <Route path="/notifications" element={<NotificationsCenterPage />} />
+            
+            {/* IAM Module Routes (NEW) */}
+            <Route path="/iam" element={<IAMOverviewPage />} />
+            <Route path="/iam/roles" element={<RolesManagementPage />} />
+            <Route path="/iam/user-roles" element={<UserRolesPage />} />
+            <Route path="/iam/permissions" element={<PermissionsMatrixPage />} />
+            <Route path="/iam/security-groups" element={<SecurityGroupsPage />} />
           </Route>
 
           {/* Sign Module Routes */}

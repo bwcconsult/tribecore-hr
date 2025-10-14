@@ -159,6 +159,11 @@ import RolesManagementPage from './pages/iam/RolesManagementPage';
 import UserRolesPage from './pages/iam/UserRolesPage';
 import PermissionsMatrixPage from './pages/iam/PermissionsMatrixPage';
 import SecurityGroupsPage from './pages/iam/SecurityGroupsPage';
+import RoleAnalyticsDashboard from './pages/iam/RoleAnalyticsDashboard';
+import DelegationManagementPage from './pages/iam/DelegationManagementPage';
+import SoDViolationsPage from './pages/iam/SoDViolationsPage';
+import AuditLogViewerPage from './pages/iam/AuditLogViewerPage';
+import PolicySimulatorPage from './pages/iam/PolicySimulatorPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -346,6 +351,11 @@ function App() {
             <Route path="/iam/user-roles" element={<UserRolesPage />} />
             <Route path="/iam/permissions" element={<PermissionsMatrixPage />} />
             <Route path="/iam/security-groups" element={<SecurityGroupsPage />} />
+            <Route path="/iam/analytics" element={<RoleAnalyticsDashboard />} />
+            <Route path="/iam/delegations" element={<DelegationManagementPage />} />
+            <Route path="/iam/sod-violations" element={<SoDViolationsPage />} />
+            <Route path="/iam/audit-logs" element={<AuditLogViewerPage />} />
+            <Route path="/iam/policy-simulator" element={<PolicySimulatorPage />} />
           </Route>
 
           {/* Sign Module Routes */}

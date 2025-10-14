@@ -50,8 +50,8 @@ export class Employee extends BaseEntity {
   @Column({ nullable: true })
   taxNumber?: string;
 
-  @Column({ nullable: true })
-  taxReference?: string; // UK PAYE Tax Reference
+  // @Column({ nullable: true })
+  // taxReference?: string; // UK PAYE Tax Reference - Temporarily disabled (migration needed)
 
   @Column({ nullable: true })
   niNumber?: string; // UK National Insurance Number

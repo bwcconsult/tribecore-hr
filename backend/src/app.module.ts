@@ -67,6 +67,7 @@ import { SignModule } from './modules/sign/sign.module';
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: process.env.NODE_ENV !== 'production', // Auto-create tables in dev, use migrations in prod
+        dropSchema: process.env.DROP_SCHEMA === 'true', // TEMPORARY: Drop and recreate all tables on startup (USE WITH CAUTION!)
         logging: configService.get('DATABASE_LOGGING') === 'true',
         ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),

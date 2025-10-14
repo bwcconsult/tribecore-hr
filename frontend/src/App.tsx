@@ -141,6 +141,9 @@ import SkillsPage from './pages/skills/SkillsPage';
 import CompensationPage from './pages/compensation/CompensationPage';
 import ContractorsPage from './pages/contractors/ContractorsPage';
 import ContractorDetailPage from './pages/contractors/ContractorDetailPage';
+import SurveysPage from './pages/surveys/SurveysPage';
+import SurveyBuilderPage from './pages/surveys/SurveyBuilderPage';
+import SurveyResultsPage from './pages/surveys/SurveyResultsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -304,6 +307,11 @@ function App() {
             {/* Contractors Module Routes (NEW) */}
             <Route path="/contractors" element={<ContractorsPage />} />
             <Route path="/contractors/:id" element={<ContractorDetailPage />} />
+            
+            {/* Surveys Module Routes (NEW) */}
+            <Route path="/surveys" element={<SurveysPage />} />
+            <Route path="/surveys/builder/:id" element={<SurveyBuilderPage />} />
+            <Route path="/surveys/:id/results" element={<SurveyResultsPage />} />
           </Route>
 
           {/* Sign Module Routes */}

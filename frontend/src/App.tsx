@@ -87,6 +87,7 @@ import OffboardingPage from './pages/offboarding/OffboardingPage';
 import OffboardingDashboard from './pages/offboarding/OffboardingDashboard';
 import CreateSeparationCasePage from './pages/offboarding/CreateSeparationCasePage';
 import OnboardingDashboard from './pages/onboarding/OnboardingDashboard';
+import CreateOnboardingCasePage from './pages/onboarding/CreateOnboardingCasePage';
 import RecruitmentDashboard from './pages/recruitment/RecruitmentDashboard';
 import CreateRequisitionPage from './pages/recruitment/CreateRequisitionPage';
 import CreateJobPage from './pages/recruitment/CreateJobPage';
@@ -249,6 +250,7 @@ function App() {
             <Route path="/offboarding/dashboard" element={<OffboardingDashboard />} />
             <Route path="/offboarding/create" element={<CreateSeparationCasePage />} />
             <Route path="/onboarding/dashboard" element={<OnboardingDashboard />} />
+            <Route path="/onboarding/create" element={<CreateOnboardingCasePage />} />
             <Route path="/recruitment/dashboard" element={<RecruitmentDashboard />} />
             <Route path="/recruitment/requisitions/new" element={<CreateRequisitionPage />} />
             <Route path="/recruitment/jobs/new" element={<CreateJobPage />} />

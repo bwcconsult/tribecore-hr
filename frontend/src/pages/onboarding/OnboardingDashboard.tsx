@@ -17,9 +17,10 @@ export default function OnboardingDashboard() {
       const response = await axiosInstance.get('/onboarding/cases', {
         params: { organizationId: 'ORG001' }
       });
-      setCases(response.data);
+      setCases(response.data || []);
     } catch (error) {
       console.error('Failed to load cases:', error);
+      setCases([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -39,11 +40,22 @@ export default function OnboardingDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-          <UserPlus className="w-8 h-8 text-blue-600" />
-          Onboarding Pipeline
-        </h1>
-        <p className="text-gray-600 mt-1">Manage new hire onboarding from offer to day 90</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <UserPlus className="w-8 h-8 text-blue-600" />
+              Onboarding Pipeline
+            </h1>
+            <p className="text-gray-600 mt-1">Manage new hire onboarding from offer to day 90</p>
+          </div>
+          <button
+            onClick={() => navigate('/onboarding/create')}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md"
+          >
+            <UserPlus className="w-5 h-5" />
+            Create Onboarding Case
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -98,8 +110,25 @@ export default function OnboardingDashboard() {
       {/* Timeline View */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h3 className="text-lg font-semibold mb-4">Upcoming Starts</h3>
-        <div className="space-y-4">
-          {cases.slice(0, 10).map(caseItem => (
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Loading onboarding cases...</p>
+          </div>
+        ) : cases.length === 0 ? (
+          <div className="text-center py-12">
+            <UserPlus className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg font-medium mb-2">No onboarding cases yet</p>
+            <p className="text-gray-400 mb-6">Create your first onboarding case to get started</p>
+            <button
+              onClick={() => navigate('/onboarding/create')}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create Onboarding Case
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {cases.slice(0, 10).map(caseItem => (
             <div
               key={caseItem.id}
               onClick={() => navigate(`/onboarding/${caseItem.id}`)}
@@ -142,7 +171,8 @@ export default function OnboardingDashboard() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

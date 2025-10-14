@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Brain,
   Shield,
@@ -50,12 +49,10 @@ export default function AIGovernanceDashboard() {
             Monitor and manage AI systems in compliance with EU AI Act regulations
           </p>
         </div>
-        <Link to="/ai-governance/register">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Register AI System
-          </Button>
-        </Link>
+        <Button onClick={() => toast.success('Register AI System - Coming soon!')}>
+          <Plus className="h-4 w-4 mr-2" />
+          Register AI System
+        </Button>
       </div>
 
       {/* Alert Banner */}
@@ -75,18 +72,14 @@ export default function AIGovernanceDashboard() {
               </ul>
               <div className="mt-3 flex gap-3">
                 {alerts.systemsDueForReview > 0 && (
-                  <Link to="/ai-governance/systems?filter=dueForReview">
-                    <Button variant="outline" size="sm">
-                      Review Systems
-                    </Button>
-                  </Link>
+                  <Button variant="outline" size="sm" onClick={() => toast('Review Systems - Coming soon!')}>
+                    Review Systems
+                  </Button>
                 )}
                 {alerts.decisionsRequiringReview > 0 && (
-                  <Link to="/ai-governance/decisions?filter=flagged">
-                    <Button variant="outline" size="sm">
-                      Review Decisions
-                    </Button>
-                  </Link>
+                  <Button variant="outline" size="sm" onClick={() => toast('Review Decisions - Coming soon!')}>
+                    Review Decisions
+                  </Button>
                 )}
               </div>
             </div>
@@ -244,45 +237,45 @@ export default function AIGovernanceDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <Link to="/ai-governance/systems">
-                <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Brain className="h-5 w-5 text-purple-600" />
-                      <span className="font-medium">View All AI Systems</span>
-                    </div>
-                    <span className="text-gray-400">→</span>
+              <button 
+                onClick={() => toast('View All AI Systems - Coming soon!')}
+                className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Brain className="h-5 w-5 text-purple-600" />
+                    <span className="font-medium">View All AI Systems</span>
                   </div>
-                </button>
-              </Link>
+                  <span className="text-gray-400">→</span>
+                </div>
+              </button>
 
-              <Link to="/ai-governance/decisions">
-                <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <FileCheck className="h-5 w-5 text-blue-600" />
-                      <span className="font-medium">Review AI Decisions</span>
-                    </div>
-                    {alerts.decisionsRequiringReview > 0 && (
-                      <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-1 rounded-full">
-                        {alerts.decisionsRequiringReview}
-                      </span>
-                    )}
+              <button 
+                onClick={() => toast('Review AI Decisions - Coming soon!')}
+                className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <FileCheck className="h-5 w-5 text-blue-600" />
+                    <span className="font-medium">Review AI Decisions</span>
                   </div>
-                </button>
-              </Link>
+                  {alerts.decisionsRequiringReview > 0 && (
+                    <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-1 rounded-full">
+                      {alerts.decisionsRequiringReview}
+                    </span>
+                  )}
+                </div>
+              </button>
 
-              <Link to="/ai-governance/compliance-report">
-                <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Shield className="h-5 w-5 text-green-600" />
-                      <span className="font-medium">Generate Compliance Report</span>
-                    </div>
-                    <span className="text-gray-400">→</span>
+              <button 
+                onClick={() => toast.success('Generating Compliance Report...')}
+                className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Shield className="h-5 w-5 text-green-600" />
+                    <span className="font-medium">Generate Compliance Report</span>
                   </div>
-                </button>
-              </Link>
+                  <span className="text-gray-400">→</span>
+                </div>
+              </button>
 
               <button 
                 onClick={() => toast.success('Register AI System - Modal opening soon!')}
@@ -305,11 +298,9 @@ export default function AIGovernanceDashboard() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Registered AI Systems</h2>
-            <Link to="/ai-governance/systems">
-              <Button variant="outline" size="sm">
-                View All
-              </Button>
-            </Link>
+            <Button variant="outline" size="sm" onClick={() => toast('View All AI Systems - Coming soon!')}>
+              View All
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -318,12 +309,10 @@ export default function AIGovernanceDashboard() {
               <Brain className="h-16 w-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 text-lg font-medium mb-2">No AI systems registered</p>
               <p className="text-gray-400 mb-6">Register your first AI system to start tracking compliance</p>
-              <Link to="/ai-governance/register">
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Register AI System
-                </Button>
-              </Link>
+              <Button onClick={() => toast.success('Register AI System - Coming soon!')}>
+                <Plus className="h-4 w-4 mr-2" />
+                Register AI System
+              </Button>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -382,11 +371,9 @@ export default function AIGovernanceDashboard() {
                           : 'N/A'}
                       </td>
                       <td className="py-3">
-                        <Link to={`/ai-governance/systems/${system.id}`}>
-                          <Button variant="outline" size="sm">
-                            View
-                          </Button>
-                        </Link>
+                        <Button variant="outline" size="sm" onClick={() => toast('View System Details - Coming soon!')}>
+                          View
+                        </Button>
                       </td>
                     </tr>
                   ))}

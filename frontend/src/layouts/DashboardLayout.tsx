@@ -34,6 +34,11 @@ import {
   Target,
   Lightbulb,
   Building,
+  ClipboardList,
+  Bell,
+  FolderOpen,
+  ShieldCheck,
+  Plug,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -76,6 +81,15 @@ const navigation = [
   { name: 'Positions', href: '/positions', icon: Network },
   { name: 'Skills', href: '/skills', icon: Award },
   { name: 'Compensation', href: '/compensation', icon: Target },
+  { name: 'Contractors', href: '/contractors', icon: Briefcase },
+  { name: 'Surveys', href: '/surveys', icon: ClipboardList },
+  
+  // Admin & Tools
+  { name: 'Notifications', href: '/notifications', icon: Bell },
+  { name: 'Documents', href: '/documents', icon: FolderOpen },
+  { name: 'Integrations', href: '/integrations', icon: Plug },
+  { name: 'Org Chart', href: '/organization/chart', icon: Building },
+  { name: 'Compliance', href: '/compliance/overview', icon: ShieldCheck },
   
   { name: 'Settings', href: '/settings', icon: Settings },
 ];

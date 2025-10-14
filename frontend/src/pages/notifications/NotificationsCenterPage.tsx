@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Bell,
   CheckCircle,
@@ -10,77 +11,34 @@ import {
   Users,
   FileText,
   AlertCircle,
+  RefreshCw,
+  Loader2,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
-
-interface Notification {
-  id: string;
-  type: 'payroll' | 'leave' | 'performance' | 'system' | 'approval';
-  title: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-  link?: string;
-}
+import { useNotifications } from '../../hooks/useNotifications';
+import { Notification } from '../../services/notificationsService';
 
 export default function NotificationsCenterPage() {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: '1',
-      type: 'payroll',
-      title: 'Payroll Processed',
-      message: 'October payroll has been successfully processed',
-      timestamp: '2024-10-31T10:30:00',
-      read: false,
-      link: '/payroll',
-    },
-    {
-      id: '2',
-      type: 'leave',
-      title: 'Leave Request Approved',
-      message: 'Your leave request for Nov 15-20 has been approved',
-      timestamp: '2024-10-30T14:20:00',
-      read: false,
-      link: '/leave',
-    },
-    {
-      id: '3',
-      type: 'approval',
-      title: 'Expense Claim Approved',
-      message: 'Your expense claim #EC-1234 has been approved',
-      timestamp: '2024-10-29T09:15:00',
-      read: true,
-      link: '/expenses',
-    },
-    {
-      id: '4',
-      type: 'performance',
-      title: 'Performance Review Due',
-      message: 'Your Q4 performance review is due in 5 days',
-      timestamp: '2024-10-28T16:45:00',
-      read: true,
-      link: '/performance',
-    },
-    {
-      id: '5',
-      type: 'system',
-      title: 'System Update',
-      message: 'TribeCore will undergo maintenance on Nov 5th',
-      timestamp: '2024-10-27T11:00:00',
-      read: true,
-    },
-  ]);
+  const {
+    notifications,
+    unreadCount,
+    loading,
+    error,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    refresh,
+  } = useNotifications();
 
   const filteredNotifications = notifications.filter((notif) => {
-    if (filter === 'unread') return !notif.read;
-    if (filter === 'read') return notif.read;
+    if (filter === 'unread') return !notif.isRead;
+    if (filter === 'read') return notif.isRead;
     return true;
   });
-
-  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -99,23 +57,30 @@ export default function NotificationsCenterPage() {
     }
   };
 
-  const markAsRead = (id: string) => {
-    setNotifications(notifications.map((n) => (n.id === id ? { ...n, read: true } : n)));
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      await markAsRead(id);
+    } catch (error) {
+      toast.error('Failed to mark as read');
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, read: true })));
-    toast.success('All notifications marked as read');
+  const handleMarkAllAsRead = async () => {
+    try {
+      await markAllAsRead();
+      toast.success('All notifications marked as read');
+    } catch (error) {
+      toast.error('Failed to mark all as read');
+    }
   };
 
-  const deleteNotification = (id: string) => {
-    setNotifications(notifications.filter((n) => n.id !== id));
-    toast.success('Notification deleted');
-  };
-
-  const clearAll = () => {
-    setNotifications([]);
-    toast.success('All notifications cleared');
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteNotification(id);
+      toast.success('Notification deleted');
+    } catch (error) {
+      toast.error('Failed to delete notification');
+    }
   };
 
   const getTimeAgo = (timestamp: string) => {
@@ -216,16 +181,14 @@ export default function NotificationsCenterPage() {
             </div>
             <div className="flex gap-2">
               {unreadCount > 0 && (
-                <Button variant="outline" size="sm" onClick={markAllAsRead}>
+                <Button size="sm" onClick={handleMarkAllAsRead}>
                   Mark All Read
                 </Button>
               )}
-              {notifications.length > 0 && (
-                <Button variant="outline" size="sm" onClick={clearAll}>
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Clear All
-                </Button>
-              )}
+              <Button variant="outline" size="sm" onClick={refresh}>
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button>
             </div>
           </div>
         </CardContent>
@@ -237,13 +200,23 @@ export default function NotificationsCenterPage() {
           <CardTitle>Recent Notifications</CardTitle>
         </CardHeader>
         <CardContent>
-          {filteredNotifications.length > 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+              <span className="ml-3 text-gray-600">Loading notifications...</span>
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center py-12">
+              <AlertCircle className="h-8 w-8 text-red-600" />
+              <span className="ml-3 text-red-600">{error}</span>
+            </div>
+          ) : filteredNotifications.length > 0 ? (
             <div className="space-y-2">
               {filteredNotifications.map((notif) => (
                 <div
                   key={notif.id}
                   className={`p-4 rounded-lg border transition-all ${
-                    notif.read ? 'bg-white border-gray-200' : 'bg-blue-50 border-blue-200'
+                    notif.isRead ? 'bg-white border-gray-200' : 'bg-blue-50 border-blue-200'
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -251,16 +224,16 @@ export default function NotificationsCenterPage() {
                     <div className="flex-1">
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className={`font-medium ${notif.read ? 'text-gray-900' : 'text-blue-900'}`}>
+                          <p className={`font-medium ${notif.isRead ? 'text-gray-900' : 'text-blue-900'}`}>
                             {notif.title}
                           </p>
                           <p className="text-sm text-gray-600 mt-1">{notif.message}</p>
-                          <p className="text-xs text-gray-500 mt-2">{getTimeAgo(notif.timestamp)}</p>
+                          <p className="text-xs text-gray-500 mt-2">{getTimeAgo(notif.createdAt)}</p>
                         </div>
                         <div className="flex gap-2">
-                          {!notif.read && (
+                          {!notif.isRead && (
                             <button
-                              onClick={() => markAsRead(notif.id)}
+                              onClick={() => handleMarkAsRead(notif.id)}
                               className="p-2 hover:bg-white rounded"
                               title="Mark as read"
                             >
@@ -268,7 +241,7 @@ export default function NotificationsCenterPage() {
                             </button>
                           )}
                           <button
-                            onClick={() => deleteNotification(notif.id)}
+                            onClick={() => handleDelete(notif.id)}
                             className="p-2 hover:bg-white rounded"
                             title="Delete"
                           >

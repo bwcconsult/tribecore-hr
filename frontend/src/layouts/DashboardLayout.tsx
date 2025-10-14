@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -41,6 +41,7 @@ import {
   Plug,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
+import { useNotifications } from '../hooks/useNotifications';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -98,7 +99,9 @@ const navigation = [
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  const { unreadCount } = useNotifications();
 
   const handleLogout = () => {
     logout();
@@ -182,6 +185,20 @@ export default function DashboardLayout() {
 
           <div className="flex flex-1 justify-end gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex items-center gap-x-4 lg:gap-x-6">
+              {/* Notification Bell */}
+              <button
+                onClick={() => navigate('/notifications')}
+                className="relative rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                title="Notifications"
+              >
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
               <div className="flex items-center gap-3">
                 <div className="text-right">
                   <p className="text-sm font-medium text-gray-900">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Building2, Users, Plus, X, Search, Edit, Trash2, UserPlus } from 'lucide-react';
+import { Building2, Users, Plus, X, Search, Edit, Trash2, UserPlus, Link as LinkIcon, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
@@ -12,12 +12,25 @@ interface SecurityGroup {
   manager?: string;
   memberCount: number;
   parentGroup?: string;
+  usedInDelegations?: number;
+}
+
+interface DelegationScope {
+  id: string;
+  delegator: string;
+  delegate: string;
+  role: string;
+  startDate: string;
+  endDate: string;
+  status: 'ACTIVE' | 'PENDING' | 'EXPIRED';
 }
 
 export default function SecurityGroupsPage() {
   const [search, setSearch] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [filterType, setFilterType] = useState('all');
+  const [showDelegationModal, setShowDelegationModal] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState<SecurityGroup | null>(null);
 
   const [groups, setGroups] = useState<SecurityGroup[]>([
     {
@@ -27,6 +40,7 @@ export default function SecurityGroupsPage() {
       description: 'Engineering department - all technical teams',
       manager: 'John Smith',
       memberCount: 45,
+      usedInDelegations: 5,
     },
     {
       id: '2',
@@ -53,6 +67,7 @@ export default function SecurityGroupsPage() {
       description: 'HR department',
       manager: 'Emily Davis',
       memberCount: 8,
+      usedInDelegations: 3,
     },
     {
       id: '5',
@@ -61,6 +76,7 @@ export default function SecurityGroupsPage() {
       description: 'Finance department',
       manager: 'David Wilson',
       memberCount: 6,
+      usedInDelegations: 2,
     },
     {
       id: '6',
@@ -249,10 +265,27 @@ export default function SecurityGroupsPage() {
                 </div>
               )}
 
-              <div className="flex items-center gap-2 text-sm text-gray-700 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-700 mb-2">
                 <UserPlus className="h-4 w-4" />
                 <span>{group.memberCount} members</span>
               </div>
+
+              {group.usedInDelegations && group.usedInDelegations > 0 && (
+                <div 
+                  onClick={() => {
+                    setSelectedGroup(group);
+                    setShowDelegationModal(true);
+                  }}
+                  className="flex items-center gap-2 text-sm text-blue-700 mb-4 bg-blue-50 px-2 py-1 rounded cursor-pointer hover:bg-blue-100 transition-colors"
+                >
+                  <LinkIcon className="h-4 w-4" />
+                  <span>Used in {group.usedInDelegations} delegation(s)</span>
+                  <ExternalLink className="h-3 w-3" />
+                </div>
+              )}
+              {(!group.usedInDelegations || group.usedInDelegations === 0) && (
+                <div className="h-4 mb-4"></div>
+              )}
 
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" className="flex-1">
@@ -358,6 +391,108 @@ export default function SecurityGroupsPage() {
                   Create Group
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delegation Scope Details Modal */}
+      {showDelegationModal && selectedGroup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h2 className="text-xl font-bold">Delegation Scope: {selectedGroup.name}</h2>
+                <p className="text-sm text-gray-600 mt-1">Active delegations restricted to this security group</p>
+              </div>
+              <button onClick={() => setShowDelegationModal(false)}>
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
+              <p className="text-sm text-blue-900">
+                <strong>Scope Restriction:</strong> These delegations are limited to users within the <strong>{selectedGroup.name}</strong> security group.
+                Delegates can only act on behalf of delegators for resources within this scope.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {/* Mock delegation data */}
+              {[
+                {
+                  id: 'del-1',
+                  delegator: 'Sarah Johnson (HR Manager)',
+                  delegate: 'John Smith',
+                  role: 'HR_MANAGER',
+                  startDate: '2025-01-10',
+                  endDate: '2025-01-20',
+                  status: 'ACTIVE' as const,
+                },
+                {
+                  id: 'del-2',
+                  delegator: 'Mike Brown',
+                  delegate: 'Emily Davis',
+                  role: 'MANAGER',
+                  startDate: '2025-01-12',
+                  endDate: '2025-01-22',
+                  status: 'ACTIVE' as const,
+                },
+                {
+                  id: 'del-3',
+                  delegator: 'David Wilson',
+                  delegate: 'John Smith',
+                  role: 'ADMIN',
+                  startDate: '2025-01-05',
+                  endDate: '2025-01-15',
+                  status: 'ACTIVE' as const,
+                },
+              ].slice(0, selectedGroup.usedInDelegations || 0).map((delegation) => (
+                <div key={delegation.id} className="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Users className="h-4 w-4 text-blue-600" />
+                        <span className="font-semibold text-gray-900">{delegation.delegator}</span>
+                        <span className="text-gray-500">→</span>
+                        <span className="font-semibold text-gray-900">{delegation.delegate}</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <Building2 className="h-3 w-3" />
+                          <span>Role: <strong>{delegation.role}</strong></span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span>Scope: <strong>{selectedGroup.name}</strong></span>
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs text-gray-500">
+                        {new Date(delegation.startDate).toLocaleDateString()} - {new Date(delegation.endDate).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <span className="px-3 py-1 text-xs font-bold rounded bg-green-100 text-green-800">
+                      {delegation.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
+              <p className="text-sm text-yellow-900">
+                <strong>Note:</strong> When a delegation is scoped to a security group, the delegate inherits permissions
+                only for resources that belong to members of this group.
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setShowDelegationModal(false)}>Close</Button>
+              <Button onClick={() => {
+                window.location.href = '/iam/delegations';
+              }}>
+                <LinkIcon className="h-4 w-4 mr-2" />
+                Manage Delegations
+              </Button>
             </div>
           </div>
         </div>

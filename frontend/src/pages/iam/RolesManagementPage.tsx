@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Shield, Users, ChevronDown, ChevronRight, Search } from 'lucide-react';
+import { Shield, Users, ChevronDown, ChevronRight, Search, Code, GitBranch, ShieldAlert, Edit, Eye } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
+import { toast } from 'react-hot-toast';
 
 interface Role {
   id: string;
@@ -20,9 +21,20 @@ interface Permission {
   description: string;
 }
 
+interface SoDRule {
+  conflictsWith: string;
+  reason: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+}
+
 export default function RolesManagementPage() {
   const [expandedRole, setExpandedRole] = useState<string | null>('EMPLOYEE');
   const [search, setSearch] = useState('');
+  const [showPolicyEditor, setShowPolicyEditor] = useState(false);
+  const [showHierarchy, setShowHierarchy] = useState(false);
+  const [showSoDConfig, setShowSoDConfig] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [policyJson, setPolicyJson] = useState('{}');
 
   const roles: Role[] = [
     {
@@ -164,6 +176,16 @@ export default function RolesManagementPage() {
           <h1 className="text-3xl font-bold text-gray-900">Roles Management</h1>
           <p className="text-gray-600 mt-1">View and manage system roles and their permissions</p>
         </div>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setShowHierarchy(true)}>
+            <GitBranch className="h-4 w-4 mr-2" />
+            Hierarchy
+          </Button>
+          <Button variant="outline" onClick={() => setShowSoDConfig(true)}>
+            <ShieldAlert className="h-4 w-4 mr-2" />
+            SoD Rules
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -248,6 +270,26 @@ export default function RolesManagementPage() {
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${colorClasses.bg} ${colorClasses.text}`}>
                           {role.userCount} users
                         </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedRole(role);
+                            setPolicyJson(JSON.stringify({
+                              roleName: role.name,
+                              permissions: role.permissions,
+                              abacRules: {
+                                allowedCountries: ['UK', 'US'],
+                                requiresMFA: role.name.includes('ADMIN'),
+                                timeRestrictions: { workHours: '9am-5pm' }
+                              }
+                            }, null, 2));
+                            setShowPolicyEditor(true);
+                          }}
+                          className="p-1 hover:bg-gray-200 rounded"
+                          title="View Policy as Code"
+                        >
+                          <Code className="h-4 w-4 text-gray-600" />
+                        </button>
                       </div>
                       <p className="text-sm text-gray-600 mt-1">{role.description}</p>
                     </div>
@@ -290,6 +332,219 @@ export default function RolesManagementPage() {
           );
         })}
       </div>
+
+      {/* Policy as Code Editor Modal */}
+      {showPolicyEditor && selectedRole && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Code className="h-5 w-5" />
+                  Policy as Code - {selectedRole.displayName}
+                </CardTitle>
+                <button onClick={() => setShowPolicyEditor(false)} className="text-gray-400 hover:text-gray-600">
+                  <ChevronDown className="h-6 w-6" />
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="overflow-y-auto max-h-[70vh]">
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-900"><strong>Policy-as-Code:</strong> Define RBAC + ABAC rules in JSON format</p>
+              </div>
+              <textarea
+                value={policyJson}
+                onChange={(e) => setPolicyJson(e.target.value)}
+                className="w-full h-96 font-mono text-sm p-4 border rounded-lg bg-gray-50"
+                spellCheck={false}
+              />
+              <div className="flex justify-end gap-2 mt-4">
+                <Button variant="outline" onClick={() => setShowPolicyEditor(false)}>Cancel</Button>
+                <Button onClick={() => {
+                  toast.success('Policy saved successfully');
+                  setShowPolicyEditor(false);
+                }}>Save Policy</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Role Hierarchy Modal */}
+      {showHierarchy && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <GitBranch className="h-5 w-5" />
+                  Role Hierarchy Tree
+                </CardTitle>
+                <button onClick={() => setShowHierarchy(false)} className="text-gray-400 hover:text-gray-600">
+                  <ChevronDown className="h-6 w-6" />
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="overflow-y-auto max-h-[70vh]">
+              <div className="space-y-2">
+                {/* Super Admin - Root */}
+                <div className="border-l-4 border-red-500 pl-4">
+                  <div className="flex items-center gap-2 p-3 bg-red-50 rounded">
+                    <Shield className="h-5 w-5 text-red-600" />
+                    <span className="font-bold">SUPER_ADMIN</span>
+                    <span className="text-xs text-gray-600">→ Full system access</span>
+                  </div>
+                </div>
+
+                {/* Admin - Level 1 */}
+                <div className="ml-8 border-l-4 border-purple-500 pl-4">
+                  <div className="flex items-center gap-2 p-3 bg-purple-50 rounded">
+                    <Shield className="h-5 w-5 text-purple-600" />
+                    <span className="font-bold">ADMIN</span>
+                    <span className="text-xs text-gray-600">→ Org management</span>
+                  </div>
+                </div>
+
+                {/* Managers - Level 2 */}
+                <div className="ml-16 space-y-2">
+                  <div className="border-l-4 border-blue-500 pl-4">
+                    <div className="flex items-center gap-2 p-3 bg-blue-50 rounded">
+                      <Shield className="h-5 w-5 text-blue-600" />
+                      <span className="font-bold">HR_MANAGER</span>
+                      <span className="text-xs text-gray-600">→ HR oversight</span>
+                    </div>
+                  </div>
+                  <div className="border-l-4 border-yellow-500 pl-4">
+                    <div className="flex items-center gap-2 p-3 bg-yellow-50 rounded">
+                      <Shield className="h-5 w-5 text-yellow-600" />
+                      <span className="font-bold">FINANCE_MANAGER</span>
+                      <span className="text-xs text-gray-600">→ Financial oversight</span>
+                    </div>
+                  </div>
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <div className="flex items-center gap-2 p-3 bg-green-50 rounded">
+                      <Shield className="h-5 w-5 text-green-600" />
+                      <span className="font-bold">MANAGER</span>
+                      <span className="text-xs text-gray-600">→ Team management</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Specialists - Level 3 */}
+                <div className="ml-24 border-l-4 border-orange-500 pl-4">
+                  <div className="flex items-center gap-2 p-3 bg-orange-50 rounded">
+                    <Shield className="h-5 w-5 text-orange-600" />
+                    <span className="font-bold">FINANCE</span>
+                    <span className="text-xs text-gray-600">→ Financial operations</span>
+                  </div>
+                </div>
+
+                {/* Employee - Base */}
+                <div className="ml-32 border-l-4 border-gray-500 pl-4">
+                  <div className="flex items-center gap-2 p-3 bg-gray-50 rounded">
+                    <Shield className="h-5 w-5 text-gray-600" />
+                    <span className="font-bold">EMPLOYEE</span>
+                    <span className="text-xs text-gray-600">→ Base role (all users)</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                <p className="text-sm text-blue-900"><strong>Inheritance:</strong> Higher-level roles inherit permissions from lower levels</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* SoD Configuration Modal */}
+      {showSoDConfig && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <ShieldAlert className="h-5 w-5" />
+                  Separation of Duties Rules
+                </CardTitle>
+                <button onClick={() => setShowSoDConfig(false)} className="text-gray-400 hover:text-gray-600">
+                  <ChevronDown className="h-6 w-6" />
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="overflow-y-auto max-h-[70vh]">
+              <div className="space-y-4">
+                {/* ADMIN conflicts */}
+                <div className="border-l-4 border-red-500 p-4 bg-red-50 rounded">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ShieldAlert className="h-5 w-5 text-red-600" />
+                    <span className="font-bold text-gray-900">ADMIN</span>
+                    <span className="text-xs px-2 py-1 bg-red-200 text-red-800 rounded font-bold">CRITICAL</span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">Cannot be combined with:</p>
+                  <ul className="space-y-1 text-sm">
+                    <li className="flex items-center gap-2">
+                      <span className="text-red-600">✗</span>
+                      <code className="px-2 py-1 bg-white rounded">FINANCE_MANAGER</code>
+                      <span className="text-gray-600">- Separation of IT and Finance</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* FINANCE_MANAGER conflicts */}
+                <div className="border-l-4 border-orange-500 p-4 bg-orange-50 rounded">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ShieldAlert className="h-5 w-5 text-orange-600" />
+                    <span className="font-bold text-gray-900">FINANCE_MANAGER</span>
+                    <span className="text-xs px-2 py-1 bg-orange-200 text-orange-800 rounded font-bold">HIGH</span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">Cannot be combined with:</p>
+                  <ul className="space-y-1 text-sm">
+                    <li className="flex items-center gap-2">
+                      <span className="text-orange-600">✗</span>
+                      <code className="px-2 py-1 bg-white rounded">FINANCE</code>
+                      <span className="text-gray-600">- Cannot approve own work</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-orange-600">✗</span>
+                      <code className="px-2 py-1 bg-white rounded">ADMIN</code>
+                      <span className="text-gray-600">- Separation of IT and Finance</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* HR_MANAGER conflicts */}
+                <div className="border-l-4 border-yellow-500 p-4 bg-yellow-50 rounded">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ShieldAlert className="h-5 w-5 text-yellow-600" />
+                    <span className="font-bold text-gray-900">HR_MANAGER</span>
+                    <span className="text-xs px-2 py-1 bg-yellow-200 text-yellow-800 rounded font-bold">MEDIUM</span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">Cannot be combined with:</p>
+                  <ul className="space-y-1 text-sm">
+                    <li className="flex items-center gap-2">
+                      <span className="text-yellow-600">✗</span>
+                      <code className="px-2 py-1 bg-white rounded">FINANCE_MANAGER</code>
+                      <span className="text-gray-600">- Separation of HR and Payroll approval</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded">
+                  <p className="text-sm text-blue-900"><strong>SoD Rules:</strong> These conflicts are automatically detected and flagged in the SoD Violations page</p>
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setShowSoDConfig(false)}>Close</Button>
+                  <Button onClick={() => {
+                    toast.success('SoD rules saved');
+                    setShowSoDConfig(false);
+                  }}>Save Rules</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

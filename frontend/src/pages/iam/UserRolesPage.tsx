@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UserCog, Search, Shield, X, Plus, Check } from 'lucide-react';
+import { UserCog, Search, Shield, X, Plus, Check, AlertTriangle, UserPlus, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
@@ -10,6 +10,16 @@ interface User {
   email: string;
   department: string;
   roles: string[];
+  activeDelegations?: Delegation[];
+}
+
+interface Delegation {
+  id: string;
+  delegatedRole: string;
+  delegator: string;
+  startDate: string;
+  endDate: string;
+  status: 'ACTIVE' | 'PENDING' | 'EXPIRED';
 }
 
 export default function UserRolesPage() {
@@ -25,6 +35,16 @@ export default function UserRolesPage() {
       email: 'john.smith@company.com',
       department: 'Engineering',
       roles: ['EMPLOYEE', 'MANAGER'],
+      activeDelegations: [
+        {
+          id: 'del-1',
+          delegatedRole: 'HR_MANAGER',
+          delegator: 'Sarah Johnson',
+          startDate: '2025-01-10',
+          endDate: '2025-01-20',
+          status: 'ACTIVE',
+        },
+      ],
     },
     {
       id: '2',
@@ -32,6 +52,7 @@ export default function UserRolesPage() {
       email: 'sarah.johnson@company.com',
       department: 'Human Resources',
       roles: ['EMPLOYEE', 'HR_MANAGER'],
+      activeDelegations: [],
     },
     {
       id: '3',
@@ -39,6 +60,7 @@ export default function UserRolesPage() {
       email: 'mike.brown@company.com',
       department: 'Finance',
       roles: ['EMPLOYEE', 'FINANCE_MANAGER'],
+      activeDelegations: [],
     },
     {
       id: '4',
@@ -46,6 +68,16 @@ export default function UserRolesPage() {
       email: 'emily.davis@company.com',
       department: 'Marketing',
       roles: ['EMPLOYEE'],
+      activeDelegations: [
+        {
+          id: 'del-2',
+          delegatedRole: 'MANAGER',
+          delegator: 'John Smith',
+          startDate: '2025-01-12',
+          endDate: '2025-01-22',
+          status: 'ACTIVE',
+        },
+      ],
     },
     {
       id: '5',
@@ -53,6 +85,7 @@ export default function UserRolesPage() {
       email: 'david.wilson@company.com',
       department: 'IT',
       roles: ['EMPLOYEE', 'ADMIN'],
+      activeDelegations: [],
     },
   ]);
 
@@ -88,12 +121,41 @@ export default function UserRolesPage() {
     return colors[role?.color || 'gray'];
   };
 
+  const checkSoDConflict = (existingRoles: string[], newRole: string): string | null => {
+    const conflicts: Record<string, string[]> = {
+      'ADMIN': ['FINANCE_MANAGER'],
+      'FINANCE_MANAGER': ['ADMIN', 'FINANCE'],
+      'FINANCE': ['FINANCE_MANAGER'],
+      'HR_MANAGER': ['FINANCE_MANAGER'],
+    };
+    
+    for (const existingRole of existingRoles) {
+      if (conflicts[newRole]?.includes(existingRole)) {
+        return `SoD Violation: ${newRole} conflicts with ${existingRole}`;
+      }
+      if (conflicts[existingRole]?.includes(newRole)) {
+        return `SoD Violation: ${newRole} conflicts with ${existingRole}`;
+      }
+    }
+    return null;
+  };
+
   const handleAddRole = (userId: string, roleName: string) => {
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+
+    // Check for SoD conflicts
+    const conflict = checkSoDConflict(user.roles, roleName);
+    if (conflict) {
+      toast.error(conflict);
+      return;
+    }
+
     setUsers(
-      users.map((user) =>
-        user.id === userId
-          ? { ...user, roles: [...user.roles, roleName] }
-          : user
+      users.map((u) =>
+        u.id === userId
+          ? { ...u, roles: [...u.roles, roleName] }
+          : u
       )
     );
     toast.success(`Role ${roleName} added to ${selectedUser?.name}`);
@@ -145,12 +207,12 @@ export default function UserRolesPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Multiple Roles</p>
-                <p className="text-2xl font-bold text-orange-600 mt-1">
-                  {users.filter((u) => u.roles.length > 1).length}
+                <p className="text-sm text-gray-600">Active Delegations</p>
+                <p className="text-2xl font-bold text-blue-600 mt-1">
+                  {users.reduce((sum, u) => sum + (u.activeDelegations?.length || 0), 0)}
                 </p>
               </div>
-              <Shield className="h-8 w-8 text-orange-600" />
+              <UserPlus className="h-8 w-8 text-blue-600" />
             </div>
           </CardContent>
         </Card>
@@ -215,23 +277,36 @@ export default function UserRolesPage() {
                       <span className="text-sm text-gray-900">{user.department}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <div className="flex flex-wrap gap-2">
-                        {user.roles.map((role) => (
-                          <span
-                            key={role}
-                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(role)}`}
-                          >
-                            {role}
-                            {role !== 'EMPLOYEE' && (
-                              <button
-                                onClick={() => handleRemoveRole(user.id, role)}
-                                className="hover:bg-black/10 rounded-full p-0.5"
-                              >
-                                <X className="h-3 w-3" />
-                              </button>
-                            )}
-                          </span>
-                        ))}
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap gap-2">
+                          {user.roles.map((role) => (
+                            <span
+                              key={role}
+                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(role)}`}
+                            >
+                              {role}
+                              {role !== 'EMPLOYEE' && (
+                                <button
+                                  onClick={() => handleRemoveRole(user.id, role)}
+                                  className="hover:bg-black/10 rounded-full p-0.5"
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              )}
+                            </span>
+                          ))}
+                        </div>
+                        {user.activeDelegations && user.activeDelegations.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {user.activeDelegations.map((del) => (
+                              <div key={del.id} className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                                <UserPlus className="h-3 w-3" />
+                                {del.delegatedRole}
+                                <span className="text-xs text-blue-600">(delegated)</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td className="py-4 px-4 text-right">
@@ -261,30 +336,40 @@ export default function UserRolesPage() {
             <div className="space-y-2">
               {availableRoles.map((role) => {
                 const hasRole = selectedUser.roles.includes(role.name);
+                const sodConflict = checkSoDConflict(selectedUser.roles, role.name);
                 return (
                   <button
                     key={role.name}
                     onClick={() => {
-                      if (!hasRole) {
+                      if (!hasRole && !sodConflict) {
                         handleAddRole(selectedUser.id, role.name);
                         setShowRoleModal(false);
                       }
                     }}
-                    disabled={hasRole}
+                    disabled={hasRole || !!sodConflict}
                     className={`w-full flex items-center justify-between p-3 rounded-lg border-2 transition-colors ${
                       hasRole
                         ? 'bg-gray-50 border-gray-200 cursor-not-allowed opacity-50'
+                        : sodConflict
+                        ? 'bg-red-50 border-red-300 cursor-not-allowed'
                         : 'hover:border-blue-500 border-gray-200'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-1">
                       <Shield className={`h-5 w-5 text-${role.color}-600`} />
-                      <div className="text-left">
+                      <div className="text-left flex-1">
                         <p className="font-medium text-gray-900">{role.displayName}</p>
                         <p className="text-xs text-gray-600">{role.name}</p>
+                        {sodConflict && (
+                          <div className="flex items-center gap-1 mt-1 text-xs text-red-700">
+                            <AlertTriangle className="h-3 w-3" />
+                            <span>SoD Conflict</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                     {hasRole && <Check className="h-5 w-5 text-green-600" />}
+                    {sodConflict && <AlertTriangle className="h-5 w-5 text-red-600" />}
                   </button>
                 );
               })}

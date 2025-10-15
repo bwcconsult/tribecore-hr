@@ -11,13 +11,6 @@ import {
 } from 'typeorm';
 import { Organization } from '../../organization/entities/organization.entity';
 import { User } from '../../users/entities/user.entity';
-import { ContractClause } from './contract-clause.entity';
-import { Approval } from './approval.entity';
-import { NegotiationVersion } from './negotiation-version.entity';
-import { Obligation } from './obligation.entity';
-import { Renewal } from './renewal.entity';
-import { Attachment } from './attachment.entity';
-import { Dispute } from './dispute.entity';
 
 export enum ContractType {
   EMPLOYMENT = 'EMPLOYMENT',
@@ -274,24 +267,24 @@ export class Contract {
   updatedAt: Date;
 
   // Relations
-  @OneToMany(() => ContractClause, (clause) => clause.contract)
-  clauses: ContractClause[];
+  @OneToMany('ContractClause', 'contract')
+  clauses: any[];
 
-  @OneToMany(() => Approval, (approval) => approval.contract)
-  approvals: Approval[];
+  @OneToMany('Approval', 'contract')
+  approvals: any[];
 
-  @OneToMany(() => NegotiationVersion, (version) => version.contract)
-  versions: NegotiationVersion[];
+  @OneToMany('NegotiationVersion', 'contract')
+  versions: any[];
 
-  @OneToMany(() => Obligation, (obligation) => obligation.contract)
-  obligations: Obligation[];
+  @OneToMany('Obligation', 'contract')
+  obligations: any[];
 
-  @OneToMany(() => Renewal, (renewal) => renewal.contract)
-  renewals: Renewal[];
+  @OneToMany('Renewal', 'contract')
+  renewals: any[];
 
-  @OneToMany(() => Attachment, (attachment) => attachment.contract)
-  attachments: Attachment[];
+  @OneToMany('Attachment', 'contract')
+  attachments: any[];
 
-  @OneToMany(() => Dispute, (dispute) => dispute.contract)
-  disputes: Dispute[];
+  @OneToMany('Dispute', 'contract')
+  disputes: any[];
 }

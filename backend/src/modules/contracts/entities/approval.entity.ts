@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { Contract } from './contract.entity';
 import { User } from '../../users/entities/user.entity';
 
 export enum ApprovalStatus {
@@ -41,9 +40,9 @@ export class Approval {
   @Column()
   contractId: string;
 
-  @ManyToOne(() => Contract, (contract) => contract.approvals)
+  @ManyToOne('Contract', 'approvals')
   @JoinColumn({ name: 'contractId' })
-  contract: Contract;
+  contract: any;
 
   @Column({ type: 'int' })
   step: number; // Order in approval chain

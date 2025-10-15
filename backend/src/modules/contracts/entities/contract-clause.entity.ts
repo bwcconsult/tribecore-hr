@@ -7,7 +7,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Contract } from './contract.entity';
 import { ClauseLibrary } from './clause-library.entity';
 
 @Entity('contract_clauses')
@@ -18,9 +17,9 @@ export class ContractClause {
   @Column()
   contractId: string;
 
-  @ManyToOne(() => Contract, (contract) => contract.clauses)
+  @ManyToOne('Contract', 'clauses')
   @JoinColumn({ name: 'contractId' })
-  contract: Contract;
+  contract: any;
 
   @Column({ nullable: true })
   clauseLibraryId: string;

@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { Contract } from './contract.entity';
 import { User } from '../../users/entities/user.entity';
 
 export enum RenewalDecision {
@@ -39,9 +38,9 @@ export class Renewal {
   @Column()
   contractId: string;
 
-  @ManyToOne(() => Contract, (contract) => contract.renewals)
+  @ManyToOne('Contract', 'renewals')
   @JoinColumn({ name: 'contractId' })
-  contract: Contract;
+  contract: any;
 
   @Column({ type: 'date' })
   renewalDate: Date; // Date when renewal is due

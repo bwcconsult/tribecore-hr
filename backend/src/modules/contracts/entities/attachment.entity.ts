@@ -7,7 +7,6 @@ import {
   CreateDateColumn,
   Index,
 } from 'typeorm';
-import { Contract } from './contract.entity';
 import { User } from '../../users/entities/user.entity';
 
 export enum AttachmentType {
@@ -35,9 +34,9 @@ export class Attachment {
   @Column()
   contractId: string;
 
-  @ManyToOne(() => Contract, (contract) => contract.attachments)
+  @ManyToOne('Contract', 'attachments')
   @JoinColumn({ name: 'contractId' })
-  contract: Contract;
+  contract: any;
 
   @Column({
     type: 'enum',

@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { Contract } from './contract.entity';
 import { User } from '../../users/entities/user.entity';
 
 export enum ObligationType {
@@ -48,9 +47,9 @@ export class Obligation {
   @Column()
   contractId: string;
 
-  @ManyToOne(() => Contract, (contract) => contract.obligations)
+  @ManyToOne('Contract', 'obligations')
   @JoinColumn({ name: 'contractId' })
-  contract: Contract;
+  contract: any;
 
   @Column({
     type: 'enum',

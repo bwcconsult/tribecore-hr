@@ -7,7 +7,6 @@ import {
   CreateDateColumn,
   Index,
 } from 'typeorm';
-import { Contract } from './contract.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('negotiation_versions')
@@ -19,9 +18,9 @@ export class NegotiationVersion {
   @Column()
   contractId: string;
 
-  @ManyToOne(() => Contract, (contract) => contract.versions)
+  @ManyToOne('Contract', 'versions')
   @JoinColumn({ name: 'contractId' })
-  contract: Contract;
+  contract: any;
 
   @Column({ type: 'int' })
   versionNumber: number;

@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ClientAccount, ClientTier } from './client-account.entity';
+import { ClientTier } from './client-account.entity';
 import { Workstream } from './workstream.entity';
 import { Environment } from './environment.entity';
 import { Risk } from './risk.entity';
@@ -33,9 +33,9 @@ export class ClientOnboardingCase extends BaseEntity {
   @Column()
   accountId: string;
 
-  @ManyToOne(() => ClientAccount, account => account.onboardingCases, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./client-account.entity').ClientAccount, account => account.onboardingCases, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'accountId' })
-  account: ClientAccount;
+  account: any;
 
   @Column({ nullable: true })
   csmId: string; // Customer Success Manager ID

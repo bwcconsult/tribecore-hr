@@ -1,7 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ClientContact } from './client-contact.entity';
-import { ClientOnboardingCase } from './client-onboarding-case.entity';
 
 export enum ClientTier {
   STANDARD = 'Standard',
@@ -51,11 +49,11 @@ export class ClientAccount extends BaseEntity {
   @Column({ default: true })
   active: boolean;
 
-  @OneToMany(() => ClientContact, contact => contact.account)
-  contacts: ClientContact[];
+  @OneToMany(() => require('./client-contact.entity').ClientContact, contact => contact.account)
+  contacts: any[];
 
-  @OneToMany(() => ClientOnboardingCase, onboardingCase => onboardingCase.account)
-  onboardingCases: ClientOnboardingCase[];
+  @OneToMany(() => require('./client-onboarding-case.entity').ClientOnboardingCase, onboardingCase => onboardingCase.account)
+  onboardingCases: any[];
 
   @Column({ type: 'jsonb', nullable: true })
   metadata: {

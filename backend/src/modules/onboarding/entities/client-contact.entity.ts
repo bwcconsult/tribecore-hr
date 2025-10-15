@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ClientAccount } from './client-account.entity';
 
 export enum ContactRole {
   SPONSOR = 'Sponsor',
@@ -16,9 +15,9 @@ export class ClientContact extends BaseEntity {
   @Column()
   accountId: string;
 
-  @ManyToOne(() => ClientAccount, account => account.contacts, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./client-account.entity').ClientAccount, account => account.contacts, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'accountId' })
-  account: ClientAccount;
+  account: any;
 
   @Column()
   name: string;

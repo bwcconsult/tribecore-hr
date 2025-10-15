@@ -20,7 +20,6 @@ export enum NodeType {
 @Entity('org_chart_nodes')
 export class OrgChartNode extends BaseEntity {
   @Column()
-  @Index()
   organizationId: string;
 
   @ManyToOne(() => Organization)
@@ -31,7 +30,6 @@ export class OrgChartNode extends BaseEntity {
   nodeType: NodeType;
 
   @Column({ nullable: true })
-  @Index()
   employeeId?: string; // Reference to Employee
 
   @Column({ nullable: true })

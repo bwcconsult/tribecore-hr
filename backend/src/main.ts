@@ -12,9 +12,33 @@ async function bootstrap() {
   const apiPrefix = configService.get('API_PREFIX') || 'api/v1';
   app.setGlobalPrefix(apiPrefix);
 
-  // CORS - Allow all origins (can be restricted later)
+  // CORS - Dynamic origin based on environment
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    configService.get('FRONTEND_URL'),
+    configService.get('CORS_ORIGIN'),
+  ].filter(Boolean);
+
   app.enableCors({
-    origin: true, // Allow all origins
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
+      
+      // Allow all origins in development
+      if (configService.get('NODE_ENV') === 'development') {
+        return callback(null, true);
+      }
+      
+      // Check whitelist in production
+      if (allowedOrigins.includes(origin) || allowedOrigins.some(o => origin.includes(o))) {
+        callback(null, true);
+      } else {
+        // Still allow in production for now (can be restricted later)
+        callback(null, true);
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
     allowedHeaders: [
@@ -25,11 +49,13 @@ async function bootstrap() {
       'Origin',
       'Access-Control-Request-Method',
       'Access-Control-Request-Headers',
+      'x-requested-with',
     ],
     exposedHeaders: [
       'Content-Length',
       'Content-Type',
       'Authorization',
+      'X-Total-Count',
     ],
     preflightContinue: false,
     optionsSuccessStatus: 204,

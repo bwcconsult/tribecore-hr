@@ -23,7 +23,6 @@ export enum PositionLevel {
 @Index(['organizationId', 'code'], { unique: true })
 export class Position extends BaseEntity {
   @Column()
-  @Index()
   organizationId: string;
 
   @ManyToOne(() => Organization)

@@ -13,7 +13,6 @@ import { Organization } from './organization.entity';
 @Index(['organizationId', 'code'], { unique: true })
 export class Department extends BaseEntity {
   @Column()
-  @Index()
   organizationId: string;
 
   @ManyToOne(() => Organization)

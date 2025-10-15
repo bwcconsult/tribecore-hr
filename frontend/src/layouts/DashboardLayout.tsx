@@ -52,6 +52,7 @@ const navigation = [
   { name: 'Employees', href: '/employees', icon: Users },
   { name: 'Recruitment', href: '/recruitment/dashboard', icon: Briefcase },
   { name: 'Onboarding', href: '/onboarding/dashboard', icon: UserPlus },
+  { name: 'Customer Onboarding', href: '/cxo', icon: Building },
   { name: 'Offboarding', href: '/offboarding/dashboard', icon: UserX },
   { name: 'Time Tracking', href: '/time-tracking', icon: Timer },
   { name: 'Clock In/Out', href: '/attendance/clock-in', icon: ClockIcon },

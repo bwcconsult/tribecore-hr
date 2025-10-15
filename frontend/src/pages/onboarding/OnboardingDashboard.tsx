@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserPlus, Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp } from 'lucide-react';
+import { UserPlus, Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, FileText, Users, Building, ArrowRight, Sparkles } from 'lucide-react';
 import { axiosInstance } from '../../lib/axios';
 
 export default function OnboardingDashboard() {
@@ -103,6 +103,63 @@ export default function OnboardingDashboard() {
               </p>
             </div>
             <AlertTriangle className="w-10 h-10 text-red-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Feature Navigation Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div
+          onClick={() => navigate('/onboarding/dashboard')}
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-blue-500"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Employee Onboarding</h3>
+          <p className="text-sm text-gray-600">Manage new hire onboarding from offer to day 90</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">Templates • Tasks • Check-ins</span>
+          </div>
+        </div>
+
+        <div
+          onClick={() => navigate('/cxo')}
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-green-500"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-green-50 p-3 rounded-lg">
+              <Building className="h-6 w-6 text-green-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Customer Onboarding</h3>
+          <p className="text-sm text-gray-600">Track client onboarding from sale to go-live</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">Workstreams • Gates • Risks</span>
+          </div>
+        </div>
+
+        <div
+          onClick={() => navigate('/onboarding/templates')}
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-purple-500"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-purple-50 p-3 rounded-lg">
+              <FileText className="h-6 w-6 text-purple-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Templates</h3>
+          <p className="text-sm text-gray-600">Create and manage onboarding templates</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">UK • US • NG Ready</span>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ interface EmptyStateProps {
   onRefresh?: () => void;
   onRetry?: () => void;
   isRetrying?: boolean;
-  error?: Error | null;
+  error?: Error | string | null;
 }
 
 export function NotificationEmptyState({
@@ -26,13 +26,15 @@ export function NotificationEmptyState({
           Failed to Load Notifications
         </h3>
         <p className="text-gray-600 text-center mb-6 max-w-md">
-          {error?.message || 'We encountered an error while fetching your notifications. Please try again.'}
+          {typeof error === 'string' 
+            ? error 
+            : error?.message || 'We encountered an error while fetching your notifications. Please try again.'}
         </p>
         
         {import.meta.env.DEV && error && (
           <div className="bg-gray-100 rounded-lg p-4 mb-4 max-w-lg w-full">
             <p className="text-xs font-mono text-gray-700 break-all">
-              {error.toString()}
+              {typeof error === 'string' ? error : error.toString()}
             </p>
           </div>
         )}

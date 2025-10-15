@@ -36,7 +36,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
-import { useNotificationsEnhanced } from '../../hooks/useNotificationsEnhanced';
+import { useNotifications } from '../../hooks/useNotifications';
 import { Notification, NotificationType } from '../../services/notificationsService';
 import { NotificationErrorBoundary } from '../../components/notifications/NotificationErrorBoundary';
 import { NotificationEmptyState } from '../../components/notifications/NotificationEmptyState';
@@ -117,13 +117,14 @@ export default function NotificationsCenterPage() {
     unreadCount,
     loading,
     error,
-    isRetrying,
     markAsRead,
     markAllAsRead,
     deleteNotification,
     refresh,
-    retry,
-  } = useNotificationsEnhanced();
+  } = useNotifications();
+  
+  const retry = refresh; // Use refresh as retry
+  const isRetrying = false; // Fallback for empty state component
 
   const filteredNotifications = notifications.filter((notif) => {
     // Read/Unread filter

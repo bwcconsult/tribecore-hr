@@ -223,7 +223,8 @@ export function useNotificationsEnhanced(options: UseNotificationsOptions = {}) 
       // Prefetch in background
       notificationsServiceEnhanced.prefetchNotifications();
     }
-  }, [isAuthenticated]); // Only on auth change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]); // Intentionally only on auth change
 
   /**
    * Auto-refresh polling with smart intervals

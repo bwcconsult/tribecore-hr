@@ -28,6 +28,12 @@ import { ComplianceService } from './services/compliance.service';
 import { RecruitmentNotificationService } from './services/recruitment-notification.service';
 import { AnalyticsService } from './services/analytics.service';
 
+// Integrations
+import { EmailIntegrationService } from './integrations/email.integration';
+import { CalendarIntegrationService } from './integrations/calendar.integration';
+import { JobBoardIntegrationService } from './integrations/job-board.integration';
+import { BackgroundCheckIntegrationService } from './integrations/background-check.integration';
+
 // Controllers
 import { RecruitmentController } from './recruitment.controller';
 import { RequisitionController } from './controllers/requisition.controller';
@@ -76,6 +82,11 @@ import { NotificationsModule } from '../notifications/notifications.module';
     ComplianceService,
     RecruitmentNotificationService,
     AnalyticsService,
+    // Integrations
+    EmailIntegrationService,
+    CalendarIntegrationService,
+    JobBoardIntegrationService,
+    BackgroundCheckIntegrationService,
   ],
   exports: [
     RecruitmentService,
@@ -86,6 +97,11 @@ import { NotificationsModule } from '../notifications/notifications.module';
     ComplianceService,
     RecruitmentNotificationService,
     AnalyticsService,
+    // Integrations
+    EmailIntegrationService,
+    CalendarIntegrationService,
+    JobBoardIntegrationService,
+    BackgroundCheckIntegrationService,
   ],
 })
 export class RecruitmentModule {}

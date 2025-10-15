@@ -12,6 +12,14 @@ export interface CreateNotificationDto {
   message: string;
   linkUrl?: string;
   relatedEntityId?: string;
+  relatedEntityType?: string;
+  senderId?: string;
+  senderName?: string;
+  actionUrl?: string;
+  actionLabel?: string;
+  metadata?: Record<string, any>;
+  icon?: string;
+  category?: string;
 }
 
 @Injectable()

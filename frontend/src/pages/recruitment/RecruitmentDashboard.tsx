@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Users, Target, TrendingUp, Plus, Filter } from 'lucide-react';
+import { Briefcase, Users, Target, TrendingUp, Plus, Filter, FileText, GitBranch, Calendar, BarChart3, ArrowRight, Sparkles } from 'lucide-react';
 import { axiosInstance } from '../../lib/axios';
 
 export default function RecruitmentDashboard() {
@@ -63,6 +63,81 @@ export default function RecruitmentDashboard() {
               <Plus className="w-5 h-5" />
               Post Job
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Feature Navigation Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div 
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-blue-500"
+          onClick={() => navigate('/recruitment/requisitions')}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <FileText className="h-6 w-6 text-blue-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Requisitions</h3>
+          <p className="text-sm text-gray-600">Create & approve job requisitions with multi-step workflow</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">Dynamic Approvals • SLA Tracking</span>
+          </div>
+        </div>
+
+        <div 
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-green-500"
+          onClick={() => navigate('/recruitment/pipeline/all')}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-green-50 p-3 rounded-lg">
+              <GitBranch className="h-6 w-6 text-green-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Pipeline (Kanban)</h3>
+          <p className="text-sm text-gray-600">Drag & drop candidates through 9-stage hiring pipeline</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">AI Scoring • Flags • Tags</span>
+          </div>
+        </div>
+
+        <div 
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-purple-500"
+          onClick={() => navigate('/recruitment/interviews')}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-purple-50 p-3 rounded-lg">
+              <Calendar className="h-6 w-6 text-purple-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Interviews</h3>
+          <p className="text-sm text-gray-600">Schedule interviews & submit scorecards with SLA reminders</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">Panel Scheduling • Scorecards</span>
+          </div>
+        </div>
+
+        <div 
+          className="bg-white rounded-xl shadow-sm p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-orange-500"
+          onClick={() => navigate('/recruitment/analytics')}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="bg-orange-50 p-3 rounded-lg">
+              <BarChart3 className="h-6 w-6 text-orange-600" />
+            </div>
+            <ArrowRight className="h-5 w-5 text-gray-400" />
+          </div>
+          <h3 className="font-bold text-gray-900 mb-2">Analytics</h3>
+          <p className="text-sm text-gray-600">Real-time metrics, funnels, time-to-hire & source effectiveness</p>
+          <div className="mt-4 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <span className="text-xs text-gray-500">15+ Metrics • Charts • Insights</span>
           </div>
         </div>
       </div>

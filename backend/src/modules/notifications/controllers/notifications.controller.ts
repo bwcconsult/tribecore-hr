@@ -16,6 +16,7 @@ import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
 import { NotificationsService } from '../services/notifications.service';
 import { NotificationPreferencesService } from '../services/notification-preferences.service';
 import { Notification } from '../entities/notification.entity';
+import { seedNotifications } from '../seed-notifications';
 
 @Controller('notifications')
 @UseGuards(JwtAuthGuard)
@@ -155,5 +156,24 @@ export class NotificationsController {
       message: body.message || 'This is a test notification',
       linkUrl: body.linkUrl,
     });
+  }
+
+  /**
+   * Seed sample notifications (development/testing only)
+   * POST /api/v1/notifications/seed
+   */
+  @Post('seed')
+  @HttpCode(HttpStatus.OK)
+  async seedNotifications(@Req() req: any) {
+    const userId = req.user.id;
+    const organizationId = req.user.organizationId;
+
+    await seedNotifications(this.notificationsService, userId, organizationId);
+
+    return {
+      message: '20 sample notifications created successfully',
+      userId,
+      organizationId,
+    };
   }
 }

@@ -42,6 +42,12 @@ import { VideoScreeningService } from './services/video-screening.service';
 import { WebhookService } from './services/webhook.service';
 import { MultiTenantService } from './services/multi-tenant.service';
 
+// Final Enhancements
+import { SlackIntegrationService } from './integrations/slack.integration';
+import { CustomReportsService } from './services/custom-reports.service';
+import { AIEnhancementsService } from './services/ai-enhancements.service';
+import { MarketplaceService } from './services/marketplace.service';
+
 // Controllers
 import { RecruitmentController } from './recruitment.controller';
 import { RequisitionController } from './controllers/requisition.controller';
@@ -104,6 +110,11 @@ import { NotificationsModule } from '../notifications/notifications.module';
     VideoScreeningService,
     WebhookService,
     MultiTenantService,
+    // Final Enhancements
+    SlackIntegrationService,
+    CustomReportsService,
+    AIEnhancementsService,
+    MarketplaceService,
   ],
   exports: [
     RecruitmentService,
@@ -126,6 +137,11 @@ import { NotificationsModule } from '../notifications/notifications.module';
     VideoScreeningService,
     WebhookService,
     MultiTenantService,
+    // Final Enhancements
+    SlackIntegrationService,
+    CustomReportsService,
+    AIEnhancementsService,
+    MarketplaceService,
   ],
 })
 export class RecruitmentModule {}

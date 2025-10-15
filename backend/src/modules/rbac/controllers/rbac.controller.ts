@@ -11,7 +11,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
 import { RequirePolicy, PolicyGuard } from '../guards/policy.guard';
 import { Role } from '../entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';

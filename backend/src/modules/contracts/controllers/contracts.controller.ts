@@ -12,7 +12,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
 import { ContractService } from '../services/contract.service';
 import { ApprovalService } from '../services/approval.service';
 import { ObligationService } from '../services/obligation.service';

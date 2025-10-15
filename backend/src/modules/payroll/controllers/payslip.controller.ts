@@ -12,7 +12,7 @@ import {
   Res,
   HttpStatus,
 } from '@nestjs/common';
-// import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard'; // TODO: Import from your auth module
+// import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard'; // TODO: Import from your auth module
 import { PayslipCalculationEngineService } from '../services/payslip-calculation-engine.service';
 import { PayslipService } from '../services/payslip.service';
 import { InjectRepository } from '@nestjs/typeorm';

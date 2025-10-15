@@ -36,8 +36,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
-import { useNotifications } from '../../hooks/useNotifications';
+import { useNotificationsEnhanced } from '../../hooks/useNotificationsEnhanced';
 import { Notification, NotificationType } from '../../services/notificationsService';
+import { NotificationErrorBoundary } from '../../components/notifications/NotificationErrorBoundary';
+import { NotificationEmptyState } from '../../components/notifications/NotificationEmptyState';
 
 const NOTIFICATION_ICONS: Record<string, { icon: any; color: string }> = {
   SYSTEM: { icon: AlertCircle, color: 'text-gray-600' },
@@ -115,11 +117,13 @@ export default function NotificationsCenterPage() {
     unreadCount,
     loading,
     error,
+    isRetrying,
     markAsRead,
     markAllAsRead,
     deleteNotification,
     refresh,
-  } = useNotifications();
+    retry,
+  } = useNotificationsEnhanced();
 
   const filteredNotifications = notifications.filter((notif) => {
     // Read/Unread filter
@@ -204,18 +208,19 @@ export default function NotificationsCenterPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
-          <p className="text-gray-600 mt-1">Stay updated with important alerts across TribeCore</p>
+    <NotificationErrorBoundary>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+            <p className="text-gray-600 mt-1">Stay updated with important alerts across TribeCore</p>
+          </div>
+          <Button variant="outline" onClick={() => setShowPreferences(true)}>
+            <Settings className="h-4 w-4 mr-2" />
+            Preferences
+          </Button>
         </div>
-        <Button variant="outline" onClick={() => setShowPreferences(true)}>
-          <Settings className="h-4 w-4 mr-2" />
-          Preferences
-        </Button>
-      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -349,13 +354,13 @@ export default function NotificationsCenterPage() {
               <span className="ml-3 text-gray-600">Loading notifications...</span>
             </div>
           ) : error ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <AlertCircle className="h-12 w-12 text-red-600 mb-4" />
-              <p className="text-red-600 font-medium">{error}</p>
-              <Button onClick={refresh} className="mt-4">
-                Try Again
-              </Button>
-            </div>
+            <NotificationEmptyState
+              type="error"
+              error={error}
+              onRetry={retry}
+              onRefresh={refresh}
+              isRetrying={isRetrying}
+            />
           ) : filteredNotifications.length > 0 ? (
             <div className="space-y-3">
               {filteredNotifications.map((notif) => (
@@ -458,16 +463,10 @@ export default function NotificationsCenterPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 text-gray-500">
-              <Bell className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-              <p className="text-lg font-medium">No notifications</p>
-              <p className="text-sm mt-1">
-                {categoryFilter !== 'all' 
-                  ? `No ${NOTIFICATION_CATEGORIES.find(c => c.value === categoryFilter)?.label} notifications`
-                  : "You're all caught up!"
-                }
-              </p>
-            </div>
+            <NotificationEmptyState
+              type={filter === 'unread' ? 'unread' : 'all'}
+              onRefresh={refresh}
+            />
           )}
         </CardContent>
       </Card>
@@ -513,6 +512,7 @@ export default function NotificationsCenterPage() {
           </Card>
         </div>
       )}
-    </div>
+      </div>
+    </NotificationErrorBoundary>
   );
 }

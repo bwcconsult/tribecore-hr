@@ -30,6 +30,10 @@ import { AnalyticsService } from './services/analytics.service';
 
 // Controllers
 import { RecruitmentController } from './recruitment.controller';
+import { RequisitionController } from './controllers/requisition.controller';
+import { ApplicationController } from './controllers/application.controller';
+import { InterviewController } from './controllers/interview.controller';
+import { AnalyticsController } from './controllers/analytics.controller';
 
 // Import NotificationsModule for NotificationHelperService
 import { NotificationsModule } from '../notifications/notifications.module';
@@ -56,7 +60,13 @@ import { NotificationsModule } from '../notifications/notifications.module';
     ]),
     NotificationsModule, // For NotificationHelperService
   ],
-  controllers: [RecruitmentController],
+  controllers: [
+    RecruitmentController,
+    RequisitionController,
+    ApplicationController,
+    InterviewController,
+    AnalyticsController,
+  ],
   providers: [
     RecruitmentService,
     WorkflowService,

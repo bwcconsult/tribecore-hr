@@ -104,7 +104,7 @@ const NOTIFICATION_CATEGORIES = [
   { value: 'SYSTEM', label: 'System & Other', types: ['SYSTEM', 'ANNOUNCEMENT', 'SECURITY', 'TASK', 'APPROVAL', 'REMINDER', 'ALERT'] },
 ];
 
-export default function NotificationsCenterPageNew() {
+export default function NotificationsCenterPage() {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');

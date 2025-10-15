@@ -1,0 +1,322 @@
+{
+  "clientAccounts": [
+    {
+      "id": "ACC-001",
+      "organizationId": "ORG001",
+      "name": "Acme Corporation",
+      "tier": "Enterprise",
+      "region": "US",
+      "industry": "Technology",
+      "successManagerId": "CSM-JADE",
+      "billingCurrency": "USD",
+      "website": "https://acme.com",
+      "employeeCount": 5000,
+      "annualRevenue": 250000000,
+      "active": true,
+      "metadata": {
+        "contractValue": 500000,
+        "mrr": 41667,
+        "arr": 500000
+      }
+    },
+    {
+      "id": "ACC-002",
+      "organizationId": "ORG001",
+      "name": "Global Finance Ltd",
+      "tier": "Professional",
+      "region": "UK",
+      "industry": "Finance",
+      "successManagerId": "CSM-JADE",
+      "billingCurrency": "GBP",
+      "website": "https://globalfinance.co.uk",
+      "employeeCount": 1200,
+      "annualRevenue": 80000000,
+      "active": true,
+      "metadata": {
+        "contractValue": 120000,
+        "mrr": 10000,
+        "arr": 120000
+      }
+    },
+    {
+      "id": "ACC-003",
+      "organizationId": "ORG001",
+      "name": "Tech Innovators Inc",
+      "tier": "Enterprise",
+      "region": "EU",
+      "industry": "Software",
+      "successManagerId": "CSM-JADE",
+      "billingCurrency": "EUR",
+      "website": "https://techinnovators.eu",
+      "employeeCount": 3000,
+      "annualRevenue": 150000000,
+      "active": true,
+      "metadata": {
+        "contractValue": 750000,
+        "mrr": 62500,
+        "arr": 750000
+      }
+    },
+    {
+      "id": "ACC-004",
+      "organizationId": "ORG001",
+      "name": "Retail Solutions Co",
+      "tier": "Standard",
+      "region": "APAC",
+      "industry": "Retail",
+      "successManagerId": "CSM-JADE",
+      "billingCurrency": "SGD",
+      "website": "https://retailsolutions.sg",
+      "employeeCount": 500,
+      "annualRevenue": 20000000,
+      "active": true,
+      "metadata": {
+        "contractValue": 36000,
+        "mrr": 3000,
+        "arr": 36000
+      }
+    }
+  ],
+  "clientContacts": [
+    {
+      "accountId": "ACC-001",
+      "name": "John Smith",
+      "email": "john.smith@acme.com",
+      "role": "Sponsor",
+      "phone": "+1-555-0100",
+      "jobTitle": "CTO",
+      "primaryContact": true,
+      "active": true
+    },
+    {
+      "accountId": "ACC-001",
+      "name": "Sarah Johnson",
+      "email": "sarah.j@acme.com",
+      "role": "ProjectLead",
+      "phone": "+1-555-0101",
+      "jobTitle": "VP Engineering",
+      "primaryContact": false,
+      "active": true
+    },
+    {
+      "accountId": "ACC-001",
+      "name": "Mike Chen",
+      "email": "mike.chen@acme.com",
+      "role": "IT",
+      "phone": "+1-555-0102",
+      "jobTitle": "IT Director",
+      "primaryContact": false,
+      "active": true
+    },
+    {
+      "accountId": "ACC-002",
+      "name": "Emma Wilson",
+      "email": "e.wilson@globalfinance.co.uk",
+      "role": "Sponsor",
+      "phone": "+44-20-7946-0958",
+      "jobTitle": "CFO",
+      "primaryContact": true,
+      "active": true
+    },
+    {
+      "accountId": "ACC-003",
+      "name": "Hans Mueller",
+      "email": "h.mueller@techinnovators.eu",
+      "role": "Sponsor",
+      "phone": "+49-30-555-0100",
+      "jobTitle": "CEO",
+      "primaryContact": true,
+      "active": true
+    }
+  ],
+  "clientOnboardingCases": [
+    {
+      "id": "CASE-001",
+      "organizationId": "ORG001",
+      "accountId": "ACC-001",
+      "csmId": "CSM-JADE",
+      "tier": "Enterprise",
+      "region": "US",
+      "goLiveTarget": "2025-12-15",
+      "status": "SOLUTION_CONFIG",
+      "risk": "MEDIUM",
+      "completionPercentage": 45,
+      "kickoffDate": "2025-10-01",
+      "gateChecks": {
+        "securityApproved": true,
+        "legalApproved": true,
+        "billingApproved": false,
+        "uatApproved": false,
+        "runbookApproved": false
+      },
+      "metadata": {
+        "contractValue": 500000,
+        "projectManager": "PM-ALEX",
+        "slackChannel": "#acme-onboarding"
+      }
+    },
+    {
+      "id": "CASE-002",
+      "organizationId": "ORG001",
+      "accountId": "ACC-002",
+      "csmId": "CSM-JADE",
+      "tier": "Professional",
+      "region": "UK",
+      "goLiveTarget": "2025-11-30",
+      "status": "ENABLEMENT",
+      "risk": "LOW",
+      "completionPercentage": 85,
+      "kickoffDate": "2025-09-15",
+      "goLiveDate": "2025-11-25",
+      "gateChecks": {
+        "securityApproved": true,
+        "legalApproved": true,
+        "billingApproved": true,
+        "uatApproved": true,
+        "runbookApproved": true
+      },
+      "metadata": {
+        "contractValue": 120000,
+        "projectManager": "PM-ALEX",
+        "slackChannel": "#globalfinance-onboarding"
+      }
+    },
+    {
+      "id": "CASE-003",
+      "organizationId": "ORG001",
+      "accountId": "ACC-003",
+      "csmId": "CSM-JADE",
+      "tier": "Enterprise",
+      "region": "EU",
+      "goLiveTarget": "2026-01-15",
+      "status": "KICKOFF",
+      "risk": "HIGH",
+      "completionPercentage": 15,
+      "kickoffDate": "2025-10-10",
+      "gateChecks": {
+        "securityApproved": false,
+        "legalApproved": false,
+        "billingApproved": false,
+        "uatApproved": false,
+        "runbookApproved": false
+      },
+      "metadata": {
+        "contractValue": 750000,
+        "projectManager": "PM-ALEX",
+        "slackChannel": "#techinnovators-onboarding"
+      }
+    },
+    {
+      "id": "CASE-004",
+      "organizationId": "ORG001",
+      "accountId": "ACC-004",
+      "csmId": "CSM-JADE",
+      "tier": "Standard",
+      "region": "APAC",
+      "goLiveTarget": "2025-11-20",
+      "status": "DUE_DILIGENCE",
+      "risk": "LOW",
+      "completionPercentage": 35,
+      "kickoffDate": "2025-10-05",
+      "gateChecks": {
+        "securityApproved": true,
+        "legalApproved": false,
+        "billingApproved": false,
+        "uatApproved": false,
+        "runbookApproved": false
+      },
+      "metadata": {
+        "contractValue": 36000,
+        "projectManager": "PM-ALEX",
+        "slackChannel": "#retailsolutions-onboarding"
+      }
+    }
+  ],
+  "workstreams": [
+    {
+      "caseId": "CASE-001",
+      "name": "Security",
+      "leadId": "SEC-LEAD-001",
+      "completionPercentage": 60,
+      "active": true
+    },
+    {
+      "caseId": "CASE-001",
+      "name": "Legal",
+      "leadId": "LEGAL-LEAD-001",
+      "completionPercentage": 80,
+      "active": true
+    },
+    {
+      "caseId": "CASE-001",
+      "name": "Technical",
+      "leadId": "TECH-LEAD-001",
+      "completionPercentage": 40,
+      "active": true
+    },
+    {
+      "caseId": "CASE-001",
+      "name": "Billing",
+      "leadId": "FIN-LEAD-001",
+      "completionPercentage": 20,
+      "active": true
+    },
+    {
+      "caseId": "CASE-001",
+      "name": "Training",
+      "leadId": "TRAIN-LEAD-001",
+      "completionPercentage": 10,
+      "active": true
+    }
+  ],
+  "risks": [
+    {
+      "caseId": "CASE-001",
+      "severity": "Medium",
+      "description": "Client IT team availability limited until Nov 15",
+      "mitigation": "Schedule evening sessions in client timezone",
+      "ownerId": "CSM-JADE",
+      "status": "Mitigating",
+      "targetResolutionDate": "2025-11-15",
+      "impact": "May delay technical integration by 1 week",
+      "probability": 3
+    },
+    {
+      "caseId": "CASE-003",
+      "severity": "High",
+      "description": "GDPR compliance review pending from legal team",
+      "mitigation": "Escalated to VP Legal for priority review",
+      "ownerId": "LEGAL-LEAD-001",
+      "status": "Open",
+      "targetResolutionDate": "2025-10-25",
+      "impact": "Blocks DPA signing and go-live",
+      "probability": 4
+    }
+  ],
+  "environments": [
+    {
+      "caseId": "CASE-001",
+      "envType": "sandbox",
+      "region": "us-east-1",
+      "domain": "acme-sandbox.tribecore.com",
+      "status": "ACTIVE",
+      "provisionedAt": "2025-10-05"
+    },
+    {
+      "caseId": "CASE-001",
+      "envType": "uat",
+      "region": "us-east-1",
+      "domain": "acme-uat.tribecore.com",
+      "status": "PROVISIONING"
+    },
+    {
+      "caseId": "CASE-002",
+      "envType": "prod",
+      "region": "eu-west-2",
+      "domain": "globalfinance.tribecore.com",
+      "status": "ACTIVE",
+      "provisionedAt": "2025-11-20",
+      "goLiveAt": "2025-11-25"
+    }
+  ]
+}

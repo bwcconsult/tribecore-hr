@@ -1,0 +1,282 @@
+{
+  "templates": [
+    {
+      "id": "TPL-UK-001",
+      "organizationId": "ORG001",
+      "name": "UK - Office Employee",
+      "description": "Standard onboarding for UK-based office employees",
+      "country": "UK",
+      "version": 1,
+      "tags": ["UK", "FullTime", "Office"],
+      "active": true,
+      "checklistItems": [
+        {
+          "name": "Send Welcome Pack",
+          "description": "Email welcome pack with company handbook and benefits guide",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": -14,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 24,
+          "orderIndex": 0,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Collect Right-to-Work Documents",
+          "description": "Passport, visa, or work permit verification",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": -10,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 48,
+          "orderIndex": 1,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "E-sign NDA & Policies",
+          "description": "Non-disclosure agreement and company policies",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": -9,
+          "required": true,
+          "dependencies": ["Collect Right-to-Work Documents"],
+          "slaHours": 24,
+          "orderIndex": 2,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Create Email & SSO Account",
+          "description": "Set up company email and single sign-on access",
+          "ownerRole": "IT_ADMIN",
+          "durationDays": -7,
+          "required": true,
+          "dependencies": ["E-sign NDA & Policies"],
+          "slaHours": 48,
+          "orderIndex": 3,
+          "metadata": { "category": "PROVISIONING" }
+        },
+        {
+          "name": "Order Laptop & Accessories",
+          "description": "MacBook Pro + monitor, keyboard, mouse",
+          "ownerRole": "IT_ADMIN",
+          "durationDays": -7,
+          "required": true,
+          "dependencies": ["Create Email & SSO Account"],
+          "slaHours": 72,
+          "orderIndex": 4,
+          "metadata": { "category": "PROVISIONING" }
+        },
+        {
+          "name": "Setup Payroll & Bank Details",
+          "description": "Collect bank account, tax code, NI number",
+          "ownerRole": "PAYROLL",
+          "durationDays": -5,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 48,
+          "orderIndex": 5,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Assign Buddy & Schedule Welcome Call",
+          "description": "Pair with buddy and schedule pre-start video call",
+          "ownerRole": "MANAGER",
+          "durationDays": -3,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 24,
+          "orderIndex": 6,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Prepare Desk & Access Badge",
+          "description": "Assign desk, create building access badge",
+          "ownerRole": "FACILITIES",
+          "durationDays": -2,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 24,
+          "orderIndex": 7,
+          "metadata": { "category": "PROVISIONING" }
+        },
+        {
+          "name": "Day 1 Orientation",
+          "description": "Office tour, team introductions, welcome lunch",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": 0,
+          "required": true,
+          "dependencies": [],
+          "slaHours": null,
+          "orderIndex": 8,
+          "metadata": { "category": "DAY1" }
+        },
+        {
+          "name": "IT Setup Session",
+          "description": "Install software, configure tools, VPN setup",
+          "ownerRole": "IT_ADMIN",
+          "durationDays": 0,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 4,
+          "orderIndex": 9,
+          "metadata": { "category": "DAY1" }
+        },
+        {
+          "name": "Set First Week Goals",
+          "description": "Define objectives and key results for week 1",
+          "ownerRole": "MANAGER",
+          "durationDays": 1,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 48,
+          "orderIndex": 10,
+          "metadata": { "category": "FUNCTIONAL" }
+        },
+        {
+          "name": "Complete Security Training",
+          "description": "Data protection, password security, phishing awareness",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": 3,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 72,
+          "orderIndex": 11,
+          "metadata": { "category": "FUNCTIONAL" }
+        },
+        {
+          "name": "Schedule 30-Day Check-in",
+          "description": "Book first feedback session with manager",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": 7,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 24,
+          "orderIndex": 12,
+          "metadata": { "category": "FUNCTIONAL" }
+        }
+      ]
+    },
+    {
+      "id": "TPL-US-001",
+      "organizationId": "ORG001",
+      "name": "US - Remote Engineer",
+      "description": "Onboarding for US-based remote software engineers",
+      "country": "US",
+      "version": 1,
+      "tags": ["US", "Remote", "Engineering"],
+      "active": true,
+      "checklistItems": [
+        {
+          "name": "Collect I-9 & W-4 Forms",
+          "description": "Employment eligibility and tax withholding forms",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": -10,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 48,
+          "orderIndex": 0,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Ship Laptop & Equipment",
+          "description": "MacBook Pro, monitor, accessories to home address",
+          "ownerRole": "IT_ADMIN",
+          "durationDays": -8,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 72,
+          "orderIndex": 1,
+          "metadata": { "category": "PROVISIONING" }
+        },
+        {
+          "name": "Create Git, Jira, Slack Access",
+          "description": "Development tools and communication platforms",
+          "ownerRole": "IT_ADMIN",
+          "durationDays": -5,
+          "required": true,
+          "dependencies": ["Ship Laptop & Equipment"],
+          "slaHours": 24,
+          "orderIndex": 2,
+          "metadata": { "category": "PROVISIONING" }
+        },
+        {
+          "name": "Setup Payroll & Benefits",
+          "description": "Direct deposit, health insurance, 401k",
+          "ownerRole": "PAYROLL",
+          "durationDays": -5,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 48,
+          "orderIndex": 3,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Engineering Onboarding Bootcamp",
+          "description": "2-day virtual bootcamp on architecture and tools",
+          "ownerRole": "MANAGER",
+          "durationDays": 2,
+          "required": true,
+          "dependencies": [],
+          "slaHours": null,
+          "orderIndex": 4,
+          "metadata": { "category": "FUNCTIONAL" }
+        },
+        {
+          "name": "Complete Security Awareness",
+          "description": "InfoSec training and VPN setup",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": 7,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 72,
+          "orderIndex": 5,
+          "metadata": { "category": "FUNCTIONAL" }
+        }
+      ]
+    },
+    {
+      "id": "TPL-NG-001",
+      "organizationId": "ORG001",
+      "name": "Nigeria - Contractor",
+      "description": "Simplified onboarding for Nigerian contractors",
+      "country": "NG",
+      "version": 1,
+      "tags": ["NG", "Contractor"],
+      "active": true,
+      "checklistItems": [
+        {
+          "name": "Sign Contractor Agreement",
+          "description": "Independent contractor agreement via e-signature",
+          "ownerRole": "HR_ADMIN",
+          "durationDays": -7,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 48,
+          "orderIndex": 0,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Verify Bank Details",
+          "description": "Confirm payment information for invoicing",
+          "ownerRole": "PAYROLL",
+          "durationDays": -5,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 24,
+          "orderIndex": 1,
+          "metadata": { "category": "PREBOARDING" }
+        },
+        {
+          "name": "Provide SSO & VPN Access",
+          "description": "Secure access to company systems",
+          "ownerRole": "IT_ADMIN",
+          "durationDays": -3,
+          "required": true,
+          "dependencies": [],
+          "slaHours": 24,
+          "orderIndex": 2,
+          "metadata": { "category": "PROVISIONING" }
+        }
+      ]
+    }
+  ]
+}

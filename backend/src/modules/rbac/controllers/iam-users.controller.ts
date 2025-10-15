@@ -12,8 +12,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
-import { RolesGuard } from '../guards/roles.guard';
-import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../../../common/guards/roles.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
 import { IamUserService } from '../services/iam-user.service';
 import { CreateIamUserDto } from '../dto/create-iam-user.dto';
 import { UpdateIamUserDto } from '../dto/update-iam-user.dto';

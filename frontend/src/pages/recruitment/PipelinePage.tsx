@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { recruitmentService, Application } from '../../services/recruitment.service';
-import { Button } from '../../components/ui/Button';
+import Button from '../../components/ui/Button';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
+import Badge from '../../components/ui/Badge';
 import { 
   ArrowLeft, 
   User, 
@@ -108,9 +108,9 @@ export function PipelinePage() {
   const getScoreBadge = (score?: number) => {
     if (!score) return null;
     
-    const color = score >= 80 ? 'green' : score >= 60 ? 'yellow' : 'red';
+    const variant = score >= 80 ? 'success' : score >= 60 ? 'warning' : 'danger';
     return (
-      <Badge variant={color as any} className="flex items-center gap-1">
+      <Badge variant={variant} className="flex items-center gap-1">
         <Star className="h-3 w-3" />
         {score}
       </Badge>
@@ -206,7 +206,7 @@ export function PipelinePage() {
                       <CardTitle className="text-sm font-semibold">
                         {stage.label}
                       </CardTitle>
-                      <Badge variant="secondary">{applications.length}</Badge>
+                      <Badge variant="default">{applications.length}</Badge>
                     </div>
                   </CardHeader>
 
@@ -276,12 +276,12 @@ export function PipelinePage() {
                                   {app.tags && app.tags.length > 0 && (
                                     <div className="flex flex-wrap gap-1">
                                       {app.tags.slice(0, 2).map((tag) => (
-                                        <Badge key={tag} variant="secondary" className="text-xs">
+                                        <Badge key={tag} variant="default" className="text-xs">
                                           {tag}
                                         </Badge>
                                       ))}
                                       {app.tags.length > 2 && (
-                                        <Badge variant="secondary" className="text-xs">
+                                        <Badge variant="default" className="text-xs">
                                           +{app.tags.length - 2}
                                         </Badge>
                                       )}

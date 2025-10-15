@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { recruitmentService, Requisition } from '../../services/recruitment.service';
-import { Button } from '../../components/ui/Button';
+import Button from '../../components/ui/Button';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
+import Badge from '../../components/ui/Badge';
 import { Plus, Search, Filter, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react';
 
 export function RequisitionsPage() {
@@ -214,7 +214,7 @@ export function RequisitionsPage() {
                         <h3 className="text-lg font-semibold text-gray-900">{req.jobTitle}</h3>
                         {getStatusBadge(req.status)}
                         {req.isUrgent && (
-                          <Badge variant="red" className="flex items-center gap-1">
+                          <Badge variant="danger" className="flex items-center gap-1">
                             <AlertCircle className="h-3 w-3" />
                             URGENT
                           </Badge>
@@ -249,10 +249,10 @@ export function RequisitionsPage() {
                                 key={idx}
                                 variant={
                                   approval.status === 'APPROVED'
-                                    ? 'green'
+                                    ? 'success'
                                     : approval.status === 'REJECTED'
-                                    ? 'red'
-                                    : 'gray'
+                                    ? 'danger'
+                                    : 'default'
                                 }
                                 className="text-xs"
                               >

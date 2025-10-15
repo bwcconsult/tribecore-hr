@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { recruitmentService, Interview, Scorecard } from '../../services/recruitment.service';
-import { Button } from '../../components/ui/Button';
+import Button from '../../components/ui/Button';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
+import Badge from '../../components/ui/Badge';
 import {
   Calendar,
   Clock,
@@ -244,7 +244,7 @@ export function InterviewsPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           {getInterviewTypeBadge(interview.type)}
-                          {today && <Badge variant="blue">TODAY</Badge>}
+                          {today && <Badge variant="info">TODAY</Badge>}
                         </div>
 
                         <div className="space-y-2 mt-3">
@@ -332,7 +332,7 @@ export function InterviewsPage() {
                         <div className="flex items-center gap-3 mb-2">
                           {getScorecardStatusBadge(scorecard.status)}
                           {isOverdue && (
-                            <Badge variant="red" className="flex items-center gap-1">
+                            <Badge variant="danger" className="flex items-center gap-1">
                               <AlertCircle className="h-3 w-3" />
                               OVERDUE
                             </Badge>
@@ -360,10 +360,10 @@ export function InterviewsPage() {
                               <Badge
                                 variant={
                                   scorecard.recommendation.includes('STRONG_HIRE')
-                                    ? 'green'
+                                    ? 'success'
                                     : scorecard.recommendation.includes('NO_HIRE')
-                                    ? 'red'
-                                    : 'yellow'
+                                    ? 'danger'
+                                    : 'warning'
                                 }
                               >
                                 {scorecard.recommendation}
@@ -423,8 +423,8 @@ export function InterviewsPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             {getInterviewTypeBadge(interview.type)}
-                            {upcoming && <Badge variant="blue">Upcoming</Badge>}
-                            {past && <Badge variant="gray">Completed</Badge>}
+                            {upcoming && <Badge variant="info">Upcoming</Badge>}
+                            {past && <Badge variant="default">Completed</Badge>}
                           </div>
 
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 mt-3">
@@ -444,7 +444,7 @@ export function InterviewsPage() {
                               <div>
                                 <Badge
                                   variant={
-                                    interview.outcome === 'STRONG_YES' ? 'green' : 'red'
+                                    interview.outcome === 'STRONG_YES' ? 'success' : 'danger'
                                   }
                                 >
                                   {interview.outcome}

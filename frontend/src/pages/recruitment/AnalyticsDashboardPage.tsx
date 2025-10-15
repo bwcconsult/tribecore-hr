@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { recruitmentService } from '../../services/recruitment.service';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
+import Badge from '../../components/ui/Badge';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -191,7 +191,7 @@ export function AnalyticsDashboardPage() {
                 <p className="text-lg font-bold">{stage.count}</p>
                 <p className="text-xs text-gray-500">{stage.percentage}%</p>
                 {idx > 0 && (
-                  <Badge variant="secondary" className="mt-1 text-xs">
+                  <Badge variant="default" className="mt-1 text-xs">
                     {stage.conversionRate}% conversion
                   </Badge>
                 )}
@@ -337,7 +337,7 @@ export function AnalyticsDashboardPage() {
                   .map(([reason, count]: any) => (
                     <div key={reason} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <span className="text-sm font-medium text-gray-700">{reason}</span>
-                      <Badge variant="secondary">{count} times</Badge>
+                      <Badge variant="default">{count} times</Badge>
                     </div>
                   ))}
                 {Object.keys(offerAcceptance.declineReasons || {}).length === 0 && (
@@ -378,10 +378,10 @@ export function AnalyticsDashboardPage() {
                     <Badge
                       variant={
                         req.pipelineHealth === 'CRITICAL'
-                          ? 'red'
+                          ? 'danger'
                           : req.pipelineHealth === 'WARNING'
-                          ? 'yellow'
-                          : 'green'
+                          ? 'warning'
+                          : 'success'
                       }
                     >
                       {req.pipelineHealth}

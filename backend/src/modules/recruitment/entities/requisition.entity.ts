@@ -25,6 +25,9 @@ export class Requisition extends BaseEntity {
   organizationId: string;
 
   @Column()
+  createdBy: string;
+
+  @Column()
   departmentId: string;
 
   @Column({ nullable: true })

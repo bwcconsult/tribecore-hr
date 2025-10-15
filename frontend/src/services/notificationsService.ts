@@ -1,10 +1,22 @@
 import { axiosInstance } from '../lib/axios';
 
+export type NotificationType = 
+  | 'SYSTEM' | 'ANNOUNCEMENT' | 'SECURITY'
+  | 'EMPLOYEE' | 'ONBOARDING' | 'OFFBOARDING'
+  | 'ATTENDANCE' | 'LEAVE' | 'OVERTIME' | 'SHIFT' | 'TIMESHEET'
+  | 'PAYROLL' | 'EXPENSE' | 'BENEFIT' | 'COMPENSATION'
+  | 'PERFORMANCE' | 'RECOGNITION' | 'LEARNING' | 'GOAL'
+  | 'RECRUITMENT' | 'APPLICANT' | 'INTERVIEW' | 'OFFER'
+  | 'CONTRACT' | 'CONTRACT_APPROVAL' | 'CONTRACT_RENEWAL' | 'CONTRACT_EXPIRY' | 'OBLIGATION'
+  | 'DOCUMENT' | 'ESIGNATURE' | 'COMPLIANCE' | 'AUDIT'
+  | 'IAM' | 'DELEGATION' | 'ACCESS_REQUEST' | 'ROLE_CHANGE'
+  | 'TASK' | 'APPROVAL' | 'REMINDER' | 'ALERT';
+
 export interface Notification {
   id: string;
   recipientId: string;
   organizationId: string;
-  type: 'SYSTEM' | 'PAYROLL' | 'LEAVE' | 'ATTENDANCE' | 'PERFORMANCE' | 'DOCUMENT' | 'BENEFIT' | 'EXPENSE' | 'TIMESHEET' | 'ONBOARDING' | 'RECRUITMENT' | 'LEARNING' | 'ANNOUNCEMENT';
+  type: NotificationType;
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
   title: string;
   message: string;
@@ -12,8 +24,16 @@ export interface Notification {
   isRead: boolean;
   readAt?: string;
   relatedEntityId?: string;
+  relatedEntityType?: string;
   emailSent: boolean;
   pushSent: boolean;
+  senderId?: string;
+  senderName?: string;
+  actionUrl?: string;
+  actionLabel?: string;
+  metadata?: Record<string, any>;
+  icon?: string;
+  category?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -56,7 +76,7 @@ export const notificationsService = {
    * Mark notification as read
    */
   markAsRead: async (notificationId: string): Promise<Notification> => {
-    const response = await axiosInstance.patch(`/notifications/${notificationId}/read`);
+    const response = await axiosInstance.put(`/notifications/${notificationId}/read`);
     return response.data;
   },
 
@@ -64,7 +84,7 @@ export const notificationsService = {
    * Mark all notifications as read
    */
   markAllAsRead: async (): Promise<void> => {
-    await axiosInstance.post('/notifications/mark-all-read');
+    await axiosInstance.put('/notifications/mark-all-read');
   },
 
   /**
@@ -75,37 +95,26 @@ export const notificationsService = {
   },
 
   /**
-   * Delete multiple notifications
+   * Clear all read notifications
    */
-  deleteMultiple: async (notificationIds: string[]): Promise<void> => {
-    await axiosInstance.post('/notifications/delete-multiple', { ids: notificationIds });
-  },
-
-  /**
-   * Get notification by ID
-   */
-  getById: async (notificationId: string): Promise<Notification> => {
-    const response = await axiosInstance.get(`/notifications/${notificationId}`);
+  clearRead: async (): Promise<{ deleted: number }> => {
+    const response = await axiosInstance.delete('/notifications/clear-read');
     return response.data;
   },
 
   /**
-   * Get notifications by type
+   * Get notification preferences
    */
-  getByType: async (type: Notification['type']): Promise<Notification[]> => {
-    const response = await axiosInstance.get('/notifications/by-type', {
-      params: { type },
-    });
+  getPreferences: async (): Promise<any> => {
+    const response = await axiosInstance.get('/notifications/preferences');
     return response.data;
   },
 
   /**
-   * Get notifications by priority
+   * Update notification preferences
    */
-  getByPriority: async (priority: Notification['priority']): Promise<Notification[]> => {
-    const response = await axiosInstance.get('/notifications/by-priority', {
-      params: { priority },
-    });
+  updatePreferences: async (preferences: any): Promise<any> => {
+    const response = await axiosInstance.put('/notifications/preferences', preferences);
     return response.data;
   },
 };

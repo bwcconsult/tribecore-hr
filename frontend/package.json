@@ -21,6 +21,7 @@
     "axios": "^1.6.5",
     "date-fns": "^3.0.6",
     "recharts": "^2.10.3",
+    "@hello-pangea/dnd": "^16.5.0",
     "lucide-react": "^0.303.0",
     "react-hook-form": "^7.49.3",
     "zod": "^3.22.4",

@@ -128,7 +128,8 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
       fetchNotifications();
       fetchUnreadCount();
     }
-  }, [isAuthenticated, fetchNotifications, fetchUnreadCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]); // Only re-run when auth changes, not when functions change
 
   /**
    * Auto-refresh polling
@@ -145,7 +146,8 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     }, pollingInterval);
 
     return () => clearInterval(interval);
-  }, [isAuthenticated, autoRefresh, pollingInterval, fetchNotifications, fetchUnreadCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, autoRefresh, pollingInterval]); // Don't include fetch functions to avoid infinite loop
 
   return {
     notifications,

@@ -9,7 +9,7 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
-import { Organization } from '../../organizations/entities/organization.entity';
+import { Organization } from '../../organization/entities/organization.entity';
 import { User } from '../../users/entities/user.entity';
 import { ContractClause } from './contract-clause.entity';
 import { Approval } from './approval.entity';

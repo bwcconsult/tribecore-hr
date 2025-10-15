@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Organization } from '../../../modules/organizations/entities/organization.entity';
+import { Organization } from '../../organization/entities/organization.entity';
 
 export enum IamUserType {
   SERVICE_ACCOUNT = 'SERVICE_ACCOUNT',

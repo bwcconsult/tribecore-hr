@@ -166,6 +166,13 @@ import AuditLogViewerPage from './pages/iam/AuditLogViewerPage';
 import PolicySimulatorPage from './pages/iam/PolicySimulatorPage';
 import IamUsersPage from './pages/iam/IamUsersPage';
 
+// Contract Management Pages
+import ContractsDashboard from './pages/contracts/ContractsDashboard';
+import ContractDetailPage from './pages/contracts/ContractDetailPage';
+import CreateContractPage from './pages/contracts/CreateContractPage';
+import RenewalsRadar from './pages/contracts/RenewalsRadar';
+import ObligationsBoard from './pages/contracts/ObligationsBoard';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -358,6 +365,13 @@ function App() {
             <Route path="/iam/sod-violations" element={<SoDViolationsPage />} />
             <Route path="/iam/audit-logs" element={<AuditLogViewerPage />} />
             <Route path="/iam/policy-simulator" element={<PolicySimulatorPage />} />
+
+            {/* Contract Management Module Routes (NEW) */}
+            <Route path="/contracts" element={<ContractsDashboard />} />
+            <Route path="/contracts/create" element={<CreateContractPage />} />
+            <Route path="/contracts/:id" element={<ContractDetailPage />} />
+            <Route path="/contracts/renewals" element={<RenewalsRadar />} />
+            <Route path="/contracts/obligations" element={<ObligationsBoard />} />
           </Route>
 
           {/* Sign Module Routes */}

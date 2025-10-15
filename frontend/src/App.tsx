@@ -180,6 +180,11 @@ import ObligationsBoard from './pages/contracts/ObligationsBoard';
 import AnalyticsDashboard from './pages/contracts/AnalyticsDashboard';
 import ContractComparison from './pages/contracts/ContractComparison';
 
+// Payroll Fintech Pages
+import WalletDashboard from './pages/fintech/WalletDashboard';
+import EarnedWageAccessPage from './pages/fintech/EarnedWageAccessPage';
+import InstantPayPage from './pages/fintech/InstantPayPage';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -386,6 +391,11 @@ function App() {
             <Route path="/contracts/obligations" element={<ObligationsBoard />} />
             <Route path="/contracts/analytics" element={<AnalyticsDashboard />} />
             <Route path="/contracts/comparison" element={<ContractComparison />} />
+            
+            {/* Payroll Fintech Module Routes (NEW) */}
+            <Route path="/fintech/wallet" element={<WalletDashboard />} />
+            <Route path="/fintech/ewa" element={<EarnedWageAccessPage />} />
+            <Route path="/fintech/instant-pay" element={<InstantPayPage />} />
           </Route>
 
           {/* Sign Module Routes */}

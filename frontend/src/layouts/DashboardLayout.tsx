@@ -65,6 +65,7 @@ const navigation = [
   { name: 'Policy Studio', href: '/leave/policy-studio', icon: Settings },
   { name: 'Overtime', href: '/overtime', icon: Clock },
   { name: 'Payroll', href: '/payroll', icon: DollarSign },
+  { name: 'My Wallet', href: '/fintech/wallet', icon: DollarSign },
   { name: 'Benefits', href: '/benefits', icon: Heart },
   { name: 'Expenses', href: '/expenses', icon: Receipt },
   { name: 'Sign', href: '/sign', icon: Edit },

@@ -38,6 +38,7 @@ import { OvertimeModule } from './modules/overtime/overtime.module';
 import { HealthSafetyModule } from './modules/health-safety/health-safety.module';
 import { LegalServicesModule } from './modules/legal-services/legal-services.module';
 import { SignModule } from './modules/sign/sign.module';
+import { PayrollFintechModule } from './modules/payroll-fintech/payroll-fintech.module';
 
 @Module({
   imports: [
@@ -110,6 +111,7 @@ import { SignModule } from './modules/sign/sign.module';
     HealthSafetyModule,
     LegalServicesModule,
     SignModule,
+    PayrollFintechModule,
   ],
   controllers: [AppController],
 })

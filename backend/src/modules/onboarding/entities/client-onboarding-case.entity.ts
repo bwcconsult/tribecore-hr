@@ -1,9 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { ClientTier } from './client-account.entity';
-import { Workstream } from './workstream.entity';
-import { Environment } from './environment.entity';
-import { Risk } from './risk.entity';
 
 export enum ClientOnboardingStatus {
   INTAKE = 'INTAKE',
@@ -78,14 +75,14 @@ export class ClientOnboardingCase extends BaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   hypercareEndDate: Date;
 
-  @OneToMany(() => Workstream, workstream => workstream.case, { cascade: true })
-  workstreams: Workstream[];
+  @OneToMany(() => require('./workstream.entity').Workstream, workstream => workstream.case, { cascade: true })
+  workstreams: any[];
 
-  @OneToMany(() => Environment, environment => environment.case, { cascade: true })
-  environments: Environment[];
+  @OneToMany(() => require('./environment.entity').Environment, environment => environment.case, { cascade: true })
+  environments: any[];
 
-  @OneToMany(() => Risk, risk => risk.case, { cascade: true })
-  risks: Risk[];
+  @OneToMany(() => require('./risk.entity').Risk, risk => risk.case, { cascade: true })
+  risks: any[];
 
   @Column({ type: 'jsonb', nullable: true })
   gateChecks: {

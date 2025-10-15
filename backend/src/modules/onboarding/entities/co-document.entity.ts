@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ClientOnboardingCase } from './client-onboarding-case.entity';
 
 export enum CODocumentType {
   DPA = 'DPA', // Data Processing Agreement
@@ -19,9 +18,9 @@ export class CODocument extends BaseEntity {
   @Column()
   caseId: string;
 
-  @ManyToOne(() => ClientOnboardingCase, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./client-onboarding-case.entity').ClientOnboardingCase, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'caseId' })
-  case: ClientOnboardingCase;
+  case: any;
 
   @Column({
     type: 'enum',

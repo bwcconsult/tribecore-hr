@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ClientOnboardingCase } from './client-onboarding-case.entity';
 
 export enum ReviewCadence {
   WEEKLY = 'Weekly',
@@ -14,9 +13,9 @@ export class SuccessPlan extends BaseEntity {
   @Column()
   caseId: string;
 
-  @ManyToOne(() => ClientOnboardingCase, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./client-onboarding-case.entity').ClientOnboardingCase, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'caseId' })
-  case: ClientOnboardingCase;
+  case: any;
 
   @Column({ type: 'jsonb', default: [] })
   objectives: Array<{

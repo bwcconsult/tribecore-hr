@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 
+// Controllers
+import { AppController } from './app.controller';
+
 // Modules
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
@@ -108,5 +111,6 @@ import { SignModule } from './modules/sign/sign.module';
     LegalServicesModule,
     SignModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

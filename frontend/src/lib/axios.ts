@@ -8,6 +8,7 @@ export const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // CRITICAL: Required for CORS with credentials
 });
 
 // Request interceptor

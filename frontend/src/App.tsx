@@ -172,6 +172,8 @@ import ContractDetailPage from './pages/contracts/ContractDetailPage';
 import CreateContractPage from './pages/contracts/CreateContractPage';
 import RenewalsRadar from './pages/contracts/RenewalsRadar';
 import ObligationsBoard from './pages/contracts/ObligationsBoard';
+import AnalyticsDashboard from './pages/contracts/AnalyticsDashboard';
+import ContractComparison from './pages/contracts/ContractComparison';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -372,6 +374,8 @@ function App() {
             <Route path="/contracts/:id" element={<ContractDetailPage />} />
             <Route path="/contracts/renewals" element={<RenewalsRadar />} />
             <Route path="/contracts/obligations" element={<ObligationsBoard />} />
+            <Route path="/contracts/analytics" element={<AnalyticsDashboard />} />
+            <Route path="/contracts/comparison" element={<ContractComparison />} />
           </Route>
 
           {/* Sign Module Routes */}

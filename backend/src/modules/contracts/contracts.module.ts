@@ -20,6 +20,9 @@ import { ApprovalService } from './services/approval.service';
 import { ObligationService } from './services/obligation.service';
 import { RenewalService } from './services/renewal.service';
 import { ClauseLibraryService } from './services/clause-library.service';
+import { PerformanceScoringService } from './services/performance-scoring.service';
+import { DocumentGenerationService } from './services/document-generation.service';
+import { NotificationService } from './services/notification.service';
 
 // Controllers
 import { ContractsController } from './controllers/contracts.controller';
@@ -46,6 +49,9 @@ import { ContractsController } from './controllers/contracts.controller';
     ObligationService,
     RenewalService,
     ClauseLibraryService,
+    PerformanceScoringService,
+    DocumentGenerationService,
+    NotificationService,
   ],
   controllers: [ContractsController],
   exports: [

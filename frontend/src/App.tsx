@@ -74,6 +74,10 @@ import ExpensesAdminAnalytics from './pages/expenses/admin/ExpensesAdminAnalytic
 import ExpensesAdminSettings from './pages/expenses/admin/ExpensesAdminSettings';
 import ExpensesAdminGettingStarted from './pages/expenses/admin/ExpensesAdminGettingStarted';
 import RecruitmentPage from './pages/recruitment/RecruitmentPage';
+import { RequisitionsPage } from './pages/recruitment/RequisitionsPage';
+import { PipelinePage } from './pages/recruitment/PipelinePage';
+import { InterviewsPage } from './pages/recruitment/InterviewsPage';
+import { AnalyticsDashboardPage } from './pages/recruitment/AnalyticsDashboardPage';
 import LearningPage from './pages/learning/LearningPage';
 import MyLearningDashboard from './pages/learning/MyLearningDashboard';
 import UKMandatoryTrainingPage from './pages/learning/UKMandatoryTrainingPage';
@@ -268,6 +272,10 @@ function App() {
             }
           >
             <Route path="/recruitment" element={<RecruitmentPage />} />
+            <Route path="/recruitment/requisitions" element={<RequisitionsPage />} />
+            <Route path="/recruitment/pipeline/:requisitionId" element={<PipelinePage />} />
+            <Route path="/recruitment/interviews" element={<InterviewsPage />} />
+            <Route path="/recruitment/analytics" element={<AnalyticsDashboardPage />} />
             <Route path="/learning" element={<LearningPage />} />
             <Route path="/learning/my-learning" element={<MyLearningDashboard />} />
             <Route path="/learning/mandatory-training" element={<UKMandatoryTrainingPage />} />

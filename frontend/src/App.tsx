@@ -185,6 +185,11 @@ import WalletDashboard from './pages/fintech/WalletDashboard';
 import EarnedWageAccessPage from './pages/fintech/EarnedWageAccessPage';
 import InstantPayPage from './pages/fintech/InstantPayPage';
 
+// Internal Recruitment Pages
+import InternalJobBoard from './pages/internal-recruitment/InternalJobBoard';
+import MyApplicationsPage from './pages/internal-recruitment/MyApplicationsPage';
+import SuccessionPlanningDashboard from './pages/internal-recruitment/SuccessionPlanningDashboard';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -396,6 +401,11 @@ function App() {
             <Route path="/fintech/wallet" element={<WalletDashboard />} />
             <Route path="/fintech/ewa" element={<EarnedWageAccessPage />} />
             <Route path="/fintech/instant-pay" element={<InstantPayPage />} />
+            
+            {/* Internal Recruitment Module Routes (NEW) */}
+            <Route path="/internal-recruitment/jobs" element={<InternalJobBoard />} />
+            <Route path="/internal-recruitment/my-applications" element={<MyApplicationsPage />} />
+            <Route path="/internal-recruitment/succession" element={<SuccessionPlanningDashboard />} />
           </Route>
 
           {/* Sign Module Routes */}

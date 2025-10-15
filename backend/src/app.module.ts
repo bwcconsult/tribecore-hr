@@ -39,6 +39,7 @@ import { HealthSafetyModule } from './modules/health-safety/health-safety.module
 import { LegalServicesModule } from './modules/legal-services/legal-services.module';
 import { SignModule } from './modules/sign/sign.module';
 import { PayrollFintechModule } from './modules/payroll-fintech/payroll-fintech.module';
+import { InternalRecruitmentModule } from './modules/internal-recruitment/internal-recruitment.module';
 
 @Module({
   imports: [
@@ -112,6 +113,7 @@ import { PayrollFintechModule } from './modules/payroll-fintech/payroll-fintech.
     LegalServicesModule,
     SignModule,
     PayrollFintechModule,
+    InternalRecruitmentModule,
   ],
   controllers: [AppController],
 })

@@ -164,6 +164,7 @@ import DelegationManagementPage from './pages/iam/DelegationManagementPage';
 import SoDViolationsPage from './pages/iam/SoDViolationsPage';
 import AuditLogViewerPage from './pages/iam/AuditLogViewerPage';
 import PolicySimulatorPage from './pages/iam/PolicySimulatorPage';
+import IamUsersPage from './pages/iam/IamUsersPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -351,6 +352,7 @@ function App() {
             <Route path="/iam/user-roles" element={<UserRolesPage />} />
             <Route path="/iam/permissions" element={<PermissionsMatrixPage />} />
             <Route path="/iam/security-groups" element={<SecurityGroupsPage />} />
+            <Route path="/iam/users" element={<IamUsersPage />} />
             <Route path="/iam/analytics" element={<RoleAnalyticsDashboard />} />
             <Route path="/iam/delegations" element={<DelegationManagementPage />} />
             <Route path="/iam/sod-violations" element={<SoDViolationsPage />} />

@@ -132,6 +132,12 @@ export default function IAMOverviewPage() {
                 Security Groups
               </Button>
             </Link>
+            <Link to="/iam/users" className="block">
+              <Button variant="outline" className="w-full justify-start">
+                <Users className="h-4 w-4 mr-2" />
+                IAM Users
+              </Button>
+            </Link>
             <Link to="/iam/analytics" className="block">
               <Button variant="outline" className="w-full justify-start">
                 <BarChart3 className="h-4 w-4 mr-2" />

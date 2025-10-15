@@ -34,12 +34,21 @@ import { CalendarIntegrationService } from './integrations/calendar.integration'
 import { JobBoardIntegrationService } from './integrations/job-board.integration';
 import { BackgroundCheckIntegrationService } from './integrations/background-check.integration';
 
+// Advanced Services
+import { ResumeParserService } from './services/resume-parser.service';
+import { CandidateSourcingService } from './services/candidate-sourcing.service';
+import { ChatbotService } from './services/chatbot.service';
+import { VideoScreeningService } from './services/video-screening.service';
+import { WebhookService } from './services/webhook.service';
+import { MultiTenantService } from './services/multi-tenant.service';
+
 // Controllers
 import { RecruitmentController } from './recruitment.controller';
 import { RequisitionController } from './controllers/requisition.controller';
 import { ApplicationController } from './controllers/application.controller';
 import { InterviewController } from './controllers/interview.controller';
 import { AnalyticsController } from './controllers/analytics.controller';
+import { AdvancedController } from './controllers/advanced.controller';
 
 // Import NotificationsModule for NotificationHelperService
 import { NotificationsModule } from '../notifications/notifications.module';
@@ -72,6 +81,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
     ApplicationController,
     InterviewController,
     AnalyticsController,
+    AdvancedController,
   ],
   providers: [
     RecruitmentService,
@@ -87,6 +97,13 @@ import { NotificationsModule } from '../notifications/notifications.module';
     CalendarIntegrationService,
     JobBoardIntegrationService,
     BackgroundCheckIntegrationService,
+    // Advanced Services
+    ResumeParserService,
+    CandidateSourcingService,
+    ChatbotService,
+    VideoScreeningService,
+    WebhookService,
+    MultiTenantService,
   ],
   exports: [
     RecruitmentService,
@@ -102,6 +119,13 @@ import { NotificationsModule } from '../notifications/notifications.module';
     CalendarIntegrationService,
     JobBoardIntegrationService,
     BackgroundCheckIntegrationService,
+    // Advanced Services
+    ResumeParserService,
+    CandidateSourcingService,
+    ChatbotService,
+    VideoScreeningService,
+    WebhookService,
+    MultiTenantService,
   ],
 })
 export class RecruitmentModule {}

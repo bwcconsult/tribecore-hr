@@ -44,27 +44,34 @@ export class NotificationsService {
   /**
    * Get notifications for a user
    */
-  async getByUser(userId: string, unreadOnly = false): Promise<Notification[]> {
+  async getByUser(userId: string, unreadOnly = false, type?: string, limit = 50): Promise<Notification[]> {
     const query: any = { recipientId: userId };
     
     if (unreadOnly) {
       query.isRead = false;
     }
 
+    if (type) {
+      query.type = type;
+    }
+
     return this.notificationRepo.find({
       where: query,
       order: { createdAt: 'DESC' },
-      take: 50,
+      take: limit,
     });
   }
 
   /**
    * Mark notification as read
    */
-  async markAsRead(notificationId: string): Promise<Notification> {
-    const notification = await this.notificationRepo.findOne({
-      where: { id: notificationId },
-    });
+  async markAsRead(notificationId: string, userId?: string): Promise<Notification> {
+    const where: any = { id: notificationId };
+    if (userId) {
+      where.recipientId = userId;
+    }
+
+    const notification = await this.notificationRepo.findOne({ where });
 
     if (!notification) {
       throw new Error('Notification not found');
@@ -94,9 +101,28 @@ export class NotificationsService {
   /**
    * Delete a notification
    */
-  async delete(notificationId: string): Promise<void> {
-    await this.notificationRepo.delete(notificationId);
+  async delete(notificationId: string, userId?: string): Promise<void> {
+    if (userId) {
+      await this.notificationRepo.delete({ id: notificationId, recipientId: userId });
+    } else {
+      await this.notificationRepo.delete(notificationId);
+    }
     this.logger.log(`Notification deleted: ${notificationId}`);
+  }
+
+  /**
+   * Delete all read notifications for a user
+   */
+  async deleteAllRead(userId: string): Promise<number> {
+    const result = await this.notificationRepo
+      .createQueryBuilder()
+      .delete()
+      .where('recipientId = :userId', { userId })
+      .andWhere('isRead = :isRead', { isRead: true })
+      .execute();
+
+    this.logger.log(`Deleted ${result.affected} read notifications for user ${userId}`);
+    return result.affected || 0;
   }
 
   /**
@@ -129,6 +155,43 @@ export class NotificationsService {
     this.logger.log(`Created ${saved.length} notifications in bulk`);
 
     return saved;
+  }
+
+  /**
+   * Get notification statistics for a user
+   */
+  async getStats(userId: string): Promise<any> {
+    const [total, unread, read] = await Promise.all([
+      this.notificationRepo.count({ where: { recipientId: userId } }),
+      this.notificationRepo.count({ where: { recipientId: userId, isRead: false } }),
+      this.notificationRepo.count({ where: { recipientId: userId, isRead: true } }),
+    ]);
+
+    // Get counts by type
+    const byType = await this.notificationRepo
+      .createQueryBuilder('notification')
+      .select('notification.type', 'type')
+      .addSelect('COUNT(*)', 'count')
+      .where('notification.recipientId = :userId', { userId })
+      .groupBy('notification.type')
+      .getRawMany();
+
+    // Get counts by priority
+    const byPriority = await this.notificationRepo
+      .createQueryBuilder('notification')
+      .select('notification.priority', 'priority')
+      .addSelect('COUNT(*)', 'count')
+      .where('notification.recipientId = :userId', { userId })
+      .groupBy('notification.priority')
+      .getRawMany();
+
+    return {
+      total,
+      unread,
+      read,
+      byType: byType.map((item) => ({ type: item.type, count: parseInt(item.count, 10) })),
+      byPriority: byPriority.map((item) => ({ priority: item.priority, count: parseInt(item.count, 10) })),
+    };
   }
 
   /**

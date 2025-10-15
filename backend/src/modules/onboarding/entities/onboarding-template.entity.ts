@@ -1,6 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ChecklistItem } from './checklist-item.entity';
 
 @Entity('onboarding_templates')
 export class OnboardingTemplate extends BaseEntity {
@@ -28,8 +27,8 @@ export class OnboardingTemplate extends BaseEntity {
   @Column({ default: true })
   active: boolean;
 
-  @OneToMany(() => ChecklistItem, item => item.template, { cascade: true })
-  checklistItems: ChecklistItem[];
+  @OneToMany(() => require('./checklist-item.entity').ChecklistItem, item => item.template, { cascade: true })
+  checklistItems: any[];
 
   @Column({ type: 'jsonb', nullable: true })
   metadata: {

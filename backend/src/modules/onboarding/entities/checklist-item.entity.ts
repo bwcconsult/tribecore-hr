@@ -1,15 +1,14 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { OnboardingTemplate } from './onboarding-template.entity';
 
 @Entity('checklist_items')
 export class ChecklistItem extends BaseEntity {
   @Column()
   templateId: string;
 
-  @ManyToOne(() => OnboardingTemplate, template => template.checklistItems, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./onboarding-template.entity').OnboardingTemplate, template => template.checklistItems, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'templateId' })
-  template: OnboardingTemplate;
+  template: any;
 
   @Column()
   name: string;

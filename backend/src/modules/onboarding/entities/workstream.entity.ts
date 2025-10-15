@@ -1,7 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { ClientOnboardingCase } from './client-onboarding-case.entity';
-import { COTask } from './co-task.entity';
 
 export enum WorkstreamName {
   SECURITY = 'Security',
@@ -16,9 +14,9 @@ export class Workstream extends BaseEntity {
   @Column()
   caseId: string;
 
-  @ManyToOne(() => ClientOnboardingCase, caseEntity => caseEntity.workstreams, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./client-onboarding-case.entity').ClientOnboardingCase, caseEntity => caseEntity.workstreams, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'caseId' })
-  case: ClientOnboardingCase;
+  case: any;
 
   @Column({
     type: 'enum',
@@ -35,8 +33,8 @@ export class Workstream extends BaseEntity {
   @Column({ default: true })
   active: boolean;
 
-  @OneToMany(() => COTask, task => task.workstream, { cascade: true })
-  tasks: COTask[];
+  @OneToMany(() => require('./co-task.entity').COTask, task => task.workstream, { cascade: true })
+  tasks: any[];
 
   @Column({ type: 'jsonb', nullable: true })
   metadata: {

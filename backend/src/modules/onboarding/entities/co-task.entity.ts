@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { Workstream } from './workstream.entity';
 
 export enum COTaskOwnerTeam {
   CSM = 'CSM',
@@ -22,9 +21,9 @@ export class COTask extends BaseEntity {
   @Column()
   workstreamId: string;
 
-  @ManyToOne(() => Workstream, workstream => workstream.tasks, { onDelete: 'CASCADE' })
+  @ManyToOne(() => require('./workstream.entity').Workstream, workstream => workstream.tasks, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workstreamId' })
-  workstream: Workstream;
+  workstream: any;
 
   @Column()
   title: string;

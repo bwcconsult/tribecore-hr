@@ -25,11 +25,13 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     try {
       setLoading(true);
       setError(null);
+      console.log('[useNotifications] Fetching notifications...');
       const data = await notificationsService.getMyNotifications(unreadOnly);
-      setNotifications(data);
+      console.log('[useNotifications] Received data:', data);
+      setNotifications(Array.isArray(data) ? data : []);
     } catch (err: any) {
+      console.error('[useNotifications] Error fetching notifications:', err);
       setError(err.message || 'Failed to fetch notifications');
-      console.error('Error fetching notifications:', err);
     } finally {
       setLoading(false);
     }

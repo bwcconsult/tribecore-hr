@@ -126,7 +126,10 @@ export default function NotificationsCenterPage() {
   const retry = refresh; // Use refresh as retry
   const isRetrying = false; // Fallback for empty state component
 
-  const filteredNotifications = notifications.filter((notif) => {
+  const filteredNotifications = (notifications || []).filter((notif) => {
+    // Safety check
+    if (!notif) return false;
+    
     // Read/Unread filter
     if (filter === 'unread' && notif.isRead) return false;
     if (filter === 'read' && !notif.isRead) return false;

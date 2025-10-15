@@ -28,6 +28,18 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Only logout and redirect for auth endpoints, not for general 401s
+      const url = error.config?.url || '';
+      const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register');
+      
+      // Don't auto-logout for non-auth 401s (might be permission issues)
+      if (!isAuthEndpoint && error.config?.url) {
+        console.warn('401 Unauthorized:', url);
+        // Just reject the error, let the component handle it
+        return Promise.reject(error);
+      }
+      
+      // For auth endpoints, logout and redirect
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }

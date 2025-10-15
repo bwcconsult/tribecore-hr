@@ -87,6 +87,7 @@ const navigation = [
   
   // Admin & Tools
   { name: 'IAM', href: '/iam', icon: Shield },
+  { name: 'Contracts', href: '/contracts', icon: FileText },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Documents', href: '/documents', icon: FolderOpen },
   { name: 'Integrations', href: '/integrations', icon: Plug },
